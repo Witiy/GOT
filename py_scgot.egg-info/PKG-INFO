@@ -1,0 +1,33 @@
+Metadata-Version: 2.2
+Name: py-scgot
+Version: 0.2.3
+Author: Ruihong Xu
+Author-email: xuruihong@big.ac.cn
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+License-File: LICENSE.txt
+Requires-Dist: cellrank==2.0.4
+Requires-Dist: joblib==1.3.2
+Requires-Dist: matplotlib
+Requires-Dist: networkx>=3.1
+Requires-Dist: numpy==1.26.3
+Requires-Dist: pygam>=0.9.0
+Requires-Dist: numba==0.58.1
+Requires-Dist: llvmlite==0.41.1
+Requires-Dist: POT==0.9.3
+Requires-Dist: scanpy==1.9.3
+Requires-Dist: scikit-learn==1.1.3
+Requires-Dist: scipy==1.11.4
+Requires-Dist: scvelo>=0.3.0
+Requires-Dist: seaborn
+Requires-Dist: torchdiffeq==0.2.4
+Requires-Dist: tqdm
+Requires-Dist: plotly
+Requires-Dist: setuptools
+Requires-Dist: statsmodels
+Requires-Dist: rich
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: requires-dist
