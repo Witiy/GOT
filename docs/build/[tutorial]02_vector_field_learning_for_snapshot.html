@@ -1,0 +1,2253 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>02. Vector Field Inference with Snapshot Data &#8212; GOT 0.2.3 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/nbsphinx-code-cells.css?v=2aa19091" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=6808a718"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '[tutorial]02_vector_field_learning_for_snapshot';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="03. Velocity-based Pseudotime Estimation" href="%5Btutorial%5D03_velocity_based_pseudotime.html" />
+    <link rel="prev" title="01. Vector Field Inference with Time-Series Data" href="%5Btutorial%5D01_vector_field_learning_for_time-series.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">GOT 0.2.3 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Main</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api.html">API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="pygot.preprocessing.GS_VAE.html">pygot.preprocessing.GS_VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.traj.fit_velocity_model.html">pygot.tools.traj.fit_velocity_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.traj.velocity.html">pygot.tools.traj.velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.traj.latent_velocity.html">pygot.tools.traj.latent_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.traj.latent2gene_velocity.html">pygot.tools.traj.latent2gene_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.traj.simulate_trajectory.html">pygot.tools.traj.simulate_trajectory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.traj.fit_velocity_model_without_time.html">pygot.tools.traj.fit_velocity_model_without_time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.traj.determine_source_state.html">pygot.tools.traj.determine_source_state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pygot.tools.analysis.ProbabilityModel.html">pygot.tools.analysis.ProbabilityModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pygot.tools.analysis.CellFate.html">pygot.tools.analysis.CellFate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pygot.tools.analysis.TimeSeriesRoadmap.html">pygot.tools.analysis.TimeSeriesRoadmap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pygot.tools.analysis.GRN.html">pygot.tools.analysis.GRN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/pygot.tools.analysis.GRNData.html">pygot.tools.analysis.GRNData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.plotting.plot_trajectory.html">pygot.plotting.plot_trajectory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.plotting.plot_root_cell.html">pygot.plotting.plot_root_cell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.datasets.synthetic.html">pygot.datasets.synthetic</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vector Field Learning</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="%5Btutorial%5D01_vector_field_learning_for_time-series.html">01. Vector Field Inference with Time-Series Data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">02. Vector Field Inference with Snapshot Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vector Field Interpretation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="%5Btutorial%5D03_velocity_based_pseudotime.html">03. Velocity-based Pseudotime Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%5Btutorial%5D04_cell_fate_prediction.html">04. Cell Fate Quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%5Btutorial%5D05_development_tree_inference.html">05. Developmental Tree Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%5Btutorial%5D06_gene_regulatory_network_inference.html">06. Gene Regulatory Network Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="%5Btutorial%5D07_in_silico_perturbation.html">07. In silico perturbation</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/[tutorial]02_vector_field_learning_for_snapshot.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>02. Vector Field Inference with Snapshot Data</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Helper-function">Helper function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Import-data-and-preprocess">Import data and preprocess</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scvelo-stochastic-mode">scvelo stochastic mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scvelo-dynamical-mode">scvelo dynamical mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#GOT-to-identify-source-cell">GOT to identify source cell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#GOT-velocity-fitting-for-snapshot-data">GOT velocity fitting for snapshot data</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="02.-Vector-Field-Inference-with-Snapshot-Data">
+<h1>02. Vector Field Inference with Snapshot Data<a class="headerlink" href="#02.-Vector-Field-Inference-with-Snapshot-Data" title="Link to this heading">#</a></h1>
+<p>This notebook introduces the basic usage of pyGOT for snapshot data. The example data is dentategyrus dataset from scvelo.datasets api.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">scanpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sc</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scvelo</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">scv</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pygot</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics.pairwise</span><span class="w"> </span><span class="kn">import</span> <span class="n">cosine_similarity</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;axes.spines&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+<section id="Helper-function">
+<h2>Helper function<a class="headerlink" href="#Helper-function" title="Link to this heading">#</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## This function is from UniTVelo to evaluate the consistent between fitted velocity and groundtruth</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">keep_type</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">k_cluster</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Select cells of targeted type</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        adata (Anndata):</span>
+<span class="sd">            Anndata object.</span>
+<span class="sd">        nodes (list):</span>
+<span class="sd">            Indexes for cells</span>
+<span class="sd">        target (str):</span>
+<span class="sd">            Cluster name.</span>
+<span class="sd">        k_cluster (str):</span>
+<span class="sd">            Cluster key in adata.obs dataframe</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list:</span>
+<span class="sd">            Selected cells.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">nodes</span><span class="p">[</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">k_cluster</span><span class="p">][</span><span class="n">nodes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">==</span> <span class="n">target</span><span class="p">]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cross_boundary_correctness</span><span class="p">(</span>
+    <span class="n">adata</span><span class="p">,</span>
+    <span class="n">k_cluster</span><span class="p">,</span>
+    <span class="n">k_velocity</span><span class="p">,</span>
+    <span class="n">cluster_edges</span><span class="p">,</span>
+    <span class="n">return_raw</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">x_emb</span><span class="o">=</span><span class="s2">&quot;X_umap&quot;</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Cross-Boundary Direction Correctness Score (A-&gt;B)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        adata (Anndata):</span>
+<span class="sd">            Anndata object.</span>
+<span class="sd">        k_cluster (str):</span>
+<span class="sd">            key to the cluster column in adata.obs DataFrame.</span>
+<span class="sd">        k_velocity (str):</span>
+<span class="sd">            key to the velocity matrix in adata.obsm.</span>
+<span class="sd">        cluster_edges (list of tuples(&quot;A&quot;, &quot;B&quot;)):</span>
+<span class="sd">            pairs of clusters has transition direction A-&gt;B</span>
+<span class="sd">        return_raw (bool):</span>
+<span class="sd">            return aggregated or raw scores.</span>
+<span class="sd">        x_emb (str):</span>
+<span class="sd">            key to x embedding for visualization.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict:</span>
+<span class="sd">            all_scores indexed by cluster_edges or mean scores indexed by cluster_edges</span>
+<span class="sd">        float:</span>
+<span class="sd">            averaged score over all cells.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">all_scores</span> <span class="o">=</span> <span class="p">{}</span>
+
+
+    <span class="k">if</span> <span class="n">x_emb</span> <span class="o">==</span> <span class="s2">&quot;X_umap&quot;</span><span class="p">:</span>
+        <span class="n">v_emb</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_umap&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">k_velocity</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">v_emb</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[[</span><span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span> <span class="k">if</span> <span class="n">key</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">k_velocity</span><span class="p">)][</span><span class="mi">0</span><span class="p">]]</span>
+
+    <span class="n">x_emb</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">x_emb</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">cluster_edges</span><span class="p">:</span>
+        <span class="n">sel</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">k_cluster</span><span class="p">]</span> <span class="o">==</span> <span class="n">u</span>
+        <span class="n">nbs</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;neighbors&#39;</span><span class="p">][</span><span class="s1">&#39;indices&#39;</span><span class="p">][</span><span class="n">sel</span><span class="p">]</span> <span class="c1"># [n * 30]</span>
+
+        <span class="n">boundary_nodes</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">nodes</span><span class="p">:</span><span class="n">keep_type</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">k_cluster</span><span class="p">),</span> <span class="n">nbs</span><span class="p">)</span>
+        <span class="n">x_points</span> <span class="o">=</span> <span class="n">x_emb</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
+        <span class="n">x_velocities</span> <span class="o">=</span> <span class="n">v_emb</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span>
+
+        <span class="n">type_score</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x_pos</span><span class="p">,</span> <span class="n">x_vel</span><span class="p">,</span> <span class="n">nodes</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_points</span><span class="p">,</span> <span class="n">x_velocities</span><span class="p">,</span> <span class="n">boundary_nodes</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="k">continue</span>
+
+            <span class="n">position_dif</span> <span class="o">=</span> <span class="n">x_emb</span><span class="p">[</span><span class="n">nodes</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_pos</span>
+            <span class="n">dir_scores</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">position_dif</span><span class="p">,</span> <span class="n">x_vel</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+            <span class="n">type_score</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dir_scores</span><span class="p">))</span>
+
+        <span class="n">scores</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">type_score</span><span class="p">)</span>
+        <span class="n">all_scores</span><span class="p">[(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)]</span> <span class="o">=</span> <span class="n">type_score</span>
+
+    <span class="k">if</span> <span class="n">return_raw</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">all_scores</span>
+
+    <span class="k">return</span> <span class="n">scores</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">([</span><span class="n">sc</span> <span class="k">for</span> <span class="n">sc</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="k">def</span><span class="w"> </span><span class="nf">calculate_cluster_centres</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">cluster_labels</span><span class="p">):</span>
+
+
+    <span class="n">unique_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">cluster_labels</span><span class="p">)</span>
+
+    <span class="n">cluster_centres</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">unique_labels</span><span class="p">:</span>
+        <span class="n">cluster_points</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">cluster_labels</span> <span class="o">==</span> <span class="n">label</span><span class="p">]</span>
+
+        <span class="n">cluster_centre</span> <span class="o">=</span> <span class="n">cluster_points</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cluster_centres</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">cluster_centre</span>
+
+    <span class="k">return</span> <span class="n">cluster_centres</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_mst</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">mst_children</span><span class="p">,</span> <span class="n">cell_type_key</span><span class="p">,</span>  <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;umap&#39;</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_&#39;</span> <span class="o">+</span> <span class="n">basis</span><span class="p">]</span>
+        <span class="n">cluster_labels</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">cell_type_key</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">cluster_centres</span> <span class="o">=</span> <span class="n">calculate_cluster_centres</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">cluster_labels</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">)</span>
+
+        <span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cell_type_key</span><span class="p">,</span> <span class="n">legend_loc</span><span class="o">=</span><span class="s1">&#39;on data&#39;</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="n">basis</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,)</span>
+        <span class="n">start_node_indicator</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span> <span class="p">:</span> <span class="kc">True</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mst_children</span> <span class="p">}</span>
+
+
+        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">kids</span> <span class="ow">in</span> <span class="n">mst_children</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">kids</span><span class="p">:</span>
+                <span class="n">start_node_indicator</span><span class="p">[</span><span class="n">child</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">x_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">cluster_centres</span><span class="p">[</span><span class="n">root</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">cluster_centres</span><span class="p">[</span><span class="n">child</span><span class="p">][</span><span class="mi">0</span><span class="p">]]</span>
+                <span class="n">y_coords</span> <span class="o">=</span> <span class="p">[</span><span class="n">cluster_centres</span><span class="p">[</span><span class="n">root</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">cluster_centres</span><span class="p">[</span><span class="n">child</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_coords</span><span class="p">,</span> <span class="n">y_coords</span><span class="p">,</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">arrow</span><span class="p">(</span><span class="n">x_coords</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">y_coords</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">x_coords</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_coords</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">y_coords</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span>  <span class="n">y_coords</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">head_width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">fc</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">ec</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">length_includes_head</span><span class="o">=</span><span class="kc">True</span><span class="p">,)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Dimension 1&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Dimension 2&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Manual annotation of cell dynamics&#39;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Import-data-and-preprocess">
+<h2>Import data and preprocess<a class="headerlink" href="#Import-data-and-preprocess" title="Link to this heading">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="n">adata</span> <span class="o">=</span> <span class="n">scv</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">dentategyrus_lamanno</span><span class="p">(</span><span class="s1">&#39;../../../../data/DentateGyrus/DentateGyrus.loom&#39;</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">filter_and_normalize</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">min_shared_counts</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">n_top_genes</span><span class="o">=</span><span class="mi">2000</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">n_pcs</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+<span class="n">embedding_key</span> <span class="o">=</span> <span class="s1">&#39;X_pca&#39;</span> <span class="c1"># Use pca as latent space</span>
+<span class="n">cell_type_key</span> <span class="o">=</span> <span class="s1">&#39;clusters&#39;</span>
+<span class="n">vis_key</span> <span class="o">=</span> <span class="s1">&#39;tsne&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+OMP: Info #276: omp_set_nested routine deprecated, please use omp_set_max_active_levels instead.
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/anndata/_core/anndata.py:1113: DeprecationWarning: is_categorical_dtype is deprecated and will be removed in a future version. Use isinstance(dtype, pd.CategoricalDtype) instead
+  if not is_categorical_dtype(df_full[k]):
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/anndata/_core/anndata.py:1113: DeprecationWarning: is_categorical_dtype is deprecated and will be removed in a future version. Use isinstance(dtype, pd.CategoricalDtype) instead
+  if not is_categorical_dtype(df_full[k]):
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/anndata/_core/anndata.py:1113: DeprecationWarning: is_categorical_dtype is deprecated and will be removed in a future version. Use isinstance(dtype, pd.CategoricalDtype) instead
+  if not is_categorical_dtype(df_full[k]):
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Filtered out 18710 genes that are detected 20 counts (shared).
+Normalized count data: X, spliced, unspliced.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/anndata/_core/anndata.py:1113: DeprecationWarning: is_categorical_dtype is deprecated and will be removed in a future version. Use isinstance(dtype, pd.CategoricalDtype) instead
+  if not is_categorical_dtype(df_full[k]):
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/anndata/_core/anndata.py:1113: DeprecationWarning: is_categorical_dtype is deprecated and will be removed in a future version. Use isinstance(dtype, pd.CategoricalDtype) instead
+  if not is_categorical_dtype(df_full[k]):
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Extracted 2000 highly variable genes.
+Logarithmized X.
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/scvelo/preprocessing/utils.py:705: DeprecationWarning: `log1p` is deprecated since scVelo v0.3.0 and will be removed in a future version. Please use `log1p` from `scanpy.pp` instead.
+  log1p(adata)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+computing neighbors
+    finished (0:00:06) --&gt; added
+    &#39;distances&#39; and &#39;connectivities&#39;, weighted adjacency matrices (adata.obsp)
+computing moments based on connectivities
+    finished (0:00:02) --&gt; added
+    &#39;Ms&#39; and &#39;Mu&#39;, moments of un/spliced abundances (adata.layers)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">tsne</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cell_type_key</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/scanpy/plotting/_tools/scatterplots.py:163: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+  cmap = copy(get_cmap(cmap))
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/IPython/core/pylabtools.py:77: DeprecationWarning: backend2gui is deprecated since IPython 8.24, backends are managed in matplotlib and can be externally registered.
+  warnings.warn(
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/scanpy/plotting/_tools/scatterplots.py:1208: DeprecationWarning: is_categorical_dtype is deprecated and will be removed in a future version. Use isinstance(dtype, pd.CategoricalDtype) instead
+  if not is_categorical_dtype(values):
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_8_1.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_8_1.png" />
+</div>
+</div>
+<p>According to <a class="reference external" href="https://www.nature.com/articles/s41586-018-0414-6">La Manno et al. (2018)</a>, the source cell type of this dataset should be <code class="docutils literal notranslate"><span class="pre">nIPC</span></code> cell type. And the groundtruth of cell type transition is as</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;nIPC&#39;</span><span class="p">:[</span><span class="s1">&#39;GlialProg&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Nbl1&#39;</span><span class="p">:[</span><span class="s1">&#39;Nbl2&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;Nbl2&#39;</span><span class="p">:[</span><span class="s1">&#39;CA&#39;</span><span class="p">,</span><span class="s1">&#39;ImmGranule1&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;ImmGranule1&#39;</span><span class="p">:[</span><span class="s1">&#39;ImmGranule2&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;ImmGranule2&#39;</span><span class="p">:[</span><span class="s1">&#39;Granule&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;CA&#39;</span><span class="p">:</span> <span class="p">[</span> <span class="s1">&#39;CA1-Sub&#39;</span><span class="p">,</span> <span class="s1">&#39;CA2-3-4&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;RadialGlia&#39;</span><span class="p">:[</span><span class="s1">&#39;RadialGlia2&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;RadialGlia2&#39;</span><span class="p">:[</span><span class="s1">&#39;ImmAstro&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;GlialProg&#39;</span><span class="p">:[</span><span class="s1">&#39;OPC&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+<span class="n">edges</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">target</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">[</span><span class="n">key</span><span class="p">]:</span>
+        <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">key</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+<span class="n">plot_mst</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">tree</span><span class="p">,</span> <span class="n">cell_type_key</span><span class="o">=</span><span class="s1">&#39;clusters&#39;</span><span class="p">,</span>  <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;tsne&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[(&#39;nIPC&#39;, &#39;GlialProg&#39;), (&#39;Nbl1&#39;, &#39;Nbl2&#39;), (&#39;Nbl2&#39;, &#39;CA&#39;), (&#39;Nbl2&#39;, &#39;ImmGranule1&#39;), (&#39;ImmGranule1&#39;, &#39;ImmGranule2&#39;), (&#39;ImmGranule2&#39;, &#39;Granule&#39;), (&#39;CA&#39;, &#39;CA1-Sub&#39;), (&#39;CA&#39;, &#39;CA2-3-4&#39;), (&#39;RadialGlia&#39;, &#39;RadialGlia2&#39;), (&#39;RadialGlia2&#39;, &#39;ImmAstro&#39;), (&#39;GlialProg&#39;, &#39;OPC&#39;)]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/scanpy/plotting/_tools/scatterplots.py:163: MatplotlibDeprecationWarning: The get_cmap function was deprecated in Matplotlib 3.7 and will be removed two minor releases later. Use ``matplotlib.colormaps[name]`` or ``matplotlib.colormaps.get_cmap(obj)`` instead.
+  cmap = copy(get_cmap(cmap))
+/Users/ruihong/anaconda3/envs/got/lib/python3.10/site-packages/scanpy/plotting/_tools/scatterplots.py:1208: DeprecationWarning: is_categorical_dtype is deprecated and will be removed in a future version. Use isinstance(dtype, pd.CategoricalDtype) instead
+  if not is_categorical_dtype(values):
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_10_2.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_10_2.png" />
+</div>
+</div>
+</section>
+<section id="scvelo-stochastic-mode">
+<h2>scvelo stochastic mode<a class="headerlink" href="#scvelo-stochastic-mode" title="Link to this heading">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">velocity_graph</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+computing velocities
+    finished (0:00:04) --&gt; added
+    &#39;velocity&#39;, velocity vectors for each individual cell (adata.layers)
+computing velocity graph (using 1/10 cores)
+WARNING: Unable to create progress bar. Consider installing `tqdm` as `pip install tqdm` and `ipywidgets` as `pip install ipywidgets`,
+or disable the progress bar using `show_progress_bar=False`.
+    finished (0:01:18) --&gt; added
+    &#39;velocity_graph&#39;, sparse matrix with cosine correlations (adata.uns)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scv</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">velocity_embedding_stream</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cell_type_key</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;tsne&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+computing velocity embedding
+    finished (0:00:01) --&gt; added
+    &#39;velocity_tsne&#39;, embedded velocity vectors (adata.obsm)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_13_1.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_13_1.png" />
+</div>
+</div>
+<p>The velocity stream plot from scvelo stochastic mode is partial consistent with groudtruth. Compute the <code class="docutils literal notranslate"><span class="pre">cross_boundary_correctness</span></code> between predicted results and given groudtruth</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">cbc_scvelo_stochastic</span> <span class="o">=</span> <span class="n">cross_boundary_correctness</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">cell_type_key</span><span class="p">,</span> <span class="s1">&#39;velocity_&#39;</span><span class="o">+</span><span class="n">vis_key</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;X_&#39;</span><span class="o">+</span><span class="n">vis_key</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cbc_scvelo_stochastic</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.322421113443348
+</pre></div></div>
+</div>
+</section>
+<section id="scvelo-dynamical-mode">
+<h2>scvelo dynamical mode<a class="headerlink" href="#scvelo-dynamical-mode" title="Link to this heading">#</a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">recover_dynamics</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;dynamical&#39;</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">velocity_graph</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+recovering dynamics (using 10/10 cores)
+    finished (0:04:59) --&gt; added
+    &#39;fit_pars&#39;, fitted parameters for splicing dynamics (adata.var)
+computing velocities
+    finished (0:00:11) --&gt; added
+    &#39;velocity&#39;, velocity vectors for each individual cell (adata.layers)
+computing velocity graph (using 1/10 cores)
+    finished (0:00:35) --&gt; added
+    &#39;velocity_graph&#39;, sparse matrix with cosine correlations (adata.uns)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">velocity_embedding_stream</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cell_type_key</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;tsne&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+computing velocity embedding
+    finished (0:00:01) --&gt; added
+    &#39;velocity_tsne&#39;, embedded velocity vectors (adata.obsm)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_18_1.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_18_1.png" />
+</div>
+</div>
+<p>The velocity stream plot from scvelo dynamical mode is not better than stochastic mode. Compute the <code class="docutils literal notranslate"><span class="pre">cross_boundary_correctness</span></code></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">cbc_scvelo_dynamical</span> <span class="o">=</span> <span class="n">cross_boundary_correctness</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">cell_type_key</span><span class="p">,</span> <span class="s1">&#39;velocity_&#39;</span><span class="o">+</span><span class="n">vis_key</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;X_&#39;</span><span class="o">+</span><span class="n">vis_key</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cbc_scvelo_dynamical</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.14824180758851663
+</pre></div></div>
+</div>
+</section>
+<section id="GOT-to-identify-source-cell">
+<h2>GOT to identify source cell<a class="headerlink" href="#GOT-to-identify-source-cell" title="Link to this heading">#</a></h2>
+<p>Here, we use got to identify source cell based on the optimal transport metrics. The assumption is that the transition cost from source cell to all cell distribution is smallest than any other developing cell. By default, to accelerate computational speed, we down-sampling dataset. The result is very similar if the number of cells in down-sampling dataset large than 3000.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">determine_source_state</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Down sampling
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 3000/3000 [06:00&lt;00:00,  8.33it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+optimal transport root cell write in adata.uns[&#39;ot_root&#39;]
+optimal transport + cytotrace root cell write in adata.uns[&#39;ot_ct_root&#39;]
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>cell</th>
+      <th>raw_root_loss</th>
+      <th>idx</th>
+      <th>root_loss</th>
+      <th>root_score</th>
+      <th>ct_root_score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>628</th>
+      <td>10X84_3:CCTAAAGTCCTGTAGAx</td>
+      <td>20.167403</td>
+      <td>628</td>
+      <td>20.305454</td>
+      <td>1.000000</td>
+      <td>0.890152</td>
+    </tr>
+    <tr>
+      <th>2099</th>
+      <td>10X83_3:CGGCTAGCAAACCTACx</td>
+      <td>20.023151</td>
+      <td>2099</td>
+      <td>20.320417</td>
+      <td>0.992036</td>
+      <td>0.882109</td>
+    </tr>
+    <tr>
+      <th>1009</th>
+      <td>10X83_3:TGCTACCCAATAACGAx</td>
+      <td>20.220465</td>
+      <td>1009</td>
+      <td>20.320417</td>
+      <td>0.992036</td>
+      <td>0.881782</td>
+    </tr>
+    <tr>
+      <th>2335</th>
+      <td>10X84_2:TGAGCCGTCTGGCGTGx</td>
+      <td>20.354053</td>
+      <td>2335</td>
+      <td>20.382536</td>
+      <td>0.958975</td>
+      <td>0.857346</td>
+    </tr>
+    <tr>
+      <th>341</th>
+      <td>10X84_2:CACTCCATCCCATTATx</td>
+      <td>20.253704</td>
+      <td>341</td>
+      <td>20.388701</td>
+      <td>0.955694</td>
+      <td>0.850167</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>818</th>
+      <td>10X83_2:AGGTCATGTCTCCCTAx</td>
+      <td>22.25202</td>
+      <td>818</td>
+      <td>22.111518</td>
+      <td>0.038774</td>
+      <td>0.063349</td>
+    </tr>
+    <tr>
+      <th>1298</th>
+      <td>10X83_3:CTGGTCTTCCTTGGTCx</td>
+      <td>22.121748</td>
+      <td>1298</td>
+      <td>22.118788</td>
+      <td>0.034905</td>
+      <td>0.058904</td>
+    </tr>
+    <tr>
+      <th>330</th>
+      <td>10X84_2:GACAGAGTCTGCTGCTx</td>
+      <td>22.145375</td>
+      <td>330</td>
+      <td>22.129215</td>
+      <td>0.029355</td>
+      <td>0.054419</td>
+    </tr>
+    <tr>
+      <th>1710</th>
+      <td>10X83_2:TCAGGTAAGGGTGTTGx</td>
+      <td>22.234469</td>
+      <td>1710</td>
+      <td>22.153983</td>
+      <td>0.016173</td>
+      <td>0.043674</td>
+    </tr>
+    <tr>
+      <th>2625</th>
+      <td>10X83_3:TGACTTTCAGTACACTx</td>
+      <td>22.170208</td>
+      <td>2625</td>
+      <td>22.184371</td>
+      <td>0.000000</td>
+      <td>0.022611</td>
+    </tr>
+  </tbody>
+</table>
+<p>3000 rows × 6 columns</p>
+</div></div>
+</div>
+<p>Visulaize the <code class="docutils literal notranslate"><span class="pre">root_score</span></code>, which represents the probability of being source cell. The score of some <code class="docutils literal notranslate"><span class="pre">nIPC</span></code> and <code class="docutils literal notranslate"><span class="pre">Nbl1</span></code> cells are significantly higher than other cells.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">tsne</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;root_score&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_25_0.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_25_0.png" />
+</div>
+</div>
+<p>Further, we can visualize the most prossible source cell.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pygot</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">plot_root_cell</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;tsne&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_27_0.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_27_0.png" />
+</div>
+</div>
+<p>Since the differentiation process is non-linear, we use the cell with optimal root_score value (OT root cell) as the source cell</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;iroot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;ot_root&#39;</span><span class="p">]</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">dpt</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">tsne</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;dpt_pseudotime&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_29_0.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_29_0.png" />
+</div>
+</div>
+<p>Based on the precomputed pseudotime, we can train a velocity model</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">fit_velocity_model_without_time</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span>
+                                                         <span class="n">precomputed_pseudotime</span><span class="o">=</span><span class="s1">&#39;dpt_pseudotime&#39;</span><span class="p">,</span> <span class="n">single_branch_detect</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2025-05-05 16:49:49      Start to fit velocity model
+loading saved shortest path profile
+[Errno 2] No such file or directory: &#39;_0.0to1.0.pkl&#39;
+Error in loading shortest path file
+calcu shortest path between 0.0 to 1.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 608/608 [00:00&lt;00:00, 1617.27it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 1.0 to 2.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 608/608 [00:00&lt;00:00, 1677.85it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 2.0 to 3.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 608/608 [00:00&lt;00:00, 1702.06it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 3.0 to 4.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1923.36it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 4.0 to 5.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1726.92it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 5.0 to 6.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1891.79it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 6.0 to 7.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1926.11it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 7.0 to 8.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2253.62it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 8.0 to 9.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2617.74it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 9.0 to 10.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 3654.07it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 10.0 to 11.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 3102.92it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 11.0 to 12.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 3406.26it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 12.0 to 13.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2468.46it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 13.0 to 14.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2096.73it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 14.0 to 15.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2034.51it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 15.0 to 16.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2046.50it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 16.0 to 17.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1764.39it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 17.0 to 18.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1797.81it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 18.0 to 19.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1895.33it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 19.0 to 20.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1764.13it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 20.0 to 21.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1724.92it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 21.0 to 22.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1766.57it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 22.0 to 23.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1868.78it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 23.0 to 24.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1795.18it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 24.0 to 25.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1690.22it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 25.0 to 26.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1729.11it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 26.0 to 27.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1803.91it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 27.0 to 28.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1713.52it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 28.0 to 29.0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1787.48it/s]
+loss :1.0732 best :1.0732: 100%|██████████| 100/100 [01:32&lt;00:00,  1.08it/s]
+loss :1087.6276  best :1087.6276: 100%|██████████| 200/200 [00:23&lt;00:00,  8.64it/s]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+<span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">velocity_graph</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">velocity_key</span><span class="o">=</span><span class="s1">&#39;velocity_pca&#39;</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">velocity_embedding</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;tsne&#39;</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">velocity_embedding_stream</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;tsne&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Use adata.obsp[&#39;connectivities&#39;] as neighbors, please confirm it is computed in embedding space
+computing velocity embedding
+    finished (0:00:01) --&gt; added
+    &#39;velocity_tsne&#39;, embedded velocity vectors (adata.obsm)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_32_1.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_32_1.png" />
+</div>
+</div>
+</section>
+<section id="GOT-velocity-fitting-for-snapshot-data">
+<h2>GOT velocity fitting for snapshot data<a class="headerlink" href="#GOT-velocity-fitting-for-snapshot-data" title="Link to this heading">#</a></h2>
+<p>The above process (including 1. source cell searching, 2. linear differentiation identification, 3. velocity model fitting) is integrated in one function of <code class="docutils literal notranslate"><span class="pre">pygot.tl.traj.fit_velocity_model_without_time</span></code>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><span></span><span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">embedding_key</span> <span class="o">=</span> <span class="s1">&#39;X_pca&#39;</span>
+<span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">&#39;velocity_pca&#39;</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">fit_velocity_model_without_time</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;tsne&#39;</span><span class="p">,</span> <span class="n">single_branch_detect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cell_type_key</span><span class="o">=</span><span class="n">cell_type_key</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2025-05-05 16:55:13      Using extrema in diffmap space to connect the whole graph
+2025-05-05 16:55:14      Search for the best source cell..
+Down sampling
+WARNING: Root cell index 14932 does not exist for 3000 samples. It’s ignored.
+Convert into connected graph
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 20/20 [00:01&lt;00:00, 11.12it/s]
+100%|██████████| 3000/3000 [09:53&lt;00:00,  5.06it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+optimal transport root cell write in adata.uns[&#39;ot_root&#39;]
+optimal transport + cytotrace root cell write in adata.uns[&#39;ot_ct_root&#39;]
+2025-05-05 17:05:15      Determine linear progress or not..
+2025-05-05 17:05:15      Single Branch Progress : False
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_35_3.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_35_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_35_4.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_35_4.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_35_5.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_35_5.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_35_6.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_35_6.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+2025-05-05 17:05:16      Start to fit velocity model
+loading saved shortest path profile
+[Errno 2] No such file or directory: &#39;_0.0to1.0.pkl&#39;
+Error in loading shortest path file
+calcu shortest path between 0.0 to 1.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 608/608 [00:00&lt;00:00, 1465.87it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 1.0 to 2.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 608/608 [00:00&lt;00:00, 1514.16it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 2.0 to 3.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 608/608 [00:00&lt;00:00, 1578.37it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 3.0 to 4.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1610.52it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 4.0 to 5.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1675.58it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 5.0 to 6.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1305.68it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 6.0 to 7.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1691.25it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 7.0 to 8.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2119.60it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 8.0 to 9.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2140.69it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 9.0 to 10.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2694.50it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 10.0 to 11.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2402.51it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 11.0 to 12.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2259.17it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 12.0 to 13.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 2119.57it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 13.0 to 14.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1930.26it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 14.0 to 15.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1776.88it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 15.0 to 16.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1797.09it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 16.0 to 17.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1596.81it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 17.0 to 18.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1674.69it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 18.0 to 19.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1694.12it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 19.0 to 20.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1540.37it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 20.0 to 21.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1681.04it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 21.0 to 22.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1564.89it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 22.0 to 23.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1686.72it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 23.0 to 24.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1617.16it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 24.0 to 25.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1467.67it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 25.0 to 26.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1371.40it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 26.0 to 27.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1491.24it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 27.0 to 28.0
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1344.80it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+calcu shortest path between 28.0 to 29.0
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 607/607 [00:00&lt;00:00, 1087.49it/s]
+loss :1.0672 best :1.0672: 100%|██████████| 100/100 [01:42&lt;00:00,  1.03s/it]
+loss :1384.4429  best :1384.4429: 100%|██████████| 200/200 [00:26&lt;00:00,  7.68it/s]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+<span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">velocity_graph</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">velocity_key</span><span class="o">=</span><span class="s1">&#39;velocity_pca&#39;</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">velocity_embedding</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;tsne&#39;</span><span class="p">)</span>
+<span class="n">scv</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">velocity_embedding_stream</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;tsne&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Use adata.obsp[&#39;connectivities&#39;] as neighbors, please confirm it is computed in embedding space
+computing velocity embedding
+    finished (0:00:01) --&gt; added
+    &#39;velocity_tsne&#39;, embedded velocity vectors (adata.obsm)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_36_1.png" src="_images/%5Btutorial%5D02_vector_field_learning_for_snapshot_36_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_</span><span class="p">,</span> <span class="n">cbc_got</span> <span class="o">=</span> <span class="n">cross_boundary_correctness</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">cell_type_key</span><span class="p">,</span> <span class="s1">&#39;velocity_&#39;</span><span class="o">+</span><span class="n">vis_key</span><span class="p">,</span> <span class="n">edges</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;X_&#39;</span><span class="o">+</span><span class="n">vis_key</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cbc_got</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.5980271152844634
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="%5Btutorial%5D01_vector_field_learning_for_time-series.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">01. Vector Field Inference with Time-Series Data</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="%5Btutorial%5D03_velocity_based_pseudotime.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">03. Velocity-based Pseudotime Estimation</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Helper-function">Helper function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#Import-data-and-preprocess">Import data and preprocess</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scvelo-stochastic-mode">scvelo stochastic mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scvelo-dynamical-mode">scvelo dynamical mode</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#GOT-to-identify-source-cell">GOT to identify source cell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#GOT-velocity-fitting-for-snapshot-data">GOT velocity fitting for snapshot data</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ruihong Xu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Ruihong Xu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
