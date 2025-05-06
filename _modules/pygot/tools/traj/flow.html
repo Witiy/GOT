@@ -1,0 +1,642 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pygot.tools.traj.flow &#8212; GOT 0.2.3 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=6808a718"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pygot/tools/traj/flow';</script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">GOT 0.2.3 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Main</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../install.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../api.html">API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.preprocessing.GS_VAE.html">pygot.preprocessing.GS_VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.tools.traj.fit_velocity_model.html">pygot.tools.traj.fit_velocity_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.tools.traj.velocity.html">pygot.tools.traj.velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.tools.traj.latent_velocity.html">pygot.tools.traj.latent_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.tools.traj.latent2gene_velocity.html">pygot.tools.traj.latent2gene_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.tools.traj.simulate_trajectory.html">pygot.tools.traj.simulate_trajectory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.tools.traj.fit_velocity_model_without_time.html">pygot.tools.traj.fit_velocity_model_without_time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.tools.traj.determine_source_state.html">pygot.tools.traj.determine_source_state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../generated/pygot.tools.analysis.ProbabilityModel.html">pygot.tools.analysis.ProbabilityModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../generated/pygot.tools.analysis.CellFate.html">pygot.tools.analysis.CellFate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../generated/pygot.tools.analysis.TimeSeriesRoadmap.html">pygot.tools.analysis.TimeSeriesRoadmap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../generated/pygot.tools.analysis.GRN.html">pygot.tools.analysis.GRN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../generated/pygot.tools.analysis.GRNData.html">pygot.tools.analysis.GRNData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.plotting.plot_trajectory.html">pygot.plotting.plot_trajectory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.plotting.plot_root_cell.html">pygot.plotting.plot_root_cell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../pygot.datasets.synthetic.html">pygot.datasets.synthetic</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vector Field Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../%5Btutorial%5D01_vector_field_learning_for_time-series.html">01. Vector Field Inference with Time-Series Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../%5Btutorial%5D02_vector_field_learning_for_snapshot.html">02. Vector Field Inference with Snapshot Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vector Field Interpretation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../../%5Btutorial%5D03_velocity_based_pseudotime.html">03. Velocity-based Pseudotime Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../%5Btutorial%5D04_cell_fate_prediction.html">04. Cell Fate Quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../%5Btutorial%5D05_development_tree_inference.html">05. Developmental Tree Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../%5Btutorial%5D06_gene_regulatory_network_inference.html">06. Gene Regulatory Network Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../%5Btutorial%5D07_in_silico_perturbation.html">07. In silico perturbation</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pygot.tools.traj.flow</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torchdiffeq</span><span class="w"> </span><span class="kn">import</span> <span class="n">odeint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.model_training</span><span class="w"> </span><span class="kn">import</span> <span class="n">ODEwrapper</span><span class="p">,</span> <span class="n">ODEwrapperNoTime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">anndata.experimental.pytorch</span><span class="w"> </span><span class="kn">import</span> <span class="n">AnnLoader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_minibatch_jacobian</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">return_np</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the Jacobian of y wrt x assuming minibatch-mode.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      y: (N, ...) with a total of D_y elements in ...</span>
+<span class="sd">      x: (N, ...) with a total of D_x elements in ...</span>
+<span class="sd">    Returns:</span>
+<span class="sd">      The minibatch Jacobian matrix of shape (N, D_y, D_x)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Compute Jacobian row by row.</span>
+    <span class="n">jac</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">dy_j_dx</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">autograd</span><span class="o">.</span><span class="n">grad</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="n">j</span><span class="p">],</span> <span class="n">x</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">y</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]),</span> <span class="n">retain_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                      <span class="n">create_graph</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">jac</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">dy_j_dx</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">jac</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">jac</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_np</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jac</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">jac</span>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">latent2gene_velocity_scVI</span><span class="p">(</span><span class="n">ad</span><span class="p">,</span>  <span class="n">embedding_key</span><span class="p">,</span> <span class="n">velocity_key</span><span class="p">,</span> <span class="n">vae</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
+    <span class="n">use_cuda</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">&#39;cpu&#39;</span>
+    
+    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">AnnLoader</span><span class="p">(</span><span class="n">ad</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cuda</span><span class="o">=</span><span class="n">use_cuda</span><span class="p">)</span>
+    <span class="n">velocity_list</span> <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">]</span>
+        <span class="n">z</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">px</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">batch_index</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;_scvi_batch&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">long</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">])[</span><span class="s1">&#39;px&#39;</span><span class="p">]</span>
+        
+        <span class="n">jac_xz</span> <span class="o">=</span> <span class="n">_get_minibatch_jacobian</span><span class="p">(</span><span class="n">px</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">return_np</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">velocity_batch</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">jac_xz</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">velocity_key</span><span class="p">]</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+            <span class="n">velocity_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">velocity_batch</span><span class="p">)</span>
+            
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">empty_cache</span><span class="p">()</span>
+        
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">velocity_list</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="latent_velocity">
+<a class="viewcode-back" href="../../../../pygot.tools.traj.latent_velocity.html#pygot.tools.traj.latent_velocity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">latent_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="s1">&#39;X_pca&#39;</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Latent velocity inference using trained model.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    adata: :class:`~anndata.AnnData`</span>
+<span class="sd">        Annotated data matrix.</span>
+<span class="sd">    odefunc: class:`ODEwrapper` or class:`ODEwrapperNoTime`</span>
+<span class="sd">        trained NeuralODE model by function `fit_velocity_model`</span>
+<span class="sd">    embedding_key: `str`</span>
+<span class="sd">        Name of latent space, in adata.obsm</span>
+<span class="sd">    time_key: `str` (default: None)</span>
+<span class="sd">        Name of time label, in adata.obs, use if the model input contains time label</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    latent_velocity (.obsm): :class`np.ndarray`</span>
+<span class="sd">        latent velocity array, (n_cells, latent_dim), store in adata.obsm[`velocity_key`]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">odefunc</span><span class="p">,</span> <span class="n">ODEwrapperNoTime</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">odefunc</span><span class="p">,</span> <span class="n">ODEwrapper</span><span class="p">):</span>
+        <span class="n">odefunc</span> <span class="o">=</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">func</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="ow">not</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">time_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)),</span> <span class="s1">&#39;please offer `time_key`&#39;</span>
+
+    <span class="n">xt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">])</span>
+    
+    <span class="k">if</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span><span class="p">:</span>
+        
+        <span class="n">t</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">time_key</span><span class="p">]</span>
+        
+        <span class="n">t</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">t</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">]</span>
+        
+        
+        <span class="n">vt</span> <span class="o">=</span> <span class="n">odefunc</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">xt</span><span class="p">,</span> <span class="n">t</span><span class="p">],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">vt</span> <span class="o">=</span> <span class="n">odefunc</span><span class="p">(</span><span class="n">xt</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">vt</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="latent2gene_velocity">
+<a class="viewcode-back" href="../../../../pygot.tools.traj.latent2gene_velocity.html#pygot.tools.traj.latent2gene_velocity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">latent2gene_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">velocity_key</span><span class="p">,</span> <span class="n">embedding_key</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dr_mode</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform latent velocity into gene velocity</span>
+
+<span class="sd">    Due to linearity and orthogonality, the gene velocity can be recover by directly multiply inverse </span>
+<span class="sd">    dimension reduction matrix, </span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        v(x) ≈  Av(z), \quad z = A^Tx</span>
+
+<span class="sd">    For non-linear transformation, </span>
+
+<span class="sd">    .. math::</span>
+<span class="sd">    </span>
+<span class="sd">        v(x) ≈ \\frac{g^{-1}(z + v(z) * dt) - g^{-1}(z)}{dt}, \quad z=g(x)</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    adata: :class:`~anndata.AnnData`</span>
+<span class="sd">        Annotated data matrix.</span>
+<span class="sd">    embedding_key: `str`</span>
+<span class="sd">        Name of latent space, in adata.obsm</span>
+<span class="sd">    velocity_key: `str` (default: None)</span>
+<span class="sd">        Name of latent velocity, in adata.obsm</span>
+<span class="sd">    A: `np.ndarray` (default: None (using adata.varm[&#39;PCs&#39;]))</span>
+<span class="sd">        Inverse matrix of linear dimension reduction</span>
+<span class="sd">    dr_mode: &#39;linear&#39; or &#39;nonlinear&#39; (default: &#39;linear&#39;)</span>
+<span class="sd">        Dimension reduction mode</span>
+<span class="sd">    inverse_transform: `function` (default: None)</span>
+<span class="sd">        Inverse function for non-linear dimension reduction (e.g. :math:`g^{-1}`)</span>
+<span class="sd">    dt: `float` (default: 0.001)</span>
+<span class="sd">        Parameter of non-linear velocity transformation from latent space to gene space</span>
+<span class="sd">       </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    velocity (.layers): :class`np.ndarray`</span>
+<span class="sd">        gene velocity array, (n_cells, n_genes)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dr_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;nonlinear&quot;</span><span class="p">}:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimension reduction mode must be &#39;linear&#39; or &#39;nonlinear&#39;, was &#39;</span><span class="si">{</span><span class="n">dr_mode</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">v_latent</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">velocity_key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">dr_mode</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+            <span class="n">v_gene</span> <span class="o">=</span> <span class="n">v_latent</span> <span class="o">@</span> <span class="n">A</span><span class="p">[:</span><span class="n">v_latent</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+        <span class="k">elif</span> <span class="n">dr_mode</span> <span class="o">==</span> <span class="s1">&#39;nonlinear&#39;</span> <span class="ow">and</span> <span class="n">inverse_transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">x0</span> <span class="o">=</span> <span class="n">inverse_transform</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">])</span>
+            <span class="n">x1</span> <span class="o">=</span> <span class="n">inverse_transform</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">]</span> <span class="o">+</span> <span class="n">v_latent</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
+            <span class="n">v_gene</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="n">dt</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">v_gene</span></div>
+
+
+<div class="viewcode-block" id="velocity">
+<a class="viewcode-back" href="../../../../pygot.tools.traj.velocity.html#pygot.tools.traj.velocity">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="s1">&#39;X_pca&#39;</span><span class="p">,</span>  <span class="n">velocity_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">dr_mode</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">.001</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Velocity inference using trained model.</span>
+
+<span class="sd">    This function will infer velocity in latent space and gene space both. It can be sperate into</span>
+<span class="sd">    `latent_velocity` and `latent2gene_velocity`</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    ----------</span>
+<span class="sd">    For linear dimension reduction space::</span>
+
+<span class="sd">        #using pca space as example</span>
+<span class="sd">        #if pca is done in scanpy framework, the inverse matrix A will be store in adata.varm[&#39;PCs&#39;], that do not need to specifed matrix A</span>
+<span class="sd">        pygot.tl.traj.velocity(adate, model, embedding_key=&#39;X_pca&#39;, velocity_key=&#39;velocity_pca&#39;)</span>
+<span class="sd">        #Otherwise, need to specify dimension reduction matrix A</span>
+<span class="sd">        pygot.tl.traj.velocity(adate, model, embedding_key=&#39;X_pca&#39;, velocity_key=&#39;velocity_pca&#39;, A=pca.components_.T)</span>
+
+<span class="sd">    For non-linear dimension reduction space::</span>
+<span class="sd">    </span>
+<span class="sd">        #using vae latent space as example</span>
+<span class="sd">        #first, train the vae model to transform space</span>
+<span class="sd">        gs_vae = pygot.pp.GS_VAE()</span>
+<span class="sd">        gs_vae.register_model(adata, latent_dim=10)</span>
+<span class="sd">        adata.obsm[&#39;X_latent&#39;] = gs_vae.fit_transform(adata)</span>
+
+<span class="sd">        #After train velocity model using `fit_velocity_model` or `fit_velocity_model_without_time`</span>
+<span class="sd">        pygot.tl.traj.velocity(adate, model, </span>
+<span class="sd">            embedding_key=&#39;X_latent&#39;, velocity_key=&#39;velocity_latent&#39;, dr_mode=&#39;nonlinear&#39;, </span>
+<span class="sd">            inverse_transform=gs_vae.inverse_transform</span>
+<span class="sd">        )</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    adata: :class:`~anndata.AnnData`</span>
+<span class="sd">        Annotated data matrix.</span>
+<span class="sd">    odefunc: class:`ODEwrapper` or class:`ODEwrapperNoTime`</span>
+<span class="sd">        trained NeuralODE model by function `fit_velocity_model`</span>
+<span class="sd">    embedding_key: `str`</span>
+<span class="sd">        Name of latent space, in adata.obsm</span>
+<span class="sd">    velocity_key: `str` (default: None)</span>
+<span class="sd">        Name of latent velocity to save, in adata.obsm</span>
+<span class="sd">    A: `np.ndarray` (default: None (using adata.varm[&#39;PCs&#39;]))</span>
+<span class="sd">        Inverse matrix of linear dimension reduction</span>
+<span class="sd">    time_key: `str` (default: None)</span>
+<span class="sd">        Name of time label, in adata.obs, use if the model input contains time label</span>
+<span class="sd">    dr_mode: &#39;linear&#39; or &#39;nonlinear&#39; (default: &#39;linear&#39;)</span>
+<span class="sd">        Dimension reduction mode</span>
+<span class="sd">    inverse_transform: `function` (default: None)</span>
+<span class="sd">        Inverse function for non-linear dimension reduction</span>
+<span class="sd">    dt: `float` (default: 0.001)</span>
+<span class="sd">        Parameter of non-linear velocity transformation from latent space to gene space</span>
+<span class="sd">       </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    velocity (.layers): :class`np.ndarray`</span>
+<span class="sd">        gene velocity array, (n_cells, n_genes)</span>
+<span class="sd">    latent_velocity (.obsm): :class`np.ndarray`</span>
+<span class="sd">        latent velocity array, (n_cells, latent_dim), store in adata.obsm[`velocity_key`]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">odefunc</span><span class="p">,</span> <span class="n">ODEwrapperNoTime</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">odefunc</span><span class="p">,</span> <span class="n">ODEwrapper</span><span class="p">):</span>
+        <span class="n">odefunc</span> <span class="o">=</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">func</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="ow">not</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">time_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)),</span> <span class="s1">&#39;please offer `time_key`&#39;</span>
+
+    <span class="k">if</span> <span class="n">embedding_key</span> <span class="o">==</span> <span class="s1">&#39;X_pca&#39;</span> <span class="ow">and</span> <span class="n">dr_mode</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span> <span class="ow">and</span> <span class="n">A</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">varm</span><span class="p">[</span><span class="s1">&#39;PCs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">if</span> <span class="n">velocity_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">&#39;velocity_&#39;</span><span class="o">+</span><span class="n">embedding_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">v_latent</span> <span class="o">=</span> <span class="n">latent_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="p">,</span> <span class="n">time_key</span><span class="p">)</span>
+    <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">velocity_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_latent</span>
+    <span class="n">v_gene</span> <span class="o">=</span> <span class="n">latent2gene_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">velocity_key</span><span class="p">,</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">dr_mode</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+    <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_gene</span>
+    <span class="k">return</span> <span class="n">v_gene</span></div>
+
+
+<div class="viewcode-block" id="simulate_trajectory">
+<a class="viewcode-back" href="../../../../pygot.tools.traj.simulate_trajectory.html#pygot.tools.traj.simulate_trajectory">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">simulate_trajectory</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">n_points</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate trajecotry using trained NeuralODE model.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">    ---------</span>
+<span class="sd">    adata: :class:`~anndata.AnnData`</span>
+<span class="sd">        Annotated data matrix.</span>
+<span class="sd">    odefunc: class:`~ODEwrapper` or class:`~ODEwrapperNoTime`</span>
+<span class="sd">        trained NeuralODE model by function `fit_velocity_model`</span>
+<span class="sd">    embedding_key: `str&#39;</span>
+<span class="sd">        Name of latent space to fit, in adata.obsm</span>
+<span class="sd">    start: `int`</span>
+<span class="sd">        Start time of simulation</span>
+<span class="sd">    end: `int`</span>
+<span class="sd">        End time of simulation</span>
+<span class="sd">    n_points: `int`</span>
+<span class="sd">        Number of points in one trajectory (e.g. 100 points from day0 -&gt; day7)</span>
+<span class="sd">       </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    trajectory: :class`~np.ndarray`</span>
+<span class="sd">        Trajectory array, (n_points, n_cells, latent_dim)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">latent_embedding</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">]</span>
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">odeint</span><span class="p">(</span>
+            <span class="n">odefunc</span><span class="p">,</span> 
+            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">latent_embedding</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">n_points</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span><span class="o">.</span><span class="n">device</span><span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span></div>
+
+
+
+
+
+<span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_inverse_transform_scVI</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">vae</span><span class="p">,</span> <span class="n">ad</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
+    <span class="n">use_cuda</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">&#39;cpu&#39;</span>
+    <span class="n">ad</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_lowd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+    <span class="n">dataloader</span> <span class="o">=</span> <span class="n">AnnLoader</span><span class="p">(</span><span class="n">ad</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cuda</span><span class="o">=</span><span class="n">use_cuda</span><span class="p">)</span>
+    <span class="n">scaled_X</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_lowd&#39;</span><span class="p">]</span>
+        <span class="n">px</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">batch_index</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;_scvi_batch&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">long</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">])[</span><span class="s1">&#39;px&#39;</span><span class="p">]</span>
+        <span class="n">scaled_X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">px</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">scaled_X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_inverse_transform_func_scVI</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">vae</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
+    <span class="n">inverse_transform</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">_inverse_transform_scVI</span><span class="p">,</span> <span class="n">vae</span><span class="o">=</span><span class="n">vae</span><span class="p">,</span> <span class="n">ad</span><span class="o">=</span><span class="n">adata</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">inverse_transform</span>
+    
+
+
+    
+
+   
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ruihong Xu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Ruihong Xu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

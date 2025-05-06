@@ -1,0 +1,544 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pygot.tools.analysis.GRN &#8212; GOT 0.2.3 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../_static/documentation_options.js?v=6808a718"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'generated/pygot.tools.analysis.GRN';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pygot.tools.analysis.GRNData" href="pygot.tools.analysis.GRNData.html" />
+    <link rel="prev" title="pygot.tools.analysis.TimeSeriesRoadmap" href="pygot.tools.analysis.TimeSeriesRoadmap.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">GOT 0.2.3 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Main</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../api.html">API</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../pygot.preprocessing.GS_VAE.html">pygot.preprocessing.GS_VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.tools.traj.fit_velocity_model.html">pygot.tools.traj.fit_velocity_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.tools.traj.velocity.html">pygot.tools.traj.velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.tools.traj.latent_velocity.html">pygot.tools.traj.latent_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.tools.traj.latent2gene_velocity.html">pygot.tools.traj.latent2gene_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.tools.traj.simulate_trajectory.html">pygot.tools.traj.simulate_trajectory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.tools.traj.fit_velocity_model_without_time.html">pygot.tools.traj.fit_velocity_model_without_time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.tools.traj.determine_source_state.html">pygot.tools.traj.determine_source_state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.analysis.ProbabilityModel.html">pygot.tools.analysis.ProbabilityModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.analysis.CellFate.html">pygot.tools.analysis.CellFate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.analysis.TimeSeriesRoadmap.html">pygot.tools.analysis.TimeSeriesRoadmap</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">pygot.tools.analysis.GRN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pygot.tools.analysis.GRNData.html">pygot.tools.analysis.GRNData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.plotting.plot_trajectory.html">pygot.plotting.plot_trajectory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.plotting.plot_root_cell.html">pygot.plotting.plot_root_cell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../pygot.datasets.synthetic.html">pygot.datasets.synthetic</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vector Field Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../%5Btutorial%5D01_vector_field_learning_for_time-series.html">01. Vector Field Inference with Time-Series Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%5Btutorial%5D02_vector_field_learning_for_snapshot.html">02. Vector Field Inference with Snapshot Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vector Field Interpretation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../%5Btutorial%5D03_velocity_based_pseudotime.html">03. Velocity-based Pseudotime Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%5Btutorial%5D04_cell_fate_prediction.html">04. Cell Fate Quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%5Btutorial%5D05_development_tree_inference.html">05. Developmental Tree Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%5Btutorial%5D06_gene_regulatory_network_inference.html">06. Gene Regulatory Network Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../%5Btutorial%5D07_in_silico_perturbation.html">07. In silico perturbation</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/generated/pygot.tools.analysis.GRN.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>pygot.tools.analysis.GRN</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygot.tools.analysis.GRN"><code class="docutils literal notranslate"><span class="pre">GRN</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygot.tools.analysis.GRN.__init__"><code class="docutils literal notranslate"><span class="pre">GRN.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygot.tools.analysis.GRN.fit"><code class="docutils literal notranslate"><span class="pre">GRN.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pygot-tools-analysis-grn">
+<h1>pygot.tools.analysis.GRN<a class="headerlink" href="#pygot-tools-analysis-grn" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pygot.tools.analysis.GRN">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pygot.tools.analysis.</span></span><span class="sig-name descname"><span class="pre">GRN</span></span><a class="reference internal" href="../_modules/pygot/tools/analysis/grn_inference.html#GRN"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygot.tools.analysis.GRN" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Gene regulatory network infered by velocity linear regression</p>
+<section id="example">
+<h2>Example:<a class="headerlink" href="#example" title="Link to this heading">#</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">grn</span> <span class="o">=</span> <span class="n">GRN</span><span class="p">()</span>
+<span class="n">grn_adata</span> <span class="o">=</span> <span class="n">grn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="s1">&#39;human&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">grn_adata</span><span class="o">.</span><span class="n">ranked_edges</span><span class="o">.</span><span class="n">head</span><span class="p">())</span> <span class="c1">#print the top regulatory relationship</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pygot.tools.analysis.GRN.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygot/tools/analysis/grn_inference.html#GRN.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygot.tools.analysis.GRN.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pygot.tools.analysis.GRN.__init__" title="pygot.tools.analysis.GRN.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pygot.tools.analysis.GRN.fit" title="pygot.tools.analysis.GRN.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(adata[, TF_constrain, TF_names, ...])</p></td>
+<td><p>fit the gene regulatory network</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="pygot.tools.analysis.GRN.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TF_constrain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TF_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'human'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">non_negative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epoch</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l1_penalty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.005</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">init_jacobian</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2048</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lineage_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pygot/tools/analysis/grn_inference.html#GRN.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pygot.tools.analysis.GRN.fit" title="Link to this definition">#</a></dt>
+<dd><p>fit the gene regulatory network</p>
+<section id="arguments">
+<h3>Arguments:<a class="headerlink" href="#arguments" title="Link to this heading">#</a></h3>
+<dl class="simple">
+<dt>adata: <code class="xref py py-class docutils literal notranslate"><span class="pre">AnnData</span></code></dt><dd><p>Annotated data matrix, gene velocity should be stored in adata.layers[‘velocity’]</p>
+</dd>
+<dt>TF_constrain: <cite>bool</cite> (default: True)</dt><dd><p>Only fit the transcriptional factor(TF)</p>
+</dd>
+<dt>TF_names: <cite>list</cite> (default: None)</dt><dd><p>Names of TF, if None, use default TF names</p>
+</dd>
+<dt>species: ‘human’ or ‘mm’ (default: ‘human’)</dt><dd><p>Default TF names of species</p>
+</dd>
+<dt>non_negative: <cite>bool</cite> (default: True)</dt><dd><p>ONLY fit positive regulatory relationship, which may avoid overfit</p>
+</dd>
+<dt>layer_key: <cite>str</cite> (default: None)</dt><dd><p>Data use as x, if None, use adata.X  else should stored in adata.layers</p>
+</dd>
+<dt>n_epoch: <cite>int</cite> (default: 10000)</dt><dd><p>Number of training epochs</p>
+</dd>
+<dt>lr: <cite>float</cite> (default: 0.01)</dt><dd><p>Learning rate</p>
+</dd>
+<dt>l1_penalty: <cite>float</cite> (default: 0.005)</dt><dd><p>l1 weight, control sparsity of grn</p>
+</dd>
+<dt>init_beta: <cite>float</cite> or <code class="xref py py-class docutils literal notranslate"><span class="pre">GeneDegradation</span></code> (default: 1.0)</dt><dd><p>Initial gene degrade rate</p>
+</dd>
+<dt>min_beta: <cite>float</cite> (default: 1.0)</dt><dd><p>Lower bound of degrade rate</p>
+</dd>
+<dt>init_jacobian: <cite>np.ndarray</cite> (default: None)</dt><dd><p>Initial grn</p>
+</dd>
+<dt>early_stopping: <cite>bool</cite> (default: True)</dt><dd><p>Early stopping training</p>
+</dd>
+<dt>batch_size: <cite>int</cite> (default: 2048)</dt><dd><p>Batch size of mini-batch training</p>
+</dd>
+<dt>val_split: <cite>float</cite> (default: 0.2)</dt><dd><p>Validation dataset portion</p>
+</dd>
+<dt>device: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.device</span></code> (default: None)</dt><dd><p>torch device</p>
+</dd>
+<dt>lineage_key: discard</dt><dd><p>This parameter is discarded</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>grn_data</strong> – gene regulatory network</p>
+</dd>
+<dt class="field-even">rtype<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="pygot.tools.analysis.GRNData.html#pygot.tools.analysis.GRNData" title="pygot.tools.analysis.GRNData"><code class="xref py py-class docutils literal notranslate"><span class="pre">GRNData</span></code></a></p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pygot.tools.analysis.TimeSeriesRoadmap.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pygot.tools.analysis.TimeSeriesRoadmap</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pygot.tools.analysis.GRNData.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pygot.tools.analysis.GRNData</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pygot.tools.analysis.GRN"><code class="docutils literal notranslate"><span class="pre">GRN</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygot.tools.analysis.GRN.__init__"><code class="docutils literal notranslate"><span class="pre">GRN.__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pygot.tools.analysis.GRN.fit"><code class="docutils literal notranslate"><span class="pre">GRN.fit()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ruihong Xu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Ruihong Xu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
