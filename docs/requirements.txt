@@ -17,3 +17,6 @@ tqdm
 plotly
 setuptools
 statsmodels
+sphinx>=1.4
+ipykernel
+nbsphinx
