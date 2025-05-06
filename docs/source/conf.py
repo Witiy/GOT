@@ -22,7 +22,7 @@ project = 'GOT'
 copyright = '2025, Ruihong Xu'
 author = 'Ruihong Xu'
 release = '0.2.3'
-
+html_favicon = 'favicon.png'
 bibtex_bibfiles = ['ref.bib']
     
 # -- General configuration ---------------------------------------------------
