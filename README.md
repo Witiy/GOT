@@ -2,13 +2,13 @@
 
 **pyGOT** is a Python package designed to help biologists analyze cellular dynamics by learning and interpreting vector fields from single-cell data.
 
+[![Documentation Status](https://img.shields.io/badge/docs-online-blue?logo=readthedocs)](https://witiy.github.io/GOT/)
+
+> 📘 **Documentation:** [https://witiy.github.io/GOT/](https://witiy.github.io/GOT/)
+
 <p align="center">
   <img src="docs/source/1fig1.png" width="800px">
 </p>
-
-📘 **Documentation**  
-Full documentation is available at:  
-👉 https://witiy.github.io/GOT/
 
 ---
 
@@ -17,7 +17,7 @@ Full documentation is available at:
 ### From PyPI
 
 ```bash
-conda create -n pyGOT python==3.10
+conda create -n pyGOT python=3.10
 pip install py-scgot
 ```
 
@@ -26,9 +26,22 @@ pip install py-scgot
 ```bash
 git clone https://github.com/Witiy/pyGOT.git
 cd pyGOT
-conda create -n pyGOT python==3.10
+conda create -n pyGOT python=3.10
 pip install .
 ```
+
+---
+
+## 🧭 Tutorials
+
+Please visit the [online documentation](https://witiy.github.io/GOT/) for full tutorials:
+
+- Vector Field Learning (Time-series / Snapshot)
+- Velocity-based Pseudotime
+- Cell Fate Prediction
+- Developmental Tree Inference
+- Gene Regulatory Network Inference
+- In silico Perturbation
 
 ---
 
@@ -131,16 +144,3 @@ oracle.import_anndata_as_normalized_count(
 )
 grn.export_grn_into_celloracle(oracle)
 ```
-
----
-
-## 🧭 Tutorials
-
-Please visit the [online documentation](https://witiy.github.io/GOT/) for full tutorials:
-
-- Vector Field Learning (Time-series / Snapshot)
-- Velocity-based Pseudotime
-- Cell Fate Prediction
-- Developmental Tree Inference
-- Gene Regulatory Network Inference
-- In silico Perturbation
