@@ -1,0 +1,58 @@
+name: Deploy Docs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Pandoc
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y pandoc
+
+    - name: Install dependencies
+      run: |
+        pip install -r docs/requirements.txt
+        pip install sphinx
+        pip install ipykernel==6.29.5
+        pip install nbsphinx==0.9.7
+        pip install pydata-sphinx-theme==0.15.4
+        pip install sphinx-book-theme==1.1.4
+        pip install sphinx-markdown-tables==0.0.17
+        pip install sphinx-rtd-theme==3.0.2
+        pip install sphinxcontrib-applehelp==2.0.0
+        pip install sphinxcontrib-bibtex==2.6.3
+        pip install sphinxcontrib-devhelp==2.0.0
+        pip install sphinxcontrib-htmlhelp==2.1.0
+        pip install sphinxcontrib-jquery==4.1
+        pip install sphinxcontrib-jsmath==1.0.1
+        pip install sphinxcontrib-qthelp==2.0.0
+        pip install sphinxcontrib-serializinghtml==2.0.0
+        pip install recommonmark==0.7.1
+
+    - name: Build documentation
+      run: |
+        cd docs
+        make html
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs/build/html
