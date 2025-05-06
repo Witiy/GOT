@@ -1,5 +1,4 @@
 cellrank==2.0.4
-Jinja2==3.1.6
 joblib==1.3.2
 matplotlib
 networkx>=3.1
@@ -18,6 +17,4 @@ tqdm
 plotly
 setuptools
 statsmodels
-sphinx>=1.4
-ipykernel
-nbsphinx
+
