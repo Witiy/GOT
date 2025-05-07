@@ -43,6 +43,15 @@ Please visit the [online documentation](https://witiy.github.io/GOT/) for full t
 - Gene Regulatory Network Inference
 - In silico Perturbation
 
+
+---
+
+## 📦 Reproducibility
+
+For full analysis workflows, datasets, and reproduction of the main figures, please visit the reproducibility repository:
+
+👉 [https://github.com/Witiy/GOT_reproducibility](https://github.com/Witiy/GOT_reproducibility)
+
 ---
 
 ## ⚡ Quick Start
@@ -144,3 +153,4 @@ oracle.import_anndata_as_normalized_count(
 )
 grn.export_grn_into_celloracle(oracle)
 ```
+
