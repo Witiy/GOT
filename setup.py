@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages, Extension
 setup(
     name='py-scgot',
-    version='0.2.3',
+    version='0.2.4',
     author='Ruihong Xu',
     author_email='xuruihong@big.ac.cn',
     packages=find_packages(),
@@ -31,7 +31,6 @@ setup(
         "plotly",
         "setuptools",
         "statsmodels",
-        "rich"
 ],
 
 

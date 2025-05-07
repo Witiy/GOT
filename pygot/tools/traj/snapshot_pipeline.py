@@ -68,8 +68,11 @@ def post_process(adata, embedding_key, kernel, pseudotime_key, cell_type_key=Non
     pseuodtime_ot_ct = compute_pseudotime(adata, adata.uns['ot_ct_root'], embedding_key=embedding_key, kernel=kernel)
     
     single_branch_progress = single_branch_detection(ot_tree)
-
-    adata.obs[pseudotime_key] = pseuodtime_ot_ct
+    
+    if single_branch_progress:
+        adata.obs[pseudotime_key] = pseuodtime_ot_ct
+    else:
+        adata.obs[pseudotime_key] = pseuodtime_ot
 
     print(current()+'\t Single Branch Progress : {}'.format(single_branch_progress))
 

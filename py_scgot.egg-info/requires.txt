@@ -17,4 +17,3 @@ tqdm
 plotly
 setuptools
 statsmodels
-rich

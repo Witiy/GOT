@@ -26,7 +26,6 @@ Requires-Dist: tqdm
 Requires-Dist: plotly
 Requires-Dist: setuptools
 Requires-Dist: statsmodels
-Requires-Dist: rich
 Dynamic: author
 Dynamic: author-email
 Dynamic: classifier
