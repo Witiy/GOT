@@ -24,16 +24,6 @@ class ODEwrapper(torch.nn.Module):
         return dxdt
     
     
-    def compute_G(self, t, x):
-        if self.func.time_varying:
-            if len(t.size()) == 0:
-                time = t.repeat(x.size()[0],1)
-            else:
-                time = t
-            G = self.func.compute_G(torch.concat([x, time], dim=-1).float())
-        else:
-            G = self.func.compute_G(x).float()
-        return G
 
 class ODEwrapperNoTime(torch.nn.Module):
     def __init__(self, func):
@@ -57,7 +47,6 @@ class MLP(torch.nn.Module):
             torch.nn.Linear(32, 16, bias=False),
             torch.nn.CELU(),
             torch.nn.Linear(16, dim, bias=False),
-            #JAC(out_dim)
         )
 
     def forward(self, x):
