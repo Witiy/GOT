@@ -174,7 +174,7 @@ class XCentricTrainer:
         self.reverse_schema = reverse_schema
         self.reverse_n = reverse_n
         self.batch_size = batch_size
-        self.loss = XCentericLoss(lambda_density=lambda_density,
+        self.loss = XCentricLoss(lambda_density=lambda_density,
                                          lambda_ot=lambda_ot, device=device)
         self.ts_map = dict(zip(self.ts, range(len(self.ts))))
         self.graph_inter = graph_inter

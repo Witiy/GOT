@@ -234,7 +234,7 @@ class GRN:
 
 
 
-def preproce_dataset(adata, TF_names, batch_size, layer_key, early_stopping, val_split, device):
+def preprocess_dataset(adata, TF_names, batch_size, layer_key, early_stopping, val_split, device):
     y = torch.Tensor(adata.layers['scaled_velocity'])
     adata.var['idx'] = range(len(adata.var))
     if layer_key is None:
@@ -267,7 +267,7 @@ def optimize_global_GRN(adata, TF_names, layer_key=None,
     
     
     print('l1_penalty:', l1_penalty, 'min_beta:', min_beta)
-    X, y, X_train, y_train, X_val, y_val, tf_idx = preproce_dataset(adata, TF_names, batch_size, layer_key, early_stopping, val_split, device)
+    X, y, X_train, y_train, X_val, y_val, tf_idx = preprocess_dataset(adata, TF_names, batch_size, layer_key, early_stopping, val_split, device)
     batch_size = min(batch_size, len(X_train))
     gene_num = y.shape[1]
     tf_num = tf_idx.shape[0]

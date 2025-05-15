@@ -24,9 +24,9 @@ pip install py-scgot
 ### From GitHub
 
 ```bash
-git clone https://github.com/Witiy/pyGOT.git
-cd pyGOT
-conda create -n pyGOT python=3.10
+git clone git@github.com:Witiy/GOT.git
+cd GOT
+conda create -n GOT python=3.10
 pip install .
 ```
 

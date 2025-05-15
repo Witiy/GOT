@@ -16,14 +16,3 @@ def plot_root_cell(adata, color=None, basis='umap', **kwargs):
         root = adata.uns['ot_root']
         sc.pl.embedding(adata, basis=basis, show=False, color=color, ax=ax, legend_loc='on data', title='OT root cell')
         ax.scatter(adata.obsm['X_'+basis][root,0], adata.obsm['X_'+basis][root,1],  color='red', marker='*', s=200, label='root cell')
-
-def highlight_extrema_with_score(adata, basis='umap', **kwargs):
-    extrema_names = adata.uns['source_score'].extrema
-    c = adata.uns['source_score'].score
-    fig,ax = plt.subplots(1,1)
-    sc.pl.embedding(adata, show=False, ax=ax, basis=basis, **kwargs)
-    ax.scatter(adata[extrema_names].obsm['X_'+basis][:,0], 
-               adata[extrema_names].obsm['X_'+basis][:,1], c=c)
-    ax.scatter(adata[adata.uns['mc_source']].obsm['X_'+basis][:,0], 
-               adata[adata.uns['mc_source']].obsm['X_'+basis][:,1],  color='red', marker='*', s=200)
-    

@@ -32,9 +32,9 @@ To clone the repository and install manually, run the following from a terminal:
 
 .. code-block:: python
 
-   git clone git@github.com:Witiy/pyGOT.git
-   cd pyGOT
-   conda create -n pyGOT python==3.10
+   git clone git@github.com:Witiy/GOT.git
+   cd GOT
+   conda create -n GOT python==3.10
    pip install .
 
 
@@ -58,12 +58,12 @@ Time-Series
    embedding_key = 'X_pca'
    velocity_key = 'velocity_pca'
    time_key = 'Day'  # your experimental time label
-   model, history = pygot.tl.fit_velocity_model(
+   model, history = pygot.tl.traj.fit_velocity_model(
        adata, embedding_key=embedding_key, time_key=time_key
    )
 
-   pygot.tl.velocity(adata, model, embedding_key=embedding_key, time_key=time_key)
-   pygot.tl.velocity_graph(adata, embedding_key=embedding_key, velocity_key=velocity_key)
+   pygot.tl.traj.velocity(adata, model, embedding_key=embedding_key, time_key=time_key)
+   pygot.tl.traj.velocity_graph(adata, embedding_key=embedding_key, velocity_key=velocity_key)
    scv.pl.velocity_embedding_stream(adata)
 
 Snapshot
@@ -148,8 +148,6 @@ In silico Perturbation (after GRN inference)
    )
    # Export to celloracle
    grn.export_grn_into_celloracle(oracle)
-
-
 
 
 

@@ -66,7 +66,7 @@ class OTLoss(nn.Module):
         return loss
 
 
-class XCentericLoss(nn.Module):
+class XCentricLoss(nn.Module):
     def __init__(self , lambda_ot=1, lambda_density=5, hinge_value=0.1, top_k=5, device=torch.device('cpu'), *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         
