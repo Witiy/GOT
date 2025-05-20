@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pygot.tools.analysis.grn_inference &#8212; GOT 0.2.4 documentation</title>
+    <title>pygot.tools.analysis.grn_inference &#8212; GOT 0.2.5 documentation</title>
   
   
   
@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=fd1d25c9"></script>
+    <script src="../../../../_static/documentation_options.js?v=46e1a7d4"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">GOT 0.2.4 documentation</p>
+    <p class="title logo__title">GOT 0.2.5 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -541,7 +541,7 @@ document.write(`
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">preproce_dataset</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">TF_names</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">layer_key</span><span class="p">,</span> <span class="n">early_stopping</span><span class="p">,</span> <span class="n">val_split</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">preprocess_dataset</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">TF_names</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">layer_key</span><span class="p">,</span> <span class="n">early_stopping</span><span class="p">,</span> <span class="n">val_split</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;scaled_velocity&#39;</span><span class="p">])</span>
     <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">layer_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -574,7 +574,7 @@ document.write(`
     
     
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;l1_penalty:&#39;</span><span class="p">,</span> <span class="n">l1_penalty</span><span class="p">,</span> <span class="s1">&#39;min_beta:&#39;</span><span class="p">,</span> <span class="n">min_beta</span><span class="p">)</span>
-    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">tf_idx</span> <span class="o">=</span> <span class="n">preproce_dataset</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">TF_names</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">layer_key</span><span class="p">,</span> <span class="n">early_stopping</span><span class="p">,</span> <span class="n">val_split</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">tf_idx</span> <span class="o">=</span> <span class="n">preprocess_dataset</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">TF_names</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">layer_key</span><span class="p">,</span> <span class="n">early_stopping</span><span class="p">,</span> <span class="n">val_split</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
     <span class="n">batch_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
     <span class="n">gene_num</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">tf_num</span> <span class="o">=</span> <span class="n">tf_idx</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>

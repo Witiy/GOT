@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>GOT documentation &#8212; GOT 0.2.4 documentation</title>
+    <title>GOT documentation &#8212; GOT 0.2.5 documentation</title>
   
   
   
@@ -36,7 +36,7 @@
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="_static/documentation_options.js?v=fd1d25c9"></script>
+    <script src="_static/documentation_options.js?v=46e1a7d4"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -137,7 +137,7 @@
   
   
   
-    <p class="title logo__title">GOT 0.2.4 documentation</p>
+    <p class="title logo__title">GOT 0.2.5 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -389,9 +389,9 @@ document.write(`
 <section id="installation-from-github">
 <h3>Installation from GitHub<a class="headerlink" href="#installation-from-github" title="Link to this heading">#</a></h3>
 <p>To clone the repository and install manually, run the following from a terminal:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">Witiy</span><span class="o">/</span><span class="n">pyGOT</span><span class="o">.</span><span class="n">git</span>
-<span class="n">cd</span> <span class="n">pyGOT</span>
-<span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">pyGOT</span> <span class="n">python</span><span class="o">==</span><span class="mf">3.10</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">Witiy</span><span class="o">/</span><span class="n">GOT</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">GOT</span>
+<span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">GOT</span> <span class="n">python</span><span class="o">==</span><span class="mf">3.10</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
 </pre></div>
 </div>
@@ -411,12 +411,12 @@ document.write(`
 <span class="n">embedding_key</span> <span class="o">=</span> <span class="s1">&#39;X_pca&#39;</span>
 <span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">&#39;velocity_pca&#39;</span>
 <span class="n">time_key</span> <span class="o">=</span> <span class="s1">&#39;Day&#39;</span>  <span class="c1"># your experimental time label</span>
-<span class="n">model</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">fit_velocity_model</span><span class="p">(</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">fit_velocity_model</span><span class="p">(</span>
     <span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="n">time_key</span>
 <span class="p">)</span>
 
-<span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="n">time_key</span><span class="p">)</span>
-<span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">velocity_graph</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">velocity_key</span><span class="o">=</span><span class="n">velocity_key</span><span class="p">)</span>
+<span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="n">time_key</span><span class="p">)</span>
+<span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">velocity_graph</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">velocity_key</span><span class="o">=</span><span class="n">velocity_key</span><span class="p">)</span>
 <span class="n">scv</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">velocity_embedding_stream</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
 </pre></div>
 </div>

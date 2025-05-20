@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pygot.tools.traj.model_training &#8212; GOT 0.2.4 documentation</title>
+    <title>pygot.tools.traj.model_training &#8212; GOT 0.2.5 documentation</title>
   
   
   
@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../../_static/documentation_options.js?v=fd1d25c9"></script>
+    <script src="../../../../_static/documentation_options.js?v=46e1a7d4"></script>
     <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">GOT 0.2.4 documentation</p>
+    <p class="title logo__title">GOT 0.2.5 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -364,6 +364,7 @@ document.write(`
         <span class="n">x_centric_batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
         <span class="n">reverse_schema</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">time_varying</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">filtered</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimates velocities and fit trajectories in latent space.</span>
@@ -379,6 +380,8 @@ document.write(`
 <span class="sd">        Name of latent space to fit, in adata.obsm</span>
 <span class="sd">    landmarks: `bool`</span>
 <span class="sd">        Use landmarks to approximate graphical paths</span>
+<span class="sd">    graph_key: `str` (default: None)</span>
+<span class="sd">        Name of graph to fit, in adata.obsm</span>
 <span class="sd">    device: :class:`~torch.device`</span>
 <span class="sd">        torch device</span>
 <span class="sd">    n_neighbors: `int` (default: 50)</span>
@@ -399,6 +402,8 @@ document.write(`
 <span class="sd">        Dir path to store shorest path file</span>
 <span class="sd">    linear: `bool` (default: False)</span>
 <span class="sd">        Accept linear path or not</span>
+<span class="sd">    filtered: `bool` (default: True)</span>
+<span class="sd">        Use filtered velocity or not</span>
 <span class="sd">    x_centric: `bool` (default: True)</span>
 <span class="sd">        Do x-centric training</span>
 <span class="sd">    x_centric_iter_n: `int` (default: 2000)</span>
@@ -411,6 +416,7 @@ document.write(`
 <span class="sd">        The neural network model use time label as input or not</span>
 <span class="sd">    lr: `float` (default: 5e-3)</span>
 <span class="sd">        Learning rate</span>
+<span class="sd">    </span>
 <span class="sd">    </span>
 <span class="sd">       </span>
 <span class="sd">    Returns</span>
@@ -443,7 +449,10 @@ document.write(`
         <span class="n">model</span> <span class="o">=</span> <span class="n">pretrained_model</span>
 
     <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
-    <span class="n">sample_fn_path</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">sp_sampler</span><span class="o">.</span><span class="n">filtered_sample_batch_path</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">v_centric_batch_size</span><span class="p">,</span> <span class="n">distance_metrics</span><span class="o">=</span><span class="n">distance_metrics</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="n">add_noise</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">filtered</span><span class="p">:</span>
+        <span class="n">sample_fn_path</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">sp_sampler</span><span class="o">.</span><span class="n">filtered_sample_batch_path</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">v_centric_batch_size</span><span class="p">,</span> <span class="n">distance_metrics</span><span class="o">=</span><span class="n">distance_metrics</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="n">add_noise</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sample_fn_path</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">sp_sampler</span><span class="o">.</span><span class="n">sample_batch_path</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">v_centric_batch_size</span><span class="p">,</span> <span class="n">distance_metrics</span><span class="o">=</span><span class="n">distance_metrics</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="n">add_noise</span><span class="p">)</span>
     <span class="n">model</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">v_centric_training</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">sample_fn_path</span><span class="p">,</span> <span class="n">iter_n</span><span class="o">=</span><span class="n">v_centric_iter_n</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">x_centric</span><span class="p">:</span>

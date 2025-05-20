@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pygot.plotting.plot_traj &#8212; GOT 0.2.4 documentation</title>
+    <title>pygot.plotting.plot_traj &#8212; GOT 0.2.5 documentation</title>
   
   
   
@@ -35,7 +35,7 @@
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
   <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
 
-    <script src="../../../_static/documentation_options.js?v=fd1d25c9"></script>
+    <script src="../../../_static/documentation_options.js?v=46e1a7d4"></script>
     <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">GOT 0.2.4 documentation</p>
+    <p class="title logo__title">GOT 0.2.5 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -297,7 +297,6 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">fcluster</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_rgba</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">minmax_scale</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.cluster</span><span class="w"> </span><span class="kn">import</span> <span class="n">KMeans</span>
@@ -317,11 +316,10 @@ document.write(`
 
 <span class="k">def</span><span class="w"> </span><span class="nf">cluster_series</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>  <span class="n">num_clusters</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">,</span> <span class="p">):</span>
     
-    <span class="c1"># 生成聚类图并提取链接矩阵</span>
+    
     <span class="n">cluster_grid</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> 
                <span class="n">col_cluster</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">standard_scale</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;Spectral_r&#39;</span><span class="p">,</span> <span class="n">xticklabels</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="n">metric</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>  <span class="c1"># 关闭当前显示窗口</span>
-    <span class="c1"># 提取行聚类的链接矩阵</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> 
     <span class="n">row_linkage</span> <span class="o">=</span> <span class="n">cluster_grid</span><span class="o">.</span><span class="n">dendrogram_row</span><span class="o">.</span><span class="n">linkage</span>
 
     
@@ -375,10 +373,8 @@ document.write(`
         <span class="n">gene_idx</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_idx</span><span class="p">)</span>
     <span class="n">gene_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">gene_idx</span><span class="p">)</span>
 
-
     <span class="c1"># coloring cells by pseudotime and user-definition</span>
-    
-    <span class="n">cmap_t</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># 定义颜色映射</span>
+    <span class="n">cmap_t</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">color_palette</span><span class="p">(</span><span class="s2">&quot;viridis&quot;</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
 
     <span class="n">pseudotime_colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap_t</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span>
 
@@ -426,73 +422,34 @@ document.write(`
         <span class="k">if</span> <span class="ow">not</span> <span class="n">highlight_genes</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ax</span> <span class="o">=</span> <span class="n">cluster_grid</span><span class="o">.</span><span class="n">ax_heatmap</span>
 
-            <span class="c1"># 获取行标签</span>
-            <span class="n">yticks</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticks</span><span class="p">()</span>  <span class="c1"># 行标签的 y 坐标</span>
-            <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="n">tick</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span> <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">()]</span>  <span class="c1"># 获取行标签的文本</span>
+            <span class="n">yticks</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticks</span><span class="p">()</span>  
+            <span class="n">yticklabels</span> <span class="o">=</span> <span class="p">[</span><span class="n">tick</span><span class="o">.</span><span class="n">get_text</span><span class="p">()</span> <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">()]</span>  
 
-            <span class="c1"># 设置仅显示高亮行的标签，其他标签为空，并关闭刻度线</span>
+            
             <span class="n">new_labels</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="s2">&quot;&quot;</span>  <span class="c1"># 非高亮行设置为空字符串</span>
+                <span class="s2">&quot;&quot;</span>  
                 <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">yticklabels</span>
             <span class="p">]</span>
             <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><span class="n">new_labels</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># 关闭左侧刻度线</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
 
-            <span class="c1"># 绘制高亮标签的延伸线和标注（在右侧）</span>
             <span class="k">for</span> <span class="n">gene</span> <span class="ow">in</span> <span class="n">highlight_genes</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">gene</span> <span class="ow">in</span> <span class="n">yticklabels</span><span class="p">:</span>
-                    <span class="c1"># 获取该基因的索引及其对应的坐标</span>
                     <span class="n">idx</span> <span class="o">=</span> <span class="n">yticklabels</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">gene</span><span class="p">)</span>
                     <span class="n">y_pos</span> <span class="o">=</span> <span class="n">yticks</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-                    <span class="c1">#gene_color = cmap_g(row_clusters[np.where(adata.var.index == gene)[0][0]] - 1)</span>
                     
-                    <span class="c1"># 在热图右侧延伸一条线并标注文字</span>
-                    <span class="n">right_bound</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span>  <span class="c1"># 热图右侧的 x 坐标</span>
-                    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">right_bound</span><span class="p">,</span> <span class="n">right_bound</span> <span class="o">+</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># 线条</span>
-                    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">right_bound</span> <span class="o">+</span> <span class="mf">10.5</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">gene_font_size</span><span class="p">)</span>  <span class="c1"># 标签</span>
+                    <span class="n">right_bound</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span>  
+                    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">right_bound</span><span class="p">,</span> <span class="n">right_bound</span> <span class="o">+</span> <span class="mi">10</span><span class="p">],</span> <span class="p">[</span><span class="n">y_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  
+                    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">right_bound</span> <span class="o">+</span> <span class="mf">10.5</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">,</span> <span class="n">gene</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">gene_font_size</span><span class="p">)</span>  
 
-            <span class="c1"># 关闭 x 和 y 轴的所有刻度</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># 关闭刻度线</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s2">&quot;both&quot;</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  
         <span class="k">else</span><span class="p">:</span>
             <span class="n">cluster_grid</span><span class="o">.</span><span class="n">ax_heatmap</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span>
             <span class="n">cluster_grid</span><span class="o">.</span><span class="n">ax_heatmap</span><span class="o">.</span><span class="n">get_yticklabels</span><span class="p">(),</span>
-            <span class="n">fontsize</span><span class="o">=</span><span class="n">gene_font_size</span><span class="p">,</span>        <span class="c1"># 调整字体大小</span>
-            <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span>          <span class="c1"># 保持标签水平</span>
+            <span class="n">fontsize</span><span class="o">=</span><span class="n">gene_font_size</span><span class="p">,</span>       
+            <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span>          
         <span class="p">)</span>
-        
-    
     <span class="k">return</span> <span class="n">cluster_grid</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">row_clusters</span><span class="p">[</span><span class="n">gene_idx</span><span class="p">],</span> <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">gene_idx</span><span class="p">]],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;cluster&#39;</span><span class="p">,</span> <span class="s1">&#39;gene&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
-
-
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">smooth_expression_by_time</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">pseudotime_key</span><span class="o">=</span><span class="s1">&#39;pseudotime&#39;</span><span class="p">,</span> <span class="n">deg</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-    <span class="c1">#gam = GAM()</span>
-    <span class="c1">#gam.fit(X, y)</span>
-    <span class="c1">#return gam.predict(X)</span>
-    <span class="n">Y</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-    <span class="n">X</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">pseudotime_key</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">poly1d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span> <span class="n">deg</span><span class="o">=</span><span class="n">deg</span><span class="p">))(</span><span class="n">X</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">Y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span><span class="o">.</span><span class="n">T</span>
-    
-
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">compute_dtw_distance</span><span class="p">(</span><span class="n">adata_a</span><span class="p">,</span> <span class="n">adata_b</span><span class="p">,</span> <span class="n">pseudotime_key</span><span class="p">,</span> <span class="n">gene_list</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="kn">from</span><span class="w"> </span><span class="nn">fastdtw</span><span class="w"> </span><span class="kn">import</span> <span class="n">fastdtw</span>
-    <span class="k">if</span> <span class="n">layer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">adata_a</span><span class="p">[</span><span class="n">adata_a</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">pseudotime_key</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">gene_list</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
-        <span class="n">B</span> <span class="o">=</span> <span class="n">adata_b</span><span class="p">[</span><span class="n">adata_b</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">pseudotime_key</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">gene_list</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span><span class="o">.</span><span class="n">T</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">adata_a</span><span class="p">[</span><span class="n">adata_a</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">pseudotime_key</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">gene_list</span><span class="p">]</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;X_smoothed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
-        <span class="n">B</span> <span class="o">=</span> <span class="n">adata_b</span><span class="p">[</span><span class="n">adata_b</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">pseudotime_key</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">gene_list</span><span class="p">]</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;X_smoothed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
-    <span class="c1"># 初始化结果向量</span>
-    <span class="n">dtw_distances</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-
-    <span class="c1"># 使用 FastDTW 逐对计算距离</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])):</span>
-        <span class="n">distance</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">fastdtw</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-        <span class="n">dtw_distances</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">distance</span>
-    <span class="k">return</span> <span class="n">dtw_distances</span>
 
 
 
@@ -514,43 +471,7 @@ document.write(`
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">traj</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;start&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">traj</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">traj</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">)</span></div>
 
-<span class="w">    </span>
-<span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">def plot_checkpoint_traj(adata, cell_idx, manipulator : FateManipulator, t_end, encoder=None, embedding_key=&#39;pca&#39;, basis=&#39;pumap&#39;, </span>
-<span class="sd">                         show_traj=False, s=5, linewidth=1, ax=None, fig=None):</span>
-<span class="sd">    </span>
-<span class="sd">    xt = adata[cell_idx].obsm[&#39;X_&#39;+embedding_key]</span>
-<span class="sd">    t_start = manipulator.check_t_start(cell_idx)</span>
-<span class="sd">    checkpoint_traj, _ = manipulator.simulator.simulation(xt,  t_start=t_start, t_end=t_end, encoder=encoder)</span>
-<span class="sd">    print(checkpoint_traj.shape)</span>
-<span class="sd">    if ax == None:</span>
-<span class="sd">        fig, ax = plt.subplots(1,1, figsize=(12, 8))</span>
-<span class="sd">    if show_traj:</span>
-<span class="sd">        for i in range(checkpoint_traj.shape[1]):</span>
-<span class="sd">            ax.plot(checkpoint_traj[:,i,0], checkpoint_traj[:,i,1], alpha=0.2, linewidth=linewidth, color=&#39;black&#39;)</span>
-<span class="sd">    sc.pl.embedding(adata, basis=basis, ax=ax, show=False)</span>
-
-<span class="sd">    c = np.array(np.linspace(t_start, t_end, checkpoint_traj.shape[0]))</span>
-
-<span class="sd">    c = np.array([[c[i]] * checkpoint_traj.shape[1] for i in range(len(c))]).flatten()</span>
-<span class="sd">    start_state = checkpoint_traj[0,:,:]</span>
-<span class="sd">    </span>
-<span class="sd">    #checkpoint_traj = checkpoint_traj[1:,:,:]</span>
-<span class="sd">    checkpoint_traj = checkpoint_traj.reshape(-1, checkpoint_traj.shape[-1])</span>
-
-<span class="sd">    cax = ax.scatter(checkpoint_traj[:,0], checkpoint_traj[:,1],  s=s, c=c, cmap=&#39;viridis&#39;)</span>
-
-<span class="sd">    #ax.scatter(start_state[:,0], start_state[:,1],  s=s, c=&#39;blue&#39;, label=&#39;start&#39;)</span>
-<span class="sd">    #plt.legend()</span>
-<span class="sd">    plt.title(&#39;Simulated trajectory of checkpoints&#39;)</span>
-<span class="sd">    plt.colorbar(</span>
-<span class="sd">                cax, ax=ax, pad=0.01, fraction=0.08, aspect=30, </span>
-<span class="sd">            )</span>
-<span class="sd">    #cbar = fig.colorbar(s)</span>
-<span class="sd">    </span>
-<span class="sd">        </span>
-<span class="sd">    #cbar.set_label(&quot;infered timepoints&quot;)</span>
-<span class="sd">&#39;&#39;&#39;</span>
+    
 </pre></div>
 
                 </article>
