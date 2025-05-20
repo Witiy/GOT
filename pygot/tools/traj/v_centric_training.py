@@ -683,7 +683,7 @@ def filter_outlier(xt, ut, k=15, q=80):
     ut_norm = ut / np.linalg.norm(ut, axis=1)[:,np.newaxis]
     knn.fit(xt, ut_norm)
     ut_knn = knn.predict(xt)
-    in_l = abs(ut_norm - ut_knn).sum(axis=1)
+    in_l = ((ut_norm - ut_knn)**2).sum(axis=1)
     c = np.percentile(in_l, q=q)
     
     return np.where(in_l < c)
