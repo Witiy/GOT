@@ -13,29 +13,10 @@ import pickle
 
 
 
-def compute_dijkstra(t0t1X, n_neighbors, n_source):
-    neighbors = NearestNeighbors(n_neighbors=min(n_neighbors,t0t1X.shape[0]), metric="euclidean").fit(t0t1X)
-    graph = neighbors.kneighbors_graph(t0t1X, mode="distance")
-            
-    predecessors_list, dist_list = [], []
-            
-    # compute each shorest path of cell in time i to cell in time {i, i+1}
-    for j in tqdm(range(n_source)):
-        dist, predecessors = dijkstra(csgraph=graph, directed=True, indices=j, return_predecessors=True)
-        predecessors_list.append(predecessors)
-        dist[np.isinf(dist)] = 9999
-        dist_list.append(dist)
-        
-    predecessors_list = np.array(predecessors_list).astype(int)
-    dist_list = np.array(dist_list).astype('float32')
-    return predecessors_list, dist_list
-    
-
-
 class Landmarks:
     def __init__(self, ):    
         pass
-    def fit(self, X, n_neighbors=30, n_landmarks=5000, random_state=None, verbose=True,):
+    def fit(self, X, n_neighbors=30, n_landmarks=5000,  verbose=True,):
         
         try:
             import faiss
@@ -82,15 +63,18 @@ class Landmarks:
 
 
 class GraphPath:
-    def __init__(self, X, n_neighbors=30, n_landmarks=5000, n_dijk=None, landmarks=False):
+    def __init__(self, X, n_neighbors=30, n_landmarks=5000, n_dijk=None, landmarks=False, X_cost=None):
         self.landmarks = landmarks
+        if X_cost is not None:
+            self.X_cost = X
         if self.landmarks:
             self.lands = Landmarks()
-            self.lands.fit(X, n_neighbors, n_landmarks, )
+            self.lands.fit(self.X_cost, n_neighbors, n_landmarks, )
         else:
             if n_dijk is None:
-                n_dijk = len(X)
-            self.predecessors_list, self.dist_list = compute_dijkstra(X, n_neighbors, n_dijk,)
+                n_dijk = len(self.X_cost)
+            self.predecessors_list, self.dist_list = compute_dijkstra(self.X_cost, n_neighbors, n_dijk,)
+        
         self.X = X
     def graphical_distance(self, source_idx, end_idx):
         
@@ -132,6 +116,7 @@ class GraphPath:
             va = (self.X[path[1]] - self.X[path[0]])
             xa = ti * self.X[path[1]] + (1-ti) * self.X[path[0]]
             return xa, va
+        
         if self.landmarks:
             centroid_dist = self.lands.centroid_dist_list[self.lands.assignments[path[0]], self.lands.assignments[path[1:-1]]]
             ori_path_dist = np.array([self.lands.cell2centoids[path[0]]] + 
@@ -154,12 +139,20 @@ class GraphPath:
         
         va = end_feature - start_feature
         norm_va = np.linalg.norm(va)
-        xa = start_feature + (total_dist / norm_va) * remain_t * va if remain_t > 0 else end_feature + (total_dist / norm_va) * remain_t * va
-
+        
         va = (total_dist / norm_va) * va
         
+        xa = start_feature + remain_t * va if remain_t > 0 else end_feature + remain_t * va
+        
+        if np.isnan(xa.sum()) or np.isnan(va.sum()):
+            print('xa: {}, va: {}'.format(xa, va))
+            print('path: {}'.format(path))
+            print('remain_t: {}'.format(remain_t))
+            print('start_feature: {}'.format(start_feature))
+            print('end_feature: {}'.format(end_feature))
+            print('va: {}'.format(va))
+            print('norm_va: {}'.format(norm_va))
         return xa, va  
-
 
 
 def _get_path(
@@ -177,9 +170,29 @@ def _get_path(
             next_node = path_map[next_node]
         path = np.array(path[::-1])
         if source == path[0]:
-            return path, 1
+            return path, True
         else:
-            return path, 0
+            return path, False
+        
+
+
+def compute_dijkstra(t0t1X, n_neighbors, n_source):
+    neighbors = NearestNeighbors(n_neighbors=min(n_neighbors,t0t1X.shape[0]), metric="euclidean").fit(t0t1X)
+    graph = neighbors.kneighbors_graph(t0t1X, mode="distance")
+            
+    predecessors_list, dist_list = [], []
+            
+    # compute each shorest path of cell in time i to cell in time {i, i+1}
+    for j in tqdm(range(n_source)):
+        dist, predecessors = dijkstra(csgraph=graph, directed=True, indices=j, return_predecessors=True)
+        predecessors_list.append(predecessors)
+        dist[np.isinf(dist)] = 9999
+        dist_list.append(dist)
+        
+    predecessors_list = np.array(predecessors_list).astype(int)
+    dist_list = np.array(dist_list).astype('float32')
+    return predecessors_list, dist_list
+    
 
 
 
@@ -366,19 +379,25 @@ class GraphicalOTVelocitySampler:
         self.GPs = []
         for i in range(len(self.ts)-1):
             print('calcu shortest path between {} to {}'.format(self.ts[i], self.ts[i+1]))
-            t0t1X = self.adata[np.concatenate([self.index_list[i], self.index_list[i+1]])].obsm[self.graph_key]
-            if self.landmarks and len(t0t1X) > 5000:
+            if self.graph_key != self.embedding_key:
+                X_cost = self.adata[np.concatenate([self.index_list[i], self.index_list[i+1]])].obsm[self.graph_key] 
+            else:
+                X_cost = None
+            X = self.adata[np.concatenate([self.index_list[i], self.index_list[i+1]])].obsm[self.embedding_key]
+            
+            if self.landmarks and len(X) > 5000:
                 landmarks = True
-                n_landmarks = max(min(25000, len(t0t1X) // 5), 2000)
+                n_landmarks = max(min(25000, len(X) // 5), 2000)
             else:
                 landmarks = False
                 n_landmarks = 0
                 
-            gp = GraphPath(t0t1X,
+            gp = GraphPath(X,
                       landmarks=landmarks,
                       n_neighbors=n_neighbors, 
                       n_landmarks=n_landmarks,
                       n_dijk=len(self.index_list[i]),
+                      X_cost=X_cost
                     )
             self.GPs.append(gp)
             
@@ -525,7 +544,7 @@ class GraphicalOTVelocitySampler:
             
             path, flag = self.GPs[t_start].graphical_path(source_idx=source, end_idx=target)
             
-            if flag == 0 or len(path) < 2:
+            if flag == False or len(path) < 2:
                 if not self.linear:
                     continue             
                 t = random.random()
@@ -603,6 +622,9 @@ class GraphicalOTVelocitySampler:
         X, U, T =  X.reshape(-1, X.shape[-1]), U.reshape(-1, U.shape[-1]), T.reshape(-1, T.shape[-1])
         if add_noise:
                 X = X + sigma*np.random.randn(X.shape[0], X.shape[1])
+        T = torch.Tensor(T)
+        X = torch.Tensor(X)
+        U = torch.Tensor(U)
         return T, X, U, X0, X1
     
 
@@ -613,7 +635,7 @@ class GraphicalOTVelocitySampler:
             distance_metrics : str = 'SP', 
             add_noise : bool = True,
             k=15,
-            q=20,
+            q=80,
            
             ):
         """ sample data point x_t and corresponding velocity u_t using OT and SP, filter outlier using gaussian dist with knn center
@@ -653,28 +675,18 @@ class GraphicalOTVelocitySampler:
         
         return T, X, U, X0, X1
 
-    
 
 
-    
-def outlier_mean_field_likelihood(x, mu, std=None):
-    d = x.shape[1]
-    if std == None or std == 1:
-        l = torch.exp(torch.sum((-0.5)*(x - mu) ** 2, dim=1) + d*np.log(1/np.sqrt(2*torch.pi)))
-    else:
-        l = torch.exp(torch.sum((-0.5*std**2)*(x - mu) ** 2, dim=1) + d*np.log(1/np.sqrt(2*torch.pi) * std))
-    return l
-
-
-def filter_outlier(xt, ut, k=15, q=20):
+def filter_outlier(xt, ut, k=15, q=80):
     
     knn = KNeighborsRegressor(k)
     ut_norm = ut / np.linalg.norm(ut, axis=1)[:,np.newaxis]
     knn.fit(xt, ut_norm)
     ut_knn = knn.predict(xt)
-    in_l = outlier_mean_field_likelihood(ut_norm, ut_knn)
+    in_l = abs(ut_norm - ut_knn).sum(axis=1)
     c = np.percentile(in_l, q=q)
-    return np.where(in_l > c)
+    
+    return np.where(in_l < c)
 
 
 

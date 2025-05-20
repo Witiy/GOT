@@ -73,6 +73,7 @@ def fit_velocity_model(
         x_centric_batch_size=256,
         reverse_schema=True,
         time_varying=True,
+        filtered=True,
         **kwargs
         ):
     """Estimates velocities and fit trajectories in latent space.
@@ -88,6 +89,8 @@ def fit_velocity_model(
         Name of latent space to fit, in adata.obsm
     landmarks: `bool`
         Use landmarks to approximate graphical paths
+    graph_key: `str` (default: None)
+        Name of graph to fit, in adata.obsm
     device: :class:`~torch.device`
         torch device
     n_neighbors: `int` (default: 50)
@@ -108,6 +111,8 @@ def fit_velocity_model(
         Dir path to store shorest path file
     linear: `bool` (default: False)
         Accept linear path or not
+    filtered: `bool` (default: True)
+        Use filtered velocity or not
     x_centric: `bool` (default: True)
         Do x-centric training
     x_centric_iter_n: `int` (default: 2000)
@@ -120,6 +125,7 @@ def fit_velocity_model(
         The neural network model use time label as input or not
     lr: `float` (default: 5e-3)
         Learning rate
+    
     
        
     Returns
@@ -152,7 +158,10 @@ def fit_velocity_model(
         model = pretrained_model
 
     optimizer = torch.optim.Adam(model.parameters(), lr, weight_decay=0.001)
-    sample_fn_path = partial(sp_sampler.filtered_sample_batch_path, sigma=sigma, batch_size=v_centric_batch_size, distance_metrics=distance_metrics, add_noise=add_noise)
+    if filtered:
+        sample_fn_path = partial(sp_sampler.filtered_sample_batch_path, sigma=sigma, batch_size=v_centric_batch_size, distance_metrics=distance_metrics, add_noise=add_noise)
+    else:
+        sample_fn_path = partial(sp_sampler.sample_batch_path, sigma=sigma, batch_size=v_centric_batch_size, distance_metrics=distance_metrics, add_noise=add_noise)
     model, history = v_centric_training(model, optimizer, sample_fn_path, iter_n=v_centric_iter_n, device=device)
 
     if x_centric:

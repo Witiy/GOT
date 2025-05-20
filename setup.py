@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages, Extension
 setup(
     name='py-scgot',
-    version='0.2.4',
+    version='0.2.5',
     author='Ruihong Xu',
     author_email='xuruihong@big.ac.cn',
     packages=find_packages(),
@@ -20,7 +20,7 @@ setup(
         "pygam>=0.9.0",
         "numba==0.58.1",
         "llvmlite==0.41.1",
-        "POT==0.9.3",
+        "POT>=0.9.3",
         "scanpy==1.9.3",
         "scikit-learn==1.1.3",
         "scipy==1.11.4",
