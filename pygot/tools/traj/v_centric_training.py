@@ -65,8 +65,10 @@ class Landmarks:
 class GraphPath:
     def __init__(self, X, n_neighbors=30, n_landmarks=5000, n_dijk=None, landmarks=False, X_cost=None):
         self.landmarks = landmarks
-        if X_cost is not None:
+        if X_cost is None:
             self.X_cost = X
+        else:
+            self.X_cost = X_cost
         if self.landmarks:
             self.lands = Landmarks()
             self.lands.fit(self.X_cost, n_neighbors, n_landmarks, )
