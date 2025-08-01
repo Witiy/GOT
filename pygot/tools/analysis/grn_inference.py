@@ -354,15 +354,15 @@ def optimize_global_GRN(adata, TF_names, layer_key=None,
     fit_godness = torch.mean((G_hat(X[:,tf_idx].to(device)) + beta_hat(X.to(device)) - y.to(device))**2, dim=-1).detach().cpu().numpy()
     return G_hat, beta_hat, fit_godness
 
-def get_ranked_edges(jacobian, tf_names, gene_names):
+def get_ranked_edges(jacobian, tf_names, gene_names, cutoff=1e-5):
     
         
     df = pd.DataFrame(jacobian, index=gene_names, columns=tf_names).T
     stacked = df.stack()
     values = stacked.to_numpy().flatten()
-    idx = np.argsort(abs(values))
+    idx = np.argsort(abs(values))[::-1]
     
-    num_top = np.sum(abs(jacobian) > 0)
+    num_top = np.sum(abs(jacobian) > cutoff)
     
     top_idx = idx[:num_top]
     gene1 = tf_names[top_idx // len(gene_names)]
