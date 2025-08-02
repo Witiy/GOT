@@ -21,7 +21,7 @@ source_suffix = ['.rst',".md"]
 project = 'GOT'
 copyright = '2025, Ruihong Xu'
 author = 'Ruihong Xu'
-release = '0.3.0'
+release = '0.3.1'
 html_favicon = 'favicon.png'
 bibtex_bibfiles = ['ref.bib']
     
