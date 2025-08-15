@@ -111,7 +111,6 @@ pm = pygot.tl.analysis.ProbabilityModel()
 history = pm.fit(adata, embedding_key=embedding_key, velocity_key=velocity_key)
 
 adata.obs['pseudotime'] = pm.estimate_pseudotime(adata)
-adata.obs['var'] = pm.estimate_variance(adata)
 ```
 
 #### Cell Fate Prediction
