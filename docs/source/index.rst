@@ -102,7 +102,6 @@ Velocity-based Pseudotime
 
    # Estimated pseudotime of cells
    adata.obs['pseudotime'] = pm.estimate_pseudotime(adata)  # pseudotime
-   adata.obs['var'] = pm.estimate_variance(adata)  # variance of time
 
 Cell Fate Prediction
 ~~~~~~~~~~~~~~~~~~~~
