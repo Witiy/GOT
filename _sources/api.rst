@@ -1,9 +1,9 @@
-.. automodule:: pygot_modified
+.. automodule:: pygot
 API
 ===
 Import GOT as::
 
-   import pygot_modified 
+   import pygot 
 
 Preprocessing (pp)
 ------------------
@@ -26,7 +26,6 @@ Trajectory Inference (traj)
 .. autosummary::
    :toctree: .
 
-   tools.traj.make_transition_couplings
    tools.traj.fit_velocity_model
    tools.traj.velocity
    tools.traj.latent_velocity
