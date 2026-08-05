@@ -1,4 +1,4 @@
-.. pygot documentation master file, created by
+.. pygot_modified documentation master file, created by
    sphinx-quickstart on Wed Aug 28 21:16:52 2024.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive
@@ -8,7 +8,7 @@ GOT documentation
 
 GOT: Deciphering Cellular Dynamics by Learning and Interpreting Vector Field \
 
-pyGOT is a python package help biologist to analyze the dynamics of cell.  
+pygot_modified is a python package help biologist to analyze the dynamics of cell.  
 
 .. image:: 1fig1.png
    :width: 800px
@@ -22,8 +22,8 @@ To install with pip, run the following from a terminal:
 
 .. code-block:: python
 
-   conda create -n pyGOT python==3.10
-   pip install py-scgot
+   conda create -n pygot_modified python==3.10
+   pip install pygot_modified
 
 
 Installation from GitHub
@@ -34,7 +34,7 @@ To clone the repository and install manually, run the following from a terminal:
 
    git clone git@github.com:Witiy/GOT.git
    cd GOT
-   conda create -n GOT python==3.10
+   conda create -n pygot_modified python==3.10
    pip install .
 
 
@@ -51,40 +51,67 @@ Time-Series
 
 .. code-block:: python
 
-   import pygot
+   import pygot_modified
    import torch
    import scvelo as scv
 
    embedding_key = 'X_pca'
    velocity_key = 'velocity_pca'
    time_key = 'Day'  # your experimental time label
-   model, history = pygot.tl.traj.fit_velocity_model(
+   model, history = pygot_modified.tl.traj.fit_velocity_model(
        adata, embedding_key=embedding_key, time_key=time_key
    )
 
-   pygot.tl.traj.velocity(adata, model, embedding_key=embedding_key, time_key=time_key)
-   pygot.tl.traj.velocity_graph(adata, embedding_key=embedding_key, velocity_key=velocity_key)
+   pygot_modified.tl.traj.velocity(adata, model, embedding_key=embedding_key, time_key=time_key)
+   pygot_modified.tl.traj.velocity_graph(adata, embedding_key=embedding_key, velocity_key=velocity_key)
    scv.pl.velocity_embedding_stream(adata)
+
+Time-Series with precomputed coupling
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+   from scipy.sparse import csr_matrix
+   import pygot_modified
+
+   embedding_key = "X_pca"
+   time_key = "Day"
+
+   coupling_day0_day1 = csr_matrix(...)  # rows: Day0 cells, cols: Day1 cells
+   coupling_day1_day2 = csr_matrix(...)  # rows: Day1 cells, cols: Day2 cells
+
+   coupling_matrices = pygot_modified.tl.traj.make_transition_couplings(
+       [coupling_day0_day1, coupling_day1_day2],
+       adata=adata,
+       time_key=time_key,
+   )
+
+   model, history = pygot_modified.tl.traj.fit_velocity_model(
+       adata,
+       embedding_key=embedding_key,
+       time_key=time_key,
+       coupling_matrices=coupling_matrices,
+   )
 
 Snapshot
 ~~~~~~~~
 
 .. code-block:: python
 
-   import pygot
+   import pygot_modified
    import scvelo as scv
 
    embedding_key = 'X_pca'
    velocity_key = 'velocity_pca'
-   model, history = pygot.tl.traj.fit_velocity_model_without_time(
+   model, history = pygot_modified.tl.traj.fit_velocity_model_without_time(
        adata, embedding_key, plot=True, basis='tsne',
        single_branch_detect=True, cell_type_key=cell_type_key
    )
 
-   adata.layers['velocity'] = pygot.tl.traj.velocity(
+   adata.layers['velocity'] = pygot_modified.tl.traj.velocity(
        adata, model, embedding_key=embedding_key
    )
-   pygot.tl.traj.velocity_graph(adata, embedding_key=embedding_key, velocity_key=velocity_key)
+   pygot_modified.tl.traj.velocity_graph(adata, embedding_key=embedding_key, velocity_key=velocity_key)
 
    scv.pl.velocity_embedding_stream(adata)
 
@@ -97,7 +124,7 @@ Velocity-based Pseudotime
 .. code-block:: python
 
    # Fit the probability model
-   pm = pygot.tl.analysis.ProbabilityModel()
+   pm = pygot_modified.tl.analysis.ProbabilityModel()
    history = pm.fit(adata, embedding_key=embedding_key, velocity_key=velocity_key)
 
    # Estimated pseudotime of cells
@@ -108,7 +135,7 @@ Cell Fate Prediction
 
 .. code-block:: python
 
-   cf = pygot.tl.analysis.CellFate()
+   cf = pygot_modified.tl.analysis.CellFate()
    cf.fit(
        adata, embedding_key='X_pca', velocity_key='velocity_pca',
        cell_type_key='clusters', target_cell_types=['Beta', 'Alpha', 'Delta', 'Epsilon']
@@ -121,7 +148,7 @@ Developmental Tree Inference
 
 .. code-block:: python
 
-   roadmap = pygot.tl.analysis.TimeSeriesRoadmap(adata, embedding_key, velocity_key, time_key)
+   roadmap = pygot_modified.tl.analysis.TimeSeriesRoadmap(adata, embedding_key, velocity_key, time_key)
    roadmap.fit(cell_type_key='clusters', n_neighbors=30)
 
    filtered_state_coupling_list = roadmap.filter_state_coupling(pvalue=0.001)  # permutation test
@@ -179,4 +206,3 @@ In silico Perturbation (after GRN inference)
    [tutorial]06_gene_regulatory_network_inference
    [tutorial]07_in_silico_perturbation
    
-
