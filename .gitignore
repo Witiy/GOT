@@ -1,0 +1,26 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Packaging and build output
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Jupyter autosave files
+.ipynb_checkpoints/
+
+# Test and tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local environments and editor metadata
+.venv/
+venv/
+.env
+.DS_Store

@@ -293,6 +293,7 @@ class GraphicalOTVelocitySampler:
             linear : bool = False,
             n_neighbors : int = 50,
             p : int = 2,
+            landmarks_fold : int = 5,
             ) -> None:
         """ init sampler function
 
@@ -332,7 +333,7 @@ class GraphicalOTVelocitySampler:
         self.set_embedding(embedding_key)
         self.data_dir = path
         self.load_gp(self.data_dir)
-        self.compute_shortest_path(n_neighbors)
+        self.compute_shortest_path(n_neighbors, landmarks_fold=landmarks_fold)
         self.p = p
         
         
@@ -362,6 +363,7 @@ class GraphicalOTVelocitySampler:
             self, 
             n_neighbors : int =50,
             p : int = 2,
+            landmarks_fold : int = 5,
     ):
         """ compute shortest path in constructed kNN graph
 
@@ -389,11 +391,12 @@ class GraphicalOTVelocitySampler:
             
             if self.landmarks and len(X) > 5000:
                 landmarks = True
-                n_landmarks = max(min(25000, len(X) // 5), 2000)
+                n_landmarks = max(min(25000, len(X) // landmarks_fold), 2000)
+                print('Number of landmarks : {} between {} to {}'.format(n_landmarks, self.ts[i], self.ts[i+1]))
             else:
                 landmarks = False
                 n_landmarks = 0
-                
+
             gp = GraphPath(X,
                       landmarks=landmarks,
                       n_neighbors=n_neighbors, 
@@ -737,4 +740,3 @@ def v_centric_training(
     return model, np.array(history)
 
         
-
