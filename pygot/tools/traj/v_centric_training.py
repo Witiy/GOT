@@ -276,7 +276,8 @@ class GraphicalOTVelocitySampler:
             "Graph Key": self.graph_key,
             "Embedding Key": self.embedding_key,
             "Device": self.device,
-            "Data Dir": self.data_dir
+            "Data Dir": self.data_dir,
+            "KNN Constraint": self.knn_constraint,
 
         }
         return str(item)
@@ -294,6 +295,7 @@ class GraphicalOTVelocitySampler:
             n_neighbors : int = 50,
             p : int = 2,
             landmarks_fold : int = 5,
+            knn_constraint : bool = True,
             ) -> None:
         """ init sampler function
 
@@ -313,6 +315,9 @@ class GraphicalOTVelocitySampler:
                 use landmarks to appoximate graphical path
             n_neighbors : int
                 the number of neighbors
+            knn_constraint : bool
+                use the kNN graph for OT cost and path interpolation, and
+                enable kNN velocity filtering
         
         """
         assert (p == 1) or (p == 2)
@@ -332,8 +337,12 @@ class GraphicalOTVelocitySampler:
         self.set_cost(graph_key)
         self.set_embedding(embedding_key)
         self.data_dir = path
-        self.load_gp(self.data_dir)
-        self.compute_shortest_path(n_neighbors, landmarks_fold=landmarks_fold)
+        self.knn_constraint = knn_constraint
+        if self.knn_constraint:
+            self.load_gp(self.data_dir)
+            self.compute_shortest_path(n_neighbors, landmarks_fold=landmarks_fold)
+        else:
+            self.GPs = None
         self.p = p
         
         
@@ -488,7 +497,7 @@ class GraphicalOTVelocitySampler:
                 .float()
             )
         # calcu the optimal transport plan and get \pi(x0, x1) as latent distribution
-        if distance_metrics != 'SP':
+        if not self.knn_constraint or distance_metrics != 'SP':
             # L2 distance as optimal transport cost matrix
             M = torch.cdist(x0_c, x1_c)
             
@@ -544,6 +553,13 @@ class GraphicalOTVelocitySampler:
         xa_t, ua_t = [], []
         ts = []
         for idx in range(len(x0)):
+            if not self.knn_constraint:
+                t = random.random()
+                xa_t.append((1-t) * x0[idx] + t * x1[idx])
+                ua_t.append(x1[idx] - x0[idx])
+                ts.append(t)
+                continue
+
             source = i[idx]
             target = j_map[idx]
             
@@ -671,6 +687,9 @@ class GraphicalOTVelocitySampler:
                 corresponding velocity to x
 
         """
+        if not self.knn_constraint:
+            return self.sample_batch_path(sigma, batch_size, distance_metrics, add_noise)
+
         T, X, U, X0, X1 = self.sample_batch_path(sigma, batch_size, distance_metrics, add_noise)
 
         filtered_idx = filter_outlier(torch.Tensor(X), torch.tensor(U), k=k, q=q)

@@ -61,6 +61,7 @@ def fit_velocity_model(
         device=None,
         graph_key=None,
         n_neighbors=50,
+        knn_constraint=True,
         v_centric_iter_n=1000, v_centric_batch_size=256, 
         add_noise=True, sigma=0.1,
         lr=5e-3, 
@@ -95,6 +96,9 @@ def fit_velocity_model(
         torch device
     n_neighbors: `int` (default: 50)
         Neighbors number in kNN
+    knn_constraint: `bool` (default: True)
+        Use the kNN graph for OT cost and path interpolation, and apply the
+        kNN velocity filter. If False, use L2 OT cost and linear interpolation.
     v_centric_iter_n: `int` (default: 1000)
         Iteration number of v-centric training
     v_centric_batch_size: `int` (default: 256)
@@ -148,6 +152,7 @@ def fit_velocity_model(
                     path=path, 
                     linear=linear,
                     n_neighbors=n_neighbors,
+                    knn_constraint=knn_constraint,
                     **kwargs
                     
     )
@@ -158,7 +163,7 @@ def fit_velocity_model(
         model = pretrained_model
 
     optimizer = torch.optim.Adam(model.parameters(), lr, weight_decay=0.001)
-    if filtered:
+    if filtered and knn_constraint:
         sample_fn_path = partial(sp_sampler.filtered_sample_batch_path, sigma=sigma, batch_size=v_centric_batch_size, distance_metrics=distance_metrics, add_noise=add_noise)
     else:
         sample_fn_path = partial(sp_sampler.sample_batch_path, sigma=sigma, batch_size=v_centric_batch_size, distance_metrics=distance_metrics, add_noise=add_noise)
