@@ -569,7 +569,7 @@ class GraphicalOTVelocitySampler:
                 if not self.linear:
                     continue             
                 t = random.random()
-                xa_t.append(t*x0[idx] + (1-t) * x1[idx])
+                xa_t.append((1-t) * x0[idx] + t * x1[idx])
                 ua_t.append(x1[idx] - x0[idx])
                 ts.append(t)
             
