@@ -468,21 +468,21 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">gmt_to_decoupler</span><span class="p">(</span><span class="n">pth</span><span class="p">,</span> <span class="n">mouse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Parse a gmt file to a decoupler pathway dataframe.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span><span class="p">,</span> <span class="n">repeat</span>
 
     <span class="n">pathways</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="n">Path</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">name</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="o">*</span><span class="n">genes</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="o">*</span><span class="n">genes</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"</span><span class="se">\t</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">pathways</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">genes</span>
 
     <span class="n">geneset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span>
         <span class="n">chain</span><span class="o">.</span><span class="n">from_iterable</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">repeat</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">pathways</span><span class="o">.</span><span class="n">items</span><span class="p">()),</span>
-        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;geneset&quot;</span><span class="p">,</span> <span class="s2">&quot;genesymbol&quot;</span><span class="p">],</span>
+        <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"geneset"</span><span class="p">,</span> <span class="s2">"genesymbol"</span><span class="p">],</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">mouse</span><span class="p">:</span>
         <span class="n">geneset</span><span class="o">.</span><span class="n">genesymbol</span> <span class="o">=</span> <span class="n">geneset</span><span class="o">.</span><span class="n">genesymbol</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
@@ -504,7 +504,7 @@ document.write(`
     
     <span class="c1"># 合并特征并添加到DataFrame中</span>
     <span class="k">for</span> <span class="n">clique</span> <span class="ow">in</span> <span class="n">cliques</span><span class="p">:</span>
-        <span class="n">new_feature_name</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">clique</span><span class="p">)</span>
+        <span class="n">new_feature_name</span> <span class="o">=</span> <span class="s1">'+'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">clique</span><span class="p">)</span>
         <span class="n">new_feature_values</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">clique</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">new_feature_values</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -589,7 +589,7 @@ document.write(`
         <span class="n">Ej</span> <span class="o">=</span> <span class="o">-</span><span class="n">F</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">global_d</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">M</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         <span class="n">Em</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_d</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">M_prime</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
         <span class="n">GLOBAL</span> <span class="o">=</span> <span class="p">(</span><span class="n">Em</span> <span class="o">-</span> <span class="n">Ej</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">'''</span>
 <span class="sd">        prior = torch.rand_like(y)</span>
 
 <span class="sd">        term_a = torch.log(self.prior_d(prior)).mean()</span>
@@ -597,14 +597,14 @@ document.write(`
 <span class="sd">        PRIOR = - (term_a + term_b) * self.gamma</span>
 <span class="sd">        </span>
 <span class="sd">        return LOCAL + GLOBAL + PRIOR</span>
-<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        '''</span>
         <span class="k">return</span> <span class="n">LOCAL</span> <span class="o">+</span> <span class="n">GLOBAL</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">training_embedder</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">n_epoch</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">training_embedder</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">n_epoch</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cpu'</span><span class="p">)):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
     <span class="n">dataloader</span> <span class="o">=</span> <span class="n">AnnLoader</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
-                           <span class="n">use_cuda</span><span class="o">=</span><span class="kc">False</span> <span class="k">if</span> <span class="p">(</span><span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">device</span> <span class="o">==</span> <span class="s1">&#39;cpu&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">True</span><span class="p">,</span>
+                           <span class="n">use_cuda</span><span class="o">=</span><span class="kc">False</span> <span class="k">if</span> <span class="p">(</span><span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cpu'</span><span class="p">)</span> <span class="ow">or</span> <span class="n">device</span> <span class="o">==</span> <span class="s1">'cpu'</span><span class="p">)</span> <span class="k">else</span> <span class="kc">True</span><span class="p">,</span>
                           <span class="p">)</span>
     <span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
 
@@ -620,15 +620,15 @@ document.write(`
             <span class="c1">#vq_history.append(vq_loss.item())</span>
             <span class="c1">#zinb_history.append(zinb_loss.item())</span>
             <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
-            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s1">&#39;loss :</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:])))</span>
-            <span class="c1">#pbar.set_description(&#39;vq loss :{:.4f} dist loss :{:.4f}&#39;.format(np.mean(vq_history[-100:]), np.mean(zinb_history[-100:])))</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s1">'loss :</span><span class="si">{:.4f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:])))</span>
+            <span class="c1">#pbar.set_description('vq loss :{:.4f} dist loss :{:.4f}'.format(np.mean(vq_history[-100:]), np.mean(zinb_history[-100:])))</span>
     <span class="k">return</span> <span class="n">model</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">DIM_training_embedder</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">n_interpretator</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">n_epoch</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">DIM_training_embedder</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">loss_func</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">n_interpretator</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">n_epoch</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cpu'</span><span class="p">)):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
     <span class="n">dataloader</span> <span class="o">=</span> <span class="n">AnnLoader</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                           <span class="n">use_cuda</span><span class="o">=</span><span class="kc">False</span> <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="kc">True</span><span class="p">,</span> <span class="p">)</span>
+                           <span class="n">use_cuda</span><span class="o">=</span><span class="kc">False</span> <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cpu'</span><span class="p">)</span> <span class="k">else</span> <span class="kc">True</span><span class="p">,</span> <span class="p">)</span>
     <span class="n">dim_fn</span> <span class="o">=</span> <span class="n">DeepInfoMaxLoss</span><span class="p">(</span><span class="n">n_interpretator</span><span class="o">=</span><span class="n">n_interpretator</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">dim</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 
     <span class="n">loss_optim</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">dim_fn</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
@@ -658,8 +658,8 @@ document.write(`
             <span class="c1">#vq_history.append(vq_loss.item())</span>
             <span class="c1">#zinb_history.append(zinb_loss.item())</span>
             <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dim_loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">+</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
-            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s1">&#39;loss :</span><span class="si">{:.4f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:])))</span>
-            <span class="c1">#pbar.set_description(&#39;vq loss :{:.4f} dist loss :{:.4f}&#39;.format(np.mean(vq_history[-100:]), np.mean(zinb_history[-100:])))</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s1">'loss :</span><span class="si">{:.4f}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:])))</span>
+            <span class="c1">#pbar.set_description('vq loss :{:.4f} dist loss :{:.4f}'.format(np.mean(vq_history[-100:]), np.mean(zinb_history[-100:])))</span>
     <span class="k">return</span> <span class="n">model</span>
 
 
@@ -670,7 +670,7 @@ document.write(`
 
 <span class="k">def</span><span class="w"> </span><span class="nf">functional_loss_func</span><span class="p">(</span><span class="n">model</span><span class="p">:</span><span class="n">VAE</span><span class="p">,</span> <span class="n">batch</span><span class="p">):</span>
         
-    <span class="n">vq_loss</span><span class="p">,</span> <span class="n">recon_loss</span><span class="p">,</span> <span class="n">func_loss</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">elbo</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">float</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;aucell&#39;</span><span class="p">])</span>
+    <span class="n">vq_loss</span><span class="p">,</span> <span class="n">recon_loss</span><span class="p">,</span> <span class="n">func_loss</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">elbo</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">float</span><span class="p">(),</span> <span class="n">batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'aucell'</span><span class="p">])</span>
 
     <span class="n">loss</span> <span class="o">=</span> <span class="n">vq_loss</span> <span class="o">+</span> <span class="n">recon_loss</span> <span class="o">+</span> <span class="n">func_loss</span>
     
@@ -681,7 +681,7 @@ document.write(`
 <div class="viewcode-block" id="GS_VAE">
 <a class="viewcode-back" href="../../../pygot.preprocessing.GS_VAE.html#pygot.preprocessing.GS_VAE">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GS_VAE</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dimension reduction model</span>
+<span class="w">    </span><span class="sd">"""Dimension reduction model</span>
 
 <span class="sd">    Non-linear dimension reduction model (based on VAE)</span>
 <span class="sd">    </span>
@@ -694,7 +694,7 @@ document.write(`
 
 <span class="sd">        vae = pygot.pp.gs_vae()</span>
 <span class="sd">        vae.register_model(adata, latent_dim=10)</span>
-<span class="sd">        adata.obsm[&#39;X_latent&#39;] = vae.fit_transform(adata)</span>
+<span class="sd">        adata.obsm['X_latent'] = vae.fit_transform(adata)</span>
 
 <span class="sd">    To use GS-VAE::</span>
 <span class="sd">    </span>
@@ -702,9 +702,9 @@ document.write(`
 <span class="sd">        auc_space = gs_vae.precompute_gs(adata, gene_set_book_paths, mouse=False) # compute gene set score by AUCell</span>
 <span class="sd">        adata = gs_vae.process_gs(adata, auc_space) # process gene set score into adata</span>
 <span class="sd">        gs_vae.register_model(adata, latent_dim=10) </span>
-<span class="sd">        adata.obsm[&#39;X_latent&#39;] = gs_vae.fit_transform(adata)</span>
+<span class="sd">        adata.obsm['X_latent'] = gs_vae.fit_transform(adata)</span>
 
-<span class="sd">        denoised_gs = gs_vae.pred_gs_using_z(adata.obsm[&#39;X_latent&#39;]) # predict denoised gene set score </span>
+<span class="sd">        denoised_gs = gs_vae.pred_gs_using_z(adata.obsm['X_latent']) # predict denoised gene set score </span>
 
 
 
@@ -713,21 +713,21 @@ document.write(`
 <span class="sd">    </span>
 <span class="sd">    </span>
 <span class="sd">    </span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 <div class="viewcode-block" id="GS_VAE.__init__">
 <a class="viewcode-back" href="../../../pygot.preprocessing.GS_VAE.html#pygot.preprocessing.GS_VAE.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;To use VAE, run as following:&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     1. gs_vae.register_model&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     2. gs_vae.fit / gs_vae.fit_transform&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'To use VAE, run as following:'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'     1. gs_vae.register_model'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'     2. gs_vae.fit / gs_vae.fit_transform'</span><span class="p">)</span>
 
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;To use GS-VAE, run as following:&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     1. gs_vae.precompute_gs&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     2. gs_vae.process_gs&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     3. gs_vae.register_model&#39;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;     4. gs_vae.fit / gs_vae.fit_transform&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'To use GS-VAE, run as following:'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'     1. gs_vae.precompute_gs'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'     2. gs_vae.process_gs'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'     3. gs_vae.register_model'</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'     4. gs_vae.fit / gs_vae.fit_transform'</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">&quot;cuda&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span></div>
 
@@ -778,7 +778,7 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pred_func_latent</span><span class="p">(</span><span class="n">x_latent</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The model is VAE, please use precompute_gs and process_gs to register gene set book in anndata&#39;</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'The model is VAE, please use precompute_gs and process_gs to register gene set book in anndata'</span><span class="p">)</span></div>
 
     
 <div class="viewcode-block" id="GS_VAE.pred_gs_using_x">
@@ -788,7 +788,7 @@ document.write(`
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flag</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">pred_func</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The model is VAE, please use precompute_gs and process_gs to register gene set book in anndata&#39;</span><span class="p">)</span></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'The model is VAE, please use precompute_gs and process_gs to register gene set book in anndata'</span><span class="p">)</span></div>
 
     
 
@@ -800,7 +800,7 @@ document.write(`
             <span class="kn">import</span><span class="w"> </span><span class="nn">decoupler</span>
         <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-                    <span class="s2">&quot;Please install the decoupler via pip install decoupler`.&quot;</span><span class="p">)</span>
+                    <span class="s2">"Please install the decoupler via pip install decoupler`."</span><span class="p">)</span>
         <span class="n">auc_space</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gene_set_book_paths</span><span class="p">)):</span>
@@ -808,12 +808,12 @@ document.write(`
             <span class="n">decoupler</span><span class="o">.</span><span class="n">run_aucell</span><span class="p">(</span>
                 <span class="n">adata</span><span class="p">,</span>
                 <span class="n">geneset</span><span class="p">,</span>
-                <span class="n">source</span><span class="o">=</span><span class="s2">&quot;geneset&quot;</span><span class="p">,</span>
-                <span class="n">target</span><span class="o">=</span><span class="s2">&quot;genesymbol&quot;</span><span class="p">,</span>
+                <span class="n">source</span><span class="o">=</span><span class="s2">"geneset"</span><span class="p">,</span>
+                <span class="n">target</span><span class="o">=</span><span class="s2">"genesymbol"</span><span class="p">,</span>
                 <span class="n">use_raw</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         
             <span class="p">)</span>
-            <span class="n">auc_space</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;aucell_estimate&#39;</span><span class="p">])</span>
+            <span class="n">auc_space</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'aucell_estimate'</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">auc_space</span></div>
 
     
@@ -828,22 +828,22 @@ document.write(`
                 <span class="n">auc_space</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">clique_filter</span><span class="p">(</span><span class="n">auc_space</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">correlation_threshold</span> <span class="o">=</span> <span class="n">c_threshold</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pathway_names</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">pathway_names</span><span class="p">)</span>
         <span class="n">aucell_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">auc_space</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Gene Set Number:&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Gene Set Number:'</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">aucell_df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;aucell_df&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aucell_df</span>
-        <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;aucell&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;aucell_df&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
-        <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">auc_space</span><span class="p">]</span>
+        <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'aucell_df'</span><span class="p">]</span> <span class="o">=</span> <span class="n">aucell_df</span>
+        <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'aucell'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'aucell_df'</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'idx'</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">auc_space</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">adata</span></div>
 
 
 <div class="viewcode-block" id="GS_VAE.register_model">
 <a class="viewcode-back" href="../../../pygot.preprocessing.GS_VAE.html#pygot.preprocessing.GS_VAE.register_model">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">register_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">latent_dim</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">hinge_value</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">):</span>
-        <span class="k">if</span> <span class="s1">&#39;idx&#39;</span> <span class="ow">in</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">funcVAE</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">latent_dim</span><span class="o">=</span><span class="n">latent_dim</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span> <span class="n">interpretation_dims</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">],</span> <span class="n">hinge_value</span><span class="o">=</span><span class="n">hinge_value</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">'idx'</span> <span class="ow">in</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">funcVAE</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">latent_dim</span><span class="o">=</span><span class="n">latent_dim</span><span class="p">,</span> <span class="n">lam</span><span class="o">=</span><span class="n">lam</span><span class="p">,</span> <span class="n">interpretation_dims</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'idx'</span><span class="p">],</span> <span class="n">hinge_value</span><span class="o">=</span><span class="n">hinge_value</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="n">beta</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">loss_func</span> <span class="o">=</span> <span class="n">functional_loss_func</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">trainer</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">DIM_training_embedder</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">latent_dim</span><span class="p">,</span> <span class="n">n_interpretator</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trainer</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">DIM_training_embedder</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="n">latent_dim</span><span class="p">,</span> <span class="n">n_interpretator</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'idx'</span><span class="p">]),</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">VAE</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">latent_dim</span><span class="o">=</span><span class="n">latent_dim</span><span class="p">)</span>

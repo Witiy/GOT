@@ -313,7 +313,7 @@ document.write(`
             <span class="n">num_resamples</span><span class="o">=</span><span class="n">num_resamples</span><span class="p">,</span>
         <span class="p">))</span>
     <span class="p">)</span>
-    <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">[[</span><span class="s1">&#39;pvalue&#39;</span><span class="p">,</span> <span class="s1">&#39;statistic&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">[[</span><span class="s1">'pvalue'</span><span class="p">,</span> <span class="s1">'statistic'</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">strings_to_tensor</span><span class="p">(</span><span class="n">string_list</span><span class="p">):</span>
     
@@ -379,7 +379,7 @@ document.write(`
         <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="c1"># Padding one dimension with 0 to make it even</span>
             <span class="n">padding</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># Pad on the right side along dim=1</span>
-            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;constant&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">padding</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'constant'</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">x</span>    
 
     <span class="k">def</span><span class="w"> </span><span class="nf">coupling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">forward</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -431,10 +431,10 @@ document.write(`
 
         <span class="k">return</span> <span class="n">x</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;avg&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">'avg'</span><span class="p">):</span>
         <span class="n">z</span><span class="p">,</span> <span class="n">log_det_J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         
-        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">'sum'</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">log_det_J</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">log_det_J</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -494,7 +494,7 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">px</span><span class="o">.</span><span class="n">set_prior</span><span class="p">(</span><span class="n">prior</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
     
-    <span class="k">def</span><span class="w"> </span><span class="nf">pearson_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_noise</span><span class="p">,</span> <span class="n">x_neigh</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>  <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;avg&#39;</span><span class="p">,</span> <span class="n">corr_cutoff</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">pearson_loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_noise</span><span class="p">,</span> <span class="n">x_neigh</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>  <span class="n">reduction</span><span class="o">=</span><span class="s1">'avg'</span><span class="p">,</span> <span class="n">corr_cutoff</span><span class="o">=</span><span class="mf">0.3</span><span class="p">):</span>
         <span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">x_neigh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">expectation_center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_t_given_x</span><span class="p">(</span><span class="n">x_noise</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
@@ -508,7 +508,7 @@ document.write(`
 
         <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">corr</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.</span><span class="p">]),</span> <span class="mf">0.</span>
-        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">&#39;avg&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">'avg'</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="n">corr</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">corr</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">)),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">corr</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="n">corr</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="nb">sum</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
@@ -523,16 +523,16 @@ document.write(`
         
         
     
-    <span class="k">def</span><span class="w"> </span><span class="nf">log_prob_t_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">log_prob_t_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">'sum'</span><span class="p">):</span>
         <span class="n">z</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">px</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         
         <span class="n">pt_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ptx</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
         <span class="n">pt_x_a</span><span class="p">,</span> <span class="n">pt_x_b</span> <span class="o">=</span> <span class="n">pt_x</span><span class="p">[:,</span><span class="mi">0</span><span class="p">][:,</span><span class="kc">None</span><span class="p">],</span> <span class="n">pt_x</span><span class="p">[:,</span><span class="mi">1</span><span class="p">][:,</span><span class="kc">None</span><span class="p">]</span>
         
         <span class="n">log_pt_x</span> <span class="o">=</span> <span class="n">normal_log_likelihood</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">pt_x_a</span><span class="p">,</span> <span class="n">pt_x_b</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">&#39;avg&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">'avg'</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">log_pt_x</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">'sum'</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">log_pt_x</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">log_pt_x</span>
@@ -545,26 +545,26 @@ document.write(`
         <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">softplus</span><span class="p">(</span><span class="n">pt_x_b</span><span class="p">)</span>
         
         
-    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;mle&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_t</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'mle'</span><span class="p">):</span>
         <span class="n">z</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">px</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">pt_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ptx</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
         <span class="n">pt_x_a</span><span class="p">,</span> <span class="n">pt_x_b</span> <span class="o">=</span> <span class="n">pt_x</span><span class="p">[:,</span><span class="mi">0</span><span class="p">][:,</span><span class="kc">None</span><span class="p">],</span> <span class="n">pt_x</span><span class="p">[:,</span><span class="mi">1</span><span class="p">][:,</span><span class="kc">None</span><span class="p">]</span>
         
-        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;mle&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">'mle'</span><span class="p">:</span>
             <span class="n">pt_x_a</span><span class="p">,</span> <span class="n">pt_x_b</span> <span class="o">=</span> <span class="n">pt_x_a</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">pt_x_b</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">minimize_scalar</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pt_x_a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pt_x_b</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;bounded&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pt_x_a</span><span class="p">)))])</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">minimize_scalar</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="n">log_likelihood</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">pt_x_a</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">pt_x_b</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="s1">'bounded'</span><span class="p">)</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pt_x_a</span><span class="p">)))])</span>
         <span class="k">return</span> <span class="n">pt_x_a</span>
         
-    <span class="k">def</span><span class="w"> </span><span class="nf">log_prob_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">log_prob_x</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">'sum'</span><span class="p">):</span>
         <span class="n">log_px</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">px</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">&#39;avg&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">'avg'</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">log_px</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">'sum'</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">log_px</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">log_px</span>
         
-    <span class="k">def</span><span class="w"> </span><span class="nf">joint_log_prob_xt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">joint_log_prob_xt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">reduction</span><span class="o">=</span><span class="s1">'sum'</span><span class="p">):</span>
         <span class="n">z</span><span class="p">,</span> <span class="n">log_det_J</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">px</span><span class="o">.</span><span class="n">f</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
         <span class="n">log_px</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">px</span><span class="o">.</span><span class="n">prior</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">log_det_J</span>
         <span class="n">pt_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ptx</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
@@ -573,9 +573,9 @@ document.write(`
         <span class="n">log_pt_x</span> <span class="o">=</span> <span class="n">normal_log_likelihood</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">pt_x_a</span><span class="p">,</span> <span class="n">pt_x_b</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
         
         
-        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">&#39;avg&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">'avg'</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="n">log_px</span> <span class="o">+</span> <span class="n">log_pt_x</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">reduction</span> <span class="o">==</span> <span class="s1">'sum'</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="n">log_px</span> <span class="o">+</span> <span class="n">log_pt_x</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">log_px</span> <span class="o">+</span> <span class="n">log_pt_x</span>
@@ -586,7 +586,7 @@ document.write(`
 
  
 <span class="k">def</span><span class="w"> </span><span class="nf">get_pair_wise_neighbors</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute nearest neighbors </span>
+<span class="w">    </span><span class="sd">"""Compute nearest neighbors </span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -597,7 +597,7 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">        nn_t_idx: neighbors index (n, n_neighbors)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">N_cell</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">dim</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     
@@ -615,7 +615,7 @@ document.write(`
 <div class="viewcode-block" id="ProbabilityModel">
 <a class="viewcode-back" href="../../../../generated/pygot.tools.analysis.ProbabilityModel.html#pygot.tools.analysis.ProbabilityModel">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ProbabilityModel</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Probability model for pseudotime estimation</span>
+<span class="w">    </span><span class="sd">"""Probability model for pseudotime estimation</span>
 
 <span class="sd">    </span>
 <span class="sd">   Example:</span>
@@ -624,34 +624,34 @@ document.write(`
 <span class="sd">    ::</span>
 
 <span class="sd">        #Assume the velocity are already fitted in pca space</span>
-<span class="sd">        embedding_key = &#39;X_pca&#39; </span>
-<span class="sd">        velocity_key = &#39;velocity_pca&#39;</span>
+<span class="sd">        embedding_key = 'X_pca' </span>
+<span class="sd">        velocity_key = 'velocity_pca'</span>
 
 <span class="sd">        # Fit the probability model</span>
 <span class="sd">        pm = pygot.tl.analysis.ProbabilityModel()</span>
 <span class="sd">        history = pm.fit(adata,  embedding_key=embedding_key, velocity_key=velocity_key)</span>
 
 <span class="sd">        # Estimated pseudotime of cells </span>
-<span class="sd">        adata.obs[&#39;pseudotime&#39;] = pm.estimate_pseudotime(adata) # pseudotime</span>
-<span class="sd">        adata.obs[&#39;var&#39;] = pm.estimate_variance(adata) # variance of time</span>
+<span class="sd">        adata.obs['pseudotime'] = pm.estimate_pseudotime(adata) # pseudotime</span>
+<span class="sd">        adata.obs['var'] = pm.estimate_variance(adata) # variance of time</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 <div class="viewcode-block" id="ProbabilityModel.__init__">
 <a class="viewcode-back" href="../../../../generated/pygot.tools.analysis.ProbabilityModel.html#pygot.tools.analysis.ProbabilityModel.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>  <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Init model</span>
+<span class="w">        </span><span class="sd">"""Init model</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">        ---------</span>
 <span class="sd">        device: :class:`~torch.device`</span>
 <span class="sd">            torch device</span>
 <span class="sd">        </span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">&#39;cpu&#39;</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="s1">'cuda'</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s1">'cpu'</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Device:&#39;</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Device:'</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span></div>
 
         
 <div class="viewcode-block" id="ProbabilityModel.to">
@@ -673,7 +673,7 @@ document.write(`
             <span class="n">mini_batch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> 
             <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span> 
         <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;fit model</span>
+<span class="w">        </span><span class="sd">"""fit model</span>
 
 <span class="sd">        </span>
 <span class="sd">        Arguments:</span>
@@ -695,12 +695,12 @@ document.write(`
 <span class="sd">        batch_size: `int` (default: 512)</span>
 <span class="sd">            Number of batch size</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">density_model</span> <span class="o">=</span> <span class="n">DensityModel</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s1">&#39;distances&#39;</span> <span class="ow">in</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsp</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">nn_t_idx</span> <span class="o">=</span> <span class="n">find_neighbors</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsp</span><span class="p">[</span><span class="s1">&#39;distances&#39;</span><span class="p">],</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">'distances'</span> <span class="ow">in</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsp</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nn_t_idx</span> <span class="o">=</span> <span class="n">find_neighbors</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsp</span><span class="p">[</span><span class="s1">'distances'</span><span class="p">],</span> <span class="n">directed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
             
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">nn_t_idx</span> <span class="o">=</span> <span class="n">get_pair_wise_neighbors</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">],</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">)</span>
@@ -708,8 +708,8 @@ document.write(`
         <span class="bp">self</span><span class="o">.</span><span class="n">velocity_key</span> <span class="o">=</span> <span class="n">velocity_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span> <span class="o">=</span> <span class="n">embedding_key</span>
         
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5000</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">==</span> <span class="s1">&#39;cpu&#39;</span> <span class="ow">and</span> <span class="n">mini_batch</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Large dataset and cpu device. Suggest to use mini-batch&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5000</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">==</span> <span class="s1">'cpu'</span> <span class="ow">and</span> <span class="n">mini_batch</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">'Large dataset and cpu device. Suggest to use mini-batch'</span><span class="p">)</span>
         
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
 
@@ -751,7 +751,7 @@ document.write(`
             <span class="n">loss</span> <span class="o">=</span> <span class="n">taylor_loss</span>
             
             
-            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">&quot;Taylor Loss </span><span class="si">{:.4f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()))</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="s2">"Taylor Loss </span><span class="si">{:.4f}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()))</span>
             
             <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
             
@@ -771,8 +771,8 @@ document.write(`
 <div class="viewcode-block" id="ProbabilityModel.estimate_pseudotime">
 <a class="viewcode-back" href="../../../../generated/pygot.tools.analysis.ProbabilityModel.html#pygot.tools.analysis.ProbabilityModel.estimate_pseudotime">[docs]</a>
     <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_pseudotime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;estimate the pseudotime</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">estimate_pseudotime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adata</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">'mean'</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""estimate the pseudotime</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">        ---------</span>
@@ -783,7 +783,7 @@ document.write(`
 <span class="sd">        :math:`t^*|x`: :class:`~np.ndarray`</span>
 <span class="sd">            pseudotime of cells</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         
         <span class="n">expectation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">density_model</span><span class="o">.</span><span class="n">estimate_t</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">expectation</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
@@ -796,7 +796,7 @@ document.write(`
 <a class="viewcode-back" href="../../../../generated/pygot.tools.analysis.ProbabilityModel.html#pygot.tools.analysis.ProbabilityModel.estimate_variance">[docs]</a>
     <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">estimate_variance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">adata</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;estimate the variance of pseudotime</span>
+<span class="w">        </span><span class="sd">"""estimate the variance of pseudotime</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">        ---------</span>
@@ -808,7 +808,7 @@ document.write(`
 <span class="sd">        var: :class:`~np.ndarray`</span>
 <span class="sd">            variance of cell time</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         
         <span class="n">var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">density_model</span><span class="o">.</span><span class="n">var_t_given_x</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">())</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">))</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">var</span></div>

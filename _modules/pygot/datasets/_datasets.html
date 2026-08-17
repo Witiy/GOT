@@ -296,15 +296,15 @@ document.write(`
 <span class="k">def</span><span class="w"> </span><span class="nf">synthetic</span><span class="p">(</span>
     <span class="n">file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
         <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span>
-    <span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;data/Synthetic/tutorial_synthetic_data.h5ad&quot;</span>
+    <span class="p">]</span> <span class="o">=</span> <span class="s2">"data/Synthetic/tutorial_synthetic_data.h5ad"</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Sythetic data</span>
+<span class="w">    </span><span class="sd">"""Sythetic data</span>
 
 <span class="sd">    Data generated using simulator from `Pratapa et al. (2020) &lt;https://doi.org/10.1038/s41592-019-0690-6&gt;`__.</span>
 
 <span class="sd">    This data is generated from a gene regulatory network of 18 genes, which drives cells differentiate linearly. </span>
-<span class="sd">    The groundtruth stored in adata.uns[&#39;ref_network&#39;] and the groundtruth</span>
-<span class="sd">    velocity store in adata.layers[&#39;velocity_groundtruth&#39;]</span>
+<span class="sd">    The groundtruth stored in adata.uns['ref_network'] and the groundtruth</span>
+<span class="sd">    velocity store in adata.layers['velocity_groundtruth']</span>
 <span class="sd">    The underlying GRN is </span>
 
 <span class="sd">    .. image:: https://raw.githubusercontent.com/Witiy/WitiyImage/img/img/20240904105501.png</span>
@@ -313,8 +313,8 @@ document.write(`
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Returns `adata` object</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://figshare.com/ndownloader/files/48994252&quot;</span>
+<span class="sd">    """</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">"https://figshare.com/ndownloader/files/48994252"</span>
     <span class="n">adata</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">backup_url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cache</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">adata</span><span class="o">.</span><span class="n">var_names_make_unique</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">adata</span></div>

@@ -297,14 +297,14 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_minibatch_jacobian</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">return_np</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Computes the Jacobian of y wrt x assuming minibatch-mode.</span>
+<span class="w">    </span><span class="sd">"""Computes the Jacobian of y wrt x assuming minibatch-mode.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">      y: (N, ...) with a total of D_y elements in ...</span>
 <span class="sd">      x: (N, ...) with a total of D_x elements in ...</span>
 <span class="sd">    Returns:</span>
 <span class="sd">      The minibatch Jacobian matrix of shape (N, D_y, D_x)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">assert</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 
@@ -323,7 +323,7 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">latent2gene_velocity_scVI</span><span class="p">(</span><span class="n">ad</span><span class="p">,</span>  <span class="n">embedding_key</span><span class="p">,</span> <span class="n">velocity_key</span><span class="p">,</span> <span class="n">vae</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">):</span>
-    <span class="n">use_cuda</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">&#39;cpu&#39;</span>
+    <span class="n">use_cuda</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">'cpu'</span>
     
     <span class="n">dataloader</span> <span class="o">=</span> <span class="n">AnnLoader</span><span class="p">(</span><span class="n">ad</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cuda</span><span class="o">=</span><span class="n">use_cuda</span><span class="p">)</span>
     <span class="n">velocity_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -331,7 +331,7 @@ document.write(`
     <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
         <span class="n">z</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">]</span>
         <span class="n">z</span><span class="o">.</span><span class="n">requires_grad</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">px</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">batch_index</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;_scvi_batch&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">long</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">])[</span><span class="s1">&#39;px&#39;</span><span class="p">]</span>
+        <span class="n">px</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">batch_index</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'_scvi_batch'</span><span class="p">])</span><span class="o">.</span><span class="n">long</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">])[</span><span class="s1">'px'</span><span class="p">]</span>
         
         <span class="n">jac_xz</span> <span class="o">=</span> <span class="n">_get_minibatch_jacobian</span><span class="p">(</span><span class="n">px</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">return_np</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
@@ -344,8 +344,8 @@ document.write(`
 
 <div class="viewcode-block" id="latent_velocity">
 <a class="viewcode-back" href="../../../../pygot.tools.traj.latent_velocity.html#pygot.tools.traj.latent_velocity">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">latent_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="s1">&#39;X_pca&#39;</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Latent velocity inference using trained model.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">latent_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="s1">'X_pca'</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Latent velocity inference using trained model.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">    ---------</span>
@@ -362,10 +362,10 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    latent_velocity (.obsm): :class`np.ndarray`</span>
 <span class="sd">        latent velocity array, (n_cells, latent_dim), store in adata.obsm[`velocity_key`]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">odefunc</span><span class="p">,</span> <span class="n">ODEwrapperNoTime</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">odefunc</span><span class="p">,</span> <span class="n">ODEwrapper</span><span class="p">):</span>
         <span class="n">odefunc</span> <span class="o">=</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">func</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="ow">not</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">time_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)),</span> <span class="s1">&#39;please offer `time_key`&#39;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="ow">not</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">time_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)),</span> <span class="s1">'please offer `time_key`'</span>
 
     <span class="n">xt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">])</span>
     
@@ -385,8 +385,8 @@ document.write(`
 
 <div class="viewcode-block" id="latent2gene_velocity">
 <a class="viewcode-back" href="../../../../pygot.tools.traj.latent2gene_velocity.html#pygot.tools.traj.latent2gene_velocity">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">latent2gene_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">velocity_key</span><span class="p">,</span> <span class="n">embedding_key</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dr_mode</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Transform latent velocity into gene velocity</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">latent2gene_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">velocity_key</span><span class="p">,</span> <span class="n">embedding_key</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dr_mode</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Transform latent velocity into gene velocity</span>
 
 <span class="sd">    Due to linearity and orthogonality, the gene velocity can be recover by directly multiply inverse </span>
 <span class="sd">    dimension reduction matrix, </span>
@@ -409,9 +409,9 @@ document.write(`
 <span class="sd">        Name of latent space, in adata.obsm</span>
 <span class="sd">    velocity_key: `str` (default: None)</span>
 <span class="sd">        Name of latent velocity, in adata.obsm</span>
-<span class="sd">    A: `np.ndarray` (default: None (using adata.varm[&#39;PCs&#39;]))</span>
+<span class="sd">    A: `np.ndarray` (default: None (using adata.varm['PCs']))</span>
 <span class="sd">        Inverse matrix of linear dimension reduction</span>
-<span class="sd">    dr_mode: &#39;linear&#39; or &#39;nonlinear&#39; (default: &#39;linear&#39;)</span>
+<span class="sd">    dr_mode: 'linear' or 'nonlinear' (default: 'linear')</span>
 <span class="sd">        Dimension reduction mode</span>
 <span class="sd">    inverse_transform: `function` (default: None)</span>
 <span class="sd">        Inverse function for non-linear dimension reduction (e.g. :math:`g^{-1}`)</span>
@@ -422,14 +422,14 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    velocity (.layers): :class`np.ndarray`</span>
 <span class="sd">        gene velocity array, (n_cells, n_genes)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">dr_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;nonlinear&quot;</span><span class="p">}:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dimension reduction mode must be &#39;linear&#39; or &#39;nonlinear&#39;, was &#39;</span><span class="si">{</span><span class="n">dr_mode</span><span class="si">}</span><span class="s2">&#39;.&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">dr_mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"linear"</span><span class="p">,</span> <span class="s2">"nonlinear"</span><span class="p">}:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Dimension reduction mode must be 'linear' or 'nonlinear', was '</span><span class="si">{</span><span class="n">dr_mode</span><span class="si">}</span><span class="s2">'."</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
         <span class="n">v_latent</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">velocity_key</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">dr_mode</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">dr_mode</span> <span class="o">==</span> <span class="s1">'linear'</span><span class="p">:</span>
             <span class="n">v_gene</span> <span class="o">=</span> <span class="n">v_latent</span> <span class="o">@</span> <span class="n">A</span><span class="p">[:</span><span class="n">v_latent</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
-        <span class="k">elif</span> <span class="n">dr_mode</span> <span class="o">==</span> <span class="s1">&#39;nonlinear&#39;</span> <span class="ow">and</span> <span class="n">inverse_transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="n">dr_mode</span> <span class="o">==</span> <span class="s1">'nonlinear'</span> <span class="ow">and</span> <span class="n">inverse_transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">x0</span> <span class="o">=</span> <span class="n">inverse_transform</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">])</span>
             <span class="n">x1</span> <span class="o">=</span> <span class="n">inverse_transform</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">]</span> <span class="o">+</span> <span class="n">v_latent</span> <span class="o">*</span> <span class="n">dt</span><span class="p">)</span>
             <span class="n">v_gene</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="n">dt</span>
@@ -440,9 +440,9 @@ document.write(`
 
 <div class="viewcode-block" id="velocity">
 <a class="viewcode-back" href="../../../../pygot.tools.traj.velocity.html#pygot.tools.traj.velocity">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="s1">&#39;X_pca&#39;</span><span class="p">,</span>  <span class="n">velocity_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-             <span class="n">dr_mode</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">.001</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Velocity inference using trained model.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="s1">'X_pca'</span><span class="p">,</span>  <span class="n">velocity_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">dr_mode</span><span class="o">=</span><span class="s1">'linear'</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">.001</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Velocity inference using trained model.</span>
 
 <span class="sd">    This function will infer velocity in latent space and gene space both. It can be sperate into</span>
 <span class="sd">    `latent_velocity` and `latent2gene_velocity`</span>
@@ -452,10 +452,10 @@ document.write(`
 <span class="sd">    For linear dimension reduction space::</span>
 
 <span class="sd">        #using pca space as example</span>
-<span class="sd">        #if pca is done in scanpy framework, the inverse matrix A will be store in adata.varm[&#39;PCs&#39;], that do not need to specifed matrix A</span>
-<span class="sd">        pygot.tl.traj.velocity(adate, model, embedding_key=&#39;X_pca&#39;, velocity_key=&#39;velocity_pca&#39;)</span>
+<span class="sd">        #if pca is done in scanpy framework, the inverse matrix A will be store in adata.varm['PCs'], that do not need to specifed matrix A</span>
+<span class="sd">        pygot.tl.traj.velocity(adate, model, embedding_key='X_pca', velocity_key='velocity_pca')</span>
 <span class="sd">        #Otherwise, need to specify dimension reduction matrix A</span>
-<span class="sd">        pygot.tl.traj.velocity(adate, model, embedding_key=&#39;X_pca&#39;, velocity_key=&#39;velocity_pca&#39;, A=pca.components_.T)</span>
+<span class="sd">        pygot.tl.traj.velocity(adate, model, embedding_key='X_pca', velocity_key='velocity_pca', A=pca.components_.T)</span>
 
 <span class="sd">    For non-linear dimension reduction space::</span>
 <span class="sd">    </span>
@@ -463,11 +463,11 @@ document.write(`
 <span class="sd">        #first, train the vae model to transform space</span>
 <span class="sd">        gs_vae = pygot.pp.GS_VAE()</span>
 <span class="sd">        gs_vae.register_model(adata, latent_dim=10)</span>
-<span class="sd">        adata.obsm[&#39;X_latent&#39;] = gs_vae.fit_transform(adata)</span>
+<span class="sd">        adata.obsm['X_latent'] = gs_vae.fit_transform(adata)</span>
 
 <span class="sd">        #After train velocity model using `fit_velocity_model` or `fit_velocity_model_without_time`</span>
 <span class="sd">        pygot.tl.traj.velocity(adate, model, </span>
-<span class="sd">            embedding_key=&#39;X_latent&#39;, velocity_key=&#39;velocity_latent&#39;, dr_mode=&#39;nonlinear&#39;, </span>
+<span class="sd">            embedding_key='X_latent', velocity_key='velocity_latent', dr_mode='nonlinear', </span>
 <span class="sd">            inverse_transform=gs_vae.inverse_transform</span>
 <span class="sd">        )</span>
 
@@ -481,11 +481,11 @@ document.write(`
 <span class="sd">        Name of latent space, in adata.obsm</span>
 <span class="sd">    velocity_key: `str` (default: None)</span>
 <span class="sd">        Name of latent velocity to save, in adata.obsm</span>
-<span class="sd">    A: `np.ndarray` (default: None (using adata.varm[&#39;PCs&#39;]))</span>
+<span class="sd">    A: `np.ndarray` (default: None (using adata.varm['PCs']))</span>
 <span class="sd">        Inverse matrix of linear dimension reduction</span>
 <span class="sd">    time_key: `str` (default: None)</span>
 <span class="sd">        Name of time label, in adata.obs, use if the model input contains time label</span>
-<span class="sd">    dr_mode: &#39;linear&#39; or &#39;nonlinear&#39; (default: &#39;linear&#39;)</span>
+<span class="sd">    dr_mode: 'linear' or 'nonlinear' (default: 'linear')</span>
 <span class="sd">        Dimension reduction mode</span>
 <span class="sd">    inverse_transform: `function` (default: None)</span>
 <span class="sd">        Inverse function for non-linear dimension reduction</span>
@@ -498,26 +498,26 @@ document.write(`
 <span class="sd">        gene velocity array, (n_cells, n_genes)</span>
 <span class="sd">    latent_velocity (.obsm): :class`np.ndarray`</span>
 <span class="sd">        latent velocity array, (n_cells, latent_dim), store in adata.obsm[`velocity_key`]</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">odefunc</span><span class="p">,</span> <span class="n">ODEwrapperNoTime</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">odefunc</span><span class="p">,</span> <span class="n">ODEwrapper</span><span class="p">):</span>
         <span class="n">odefunc</span> <span class="o">=</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">func</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="ow">not</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">time_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)),</span> <span class="s1">&#39;please offer `time_key`&#39;</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="ow">not</span> <span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">odefunc</span><span class="o">.</span><span class="n">time_varying</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">time_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)),</span> <span class="s1">'please offer `time_key`'</span>
 
-    <span class="k">if</span> <span class="n">embedding_key</span> <span class="o">==</span> <span class="s1">&#39;X_pca&#39;</span> <span class="ow">and</span> <span class="n">dr_mode</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span> <span class="ow">and</span> <span class="n">A</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">A</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">varm</span><span class="p">[</span><span class="s1">&#39;PCs&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">if</span> <span class="n">embedding_key</span> <span class="o">==</span> <span class="s1">'X_pca'</span> <span class="ow">and</span> <span class="n">dr_mode</span> <span class="o">==</span> <span class="s1">'linear'</span> <span class="ow">and</span> <span class="n">A</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">varm</span><span class="p">[</span><span class="s1">'PCs'</span><span class="p">]</span><span class="o">.</span><span class="n">T</span>
     <span class="k">if</span> <span class="n">velocity_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">&#39;velocity_&#39;</span><span class="o">+</span><span class="n">embedding_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">'velocity_'</span><span class="o">+</span><span class="n">embedding_key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">'_'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">v_latent</span> <span class="o">=</span> <span class="n">latent_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="p">,</span> <span class="n">time_key</span><span class="p">)</span>
     <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">velocity_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_latent</span>
     <span class="n">v_gene</span> <span class="o">=</span> <span class="n">latent2gene_velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">velocity_key</span><span class="p">,</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">dr_mode</span><span class="p">,</span> <span class="n">inverse_transform</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
-    <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_gene</span>
+    <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'velocity'</span><span class="p">]</span> <span class="o">=</span> <span class="n">v_gene</span>
     <span class="k">return</span> <span class="n">v_gene</span></div>
 
 
 <div class="viewcode-block" id="simulate_trajectory">
 <a class="viewcode-back" href="../../../../pygot.tools.traj.simulate_trajectory.html#pygot.tools.traj.simulate_trajectory">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">simulate_trajectory</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">odefunc</span><span class="p">,</span> <span class="n">embedding_key</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">n_points</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate trajecotry using trained NeuralODE model.</span>
+<span class="w">    </span><span class="sd">"""Simulate trajecotry using trained NeuralODE model.</span>
 
 <span class="sd">    Arguments:</span>
 <span class="sd">    ---------</span>
@@ -525,7 +525,7 @@ document.write(`
 <span class="sd">        Annotated data matrix.</span>
 <span class="sd">    odefunc: class:`~ODEwrapper` or class:`~ODEwrapperNoTime`</span>
 <span class="sd">        trained NeuralODE model by function `fit_velocity_model`</span>
-<span class="sd">    embedding_key: `str&#39;</span>
+<span class="sd">    embedding_key: `str'</span>
 <span class="sd">        Name of latent space to fit, in adata.obsm</span>
 <span class="sd">    start: `int`</span>
 <span class="sd">        Start time of simulation</span>
@@ -538,7 +538,7 @@ document.write(`
 <span class="sd">    -------</span>
 <span class="sd">    trajectory: :class`~np.ndarray`</span>
 <span class="sd">        Trajectory array, (n_points, n_cells, latent_dim)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">latent_embedding</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">]</span>
     <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">odeint</span><span class="p">(</span>
@@ -553,13 +553,13 @@ document.write(`
 
 <span class="nd">@torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">()</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">_inverse_transform_scVI</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">vae</span><span class="p">,</span> <span class="n">ad</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">1024</span><span class="p">):</span>
-    <span class="n">use_cuda</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">&#39;cpu&#39;</span>
-    <span class="n">ad</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_lowd&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
+    <span class="n">use_cuda</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">!=</span> <span class="s1">'cpu'</span>
+    <span class="n">ad</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_lowd'</span><span class="p">]</span> <span class="o">=</span> <span class="n">z</span>
     <span class="n">dataloader</span> <span class="o">=</span> <span class="n">AnnLoader</span><span class="p">(</span><span class="n">ad</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_cuda</span><span class="o">=</span><span class="n">use_cuda</span><span class="p">)</span>
     <span class="n">scaled_X</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
-        <span class="n">z</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_lowd&#39;</span><span class="p">]</span>
-        <span class="n">px</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">batch_index</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;_scvi_batch&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">long</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">])[</span><span class="s1">&#39;px&#39;</span><span class="p">]</span>
+        <span class="n">z</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_lowd'</span><span class="p">]</span>
+        <span class="n">px</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">generative</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">),</span> <span class="n">batch_index</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'_scvi_batch'</span><span class="p">])</span><span class="o">.</span><span class="n">long</span><span class="p">()[:,</span><span class="kc">None</span><span class="p">])[</span><span class="s1">'px'</span><span class="p">]</span>
         <span class="n">scaled_X</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">px</span><span class="o">.</span><span class="n">mean</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">scaled_X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 

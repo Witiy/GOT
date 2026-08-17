@@ -362,16 +362,16 @@ document.write(`
 <p class="rubric">Example</p>
 <hr class="docutils" />
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#Assume the velocity are already fitted in pca space</span>
-<span class="n">embedding_key</span> <span class="o">=</span> <span class="s1">&#39;X_pca&#39;</span>
-<span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">&#39;velocity_pca&#39;</span>
+<span class="n">embedding_key</span> <span class="o">=</span> <span class="s1">'X_pca'</span>
+<span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">'velocity_pca'</span>
 
 <span class="c1"># Fit the probability model</span>
 <span class="n">pm</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">ProbabilityModel</span><span class="p">()</span>
 <span class="n">history</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span>  <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">velocity_key</span><span class="o">=</span><span class="n">velocity_key</span><span class="p">)</span>
 
 <span class="c1"># Estimated pseudotime of cells</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;pseudotime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">estimate_pseudotime</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="c1"># pseudotime</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;var&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">estimate_variance</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="c1"># variance of time</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'pseudotime'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">estimate_pseudotime</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="c1"># pseudotime</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'var'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pm</span><span class="o">.</span><span class="n">estimate_variance</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="c1"># variance of time</span>
 </pre></div>
 </div>
 <dl class="py method">

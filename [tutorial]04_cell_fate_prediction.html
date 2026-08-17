@@ -368,7 +368,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">cospar</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">cs</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pygot</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">tqdm</span><span class="w"> </span><span class="kn">import</span> <span class="n">tqdm</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;axes.spines&#39;</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">'axes.spines'</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="o">%</span><span class="k">matplotlib</span> inline
 </pre></div>
 </div>
@@ -378,18 +378,18 @@ document.write(`
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="s1">&#39;../../pygot_data/03_cellfate/adata_hpsc.h5ad&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span> <span class="o">=</span> <span class="n">sc</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="s1">'../../pygot_data/03_cellfate/adata_hpsc.h5ad'</span><span class="p">)</span>
 
-<span class="n">time_key</span> <span class="o">=</span> <span class="s1">&#39;Time point&#39;</span>
+<span class="n">time_key</span> <span class="o">=</span> <span class="s1">'Time point'</span>
 <span class="n">ts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">time_key</span><span class="p">]))</span>
 <span class="n">ts_map</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">))))</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;time_label&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">time_key</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ts_map</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'time_label'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">time_key</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ts_map</span><span class="p">)</span>
 
-<span class="n">embedding_key</span> <span class="o">=</span> <span class="s1">&#39;X_pca&#39;</span>
-<span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">&#39;velocity_pca&#39;</span>
-<span class="n">time_key</span> <span class="o">=</span> <span class="s1">&#39;time_label&#39;</span>
-<span class="n">cell_type_key</span> <span class="o">=</span> <span class="s1">&#39;Cell type annotation&#39;</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span><span class="n">basis</span><span class="o">=</span><span class="s1">&#39;spring&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">time_key</span><span class="p">,</span> <span class="n">cell_type_key</span><span class="p">])</span>
+<span class="n">embedding_key</span> <span class="o">=</span> <span class="s1">'X_pca'</span>
+<span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">'velocity_pca'</span>
+<span class="n">time_key</span> <span class="o">=</span> <span class="s1">'time_label'</span>
+<span class="n">cell_type_key</span> <span class="o">=</span> <span class="s1">'Cell type annotation'</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span><span class="n">basis</span><span class="o">=</span><span class="s1">'spring'</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="n">time_key</span><span class="p">,</span> <span class="n">cell_type_key</span><span class="p">])</span>
 <br/></pre></div>
 </div>
 </div>
@@ -406,8 +406,8 @@ document.write(`
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">pca</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cell_type_key</span><span class="p">)</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_pca&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_pca&#39;</span><span class="p">][:,:</span><span class="mi">10</span><span class="p">]</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">varm</span><span class="p">[</span><span class="s1">&#39;PCs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">varm</span><span class="p">[</span><span class="s1">&#39;PCs&#39;</span><span class="p">][:,:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_pca'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_pca'</span><span class="p">][:,:</span><span class="mi">10</span><span class="p">]</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">varm</span><span class="p">[</span><span class="s1">'PCs'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">varm</span><span class="p">[</span><span class="s1">'PCs'</span><span class="p">][:,:</span><span class="mi">10</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -426,13 +426,13 @@ document.write(`
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">csr_matrix</span>
-<span class="n">clone_key</span> <span class="o">=</span> <span class="s1">&#39;clone&#39;</span>
+<span class="n">clone_key</span> <span class="o">=</span> <span class="s1">'clone'</span>
 <span class="n">clone_library</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">clone_key</span><span class="p">][</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">clone_key</span><span class="p">])]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 <span class="n">X_clone</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adata</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">clone_library</span><span class="p">)))</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">clone_library</span><span class="p">)):</span>
     <span class="n">X_clone</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">clone_key</span><span class="p">]</span> <span class="o">==</span> <span class="n">clone_library</span><span class="p">[</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">],</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">X_clone</span> <span class="o">=</span> <span class="n">csr_matrix</span><span class="p">(</span><span class="n">X_clone</span><span class="p">)</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_clone&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_clone</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_clone'</span><span class="p">]</span> <span class="o">=</span> <span class="n">X_clone</span>
 </pre></div>
 </div>
 </div>
@@ -440,9 +440,9 @@ document.write(`
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;time_info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">time_key</span><span class="p">]</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;state_info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">cell_type_key</span><span class="p">]</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_emb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_spring&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'time_info'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">time_key</span><span class="p">]</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'state_info'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">cell_type_key</span><span class="p">]</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_emb'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_spring'</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -490,12 +490,12 @@ Use all clones (naive method)
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cs</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">fate_map</span><span class="p">(</span>
     <span class="n">adata_processed</span><span class="p">,</span>
-    <span class="n">selected_fates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Neutrophil&quot;</span><span class="p">,</span> <span class="s2">&quot;Monocyte&quot;</span><span class="p">],</span>
-    <span class="n">source</span><span class="o">=</span><span class="s2">&quot;clonal_transition_map&quot;</span><span class="p">,</span>
+    <span class="n">selected_fates</span><span class="o">=</span><span class="p">[</span><span class="s2">"Neutrophil"</span><span class="p">,</span> <span class="s2">"Monocyte"</span><span class="p">],</span>
+    <span class="n">source</span><span class="o">=</span><span class="s2">"clonal_transition_map"</span><span class="p">,</span>
     <span class="n">map_backward</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Cospar_fate_bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;fate_map_clonal_transition_map_Neutrophil&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;fate_map_clonal_transition_map_Neutrophil&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;fate_map_clonal_transition_map_Monocyte&#39;</span><span class="p">])</span>
+<span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'Cospar_fate_bias'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'fate_map_clonal_transition_map_Neutrophil'</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'fate_map_clonal_transition_map_Neutrophil'</span><span class="p">]</span> <span class="o">+</span> <span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'fate_map_clonal_transition_map_Monocyte'</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
@@ -512,9 +512,9 @@ Results saved at adata.obs[&#39;fate_map_clonal_transition_map_Monocyte&#39;]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0_adata</span> <span class="o">=</span> <span class="n">adata_processed</span><span class="p">[</span>  <span class="p">(</span><span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">cell_type_key</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;Undifferentiated&#39;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Cospar_fate_bias&#39;</span><span class="p">]))]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">groundtruth_key</span> <span class="o">=</span> <span class="s1">&#39;Cospar_fate_bias&#39;</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">x0_adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;Cospar_fate_bias&#39;</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;spring&#39;</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">x0_adata</span> <span class="o">=</span> <span class="n">adata_processed</span><span class="p">[</span>  <span class="p">(</span><span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">cell_type_key</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'Undifferentiated'</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">adata_processed</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'Cospar_fate_bias'</span><span class="p">]))]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">groundtruth_key</span> <span class="o">=</span> <span class="s1">'Cospar_fate_bias'</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">x0_adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'Cospar_fate_bias'</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">'spring'</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s1">'coolwarm'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -533,7 +533,7 @@ Results saved at adata.obs[&#39;fate_map_clonal_transition_map_Monocyte&#39;]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">fit_velocity_model</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="n">time_key</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;../../pygot_data/03_cellfate/hpsc/k50_all/&#39;</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">fit_velocity_model</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="n">time_key</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">'../../pygot_data/03_cellfate/hpsc/k50_all/'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -558,8 +558,8 @@ loss :18.5750  best :18.4316: 100%|███████████████
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">&#39;velocity_pca&#39;</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="n">time_key</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">velocity_key</span> <span class="o">=</span> <span class="s1">'velocity_pca'</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">'velocity'</span><span class="p">]</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">velocity</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">time_key</span><span class="o">=</span><span class="n">time_key</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">)</span>
 <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">traj</span><span class="o">.</span><span class="n">velocity_graph</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">velocity_key</span><span class="o">=</span><span class="n">velocity_key</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -577,7 +577,7 @@ Use adata.obsp[&#39;connectivities&#39;] as neighbors, please confirm it is comp
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scv</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">velocity_embedding_grid</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;spring&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cell_type_key</span><span class="p">)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">scv</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">velocity_embedding_grid</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">'spring'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">cell_type_key</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -607,8 +607,8 @@ computing velocity embedding
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cf</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">tl</span><span class="o">.</span><span class="n">analysis</span><span class="o">.</span><span class="n">CellFate</span><span class="p">()</span>
 <span class="n">cf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span> <span class="n">velocity_key</span><span class="o">=</span><span class="n">velocity_key</span><span class="p">,</span> <span class="n">cell_type_key</span><span class="o">=</span><span class="n">cell_type_key</span><span class="p">,</span> <span class="n">target_cell_types</span><span class="o">=</span><span class="p">[</span>
-    <span class="s1">&#39;Monocyte&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;Neutrophil&#39;</span><span class="p">,</span>
+    <span class="s1">'Monocyte'</span><span class="p">,</span>
+    <span class="s1">'Neutrophil'</span><span class="p">,</span>
 <span class="p">]</span>
        <span class="p">)</span>
 </pre></div>
@@ -635,7 +635,7 @@ Export result into adata.obsm[&#39;descendant&#39;] and adata.obsm[&#39;ancestor
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Descendant probabilities</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;descendant&#39;</span><span class="p">]</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'descendant'</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -732,7 +732,7 @@ Export result into adata.obsm[&#39;descendant&#39;] and adata.obsm[&#39;ancestor
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ancestor probabilities</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;ancestor&#39;</span><span class="p">]</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'ancestor'</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -817,9 +817,9 @@ Export result into adata.obsm[&#39;descendant&#39;] and adata.obsm[&#39;ancestor
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;pred_fate_bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;Neutrophil&#39;</span><span class="p">]</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;pred_fate_bias&#39;</span><span class="p">]),</span><span class="s1">&#39;pred_fate_bias&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;pred_fate_bias&#39;</span><span class="p">]</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'pred_fate_bias'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'Neutrophil'</span><span class="p">]</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'pred_fate_bias'</span><span class="p">]),</span><span class="s1">'pred_fate_bias'</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'pred_fate_bias'</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -849,9 +849,9 @@ Name: pred_fate_bias, Length: 96371, dtype: float64
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="kn">import</span> <span class="n">pearsonr</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span> <span class="mf">6.4</span><span class="o">*</span><span class="mi">2</span><span class="p">,</span> <span class="mf">4.8</span><span class="p">))</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">x0_adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">groundtruth_key</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;spring&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
-<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">adata</span><span class="p">[</span><span class="n">x0_adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">index</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;pred_fate_bias&#39;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">basis</span><span class="o">=</span><span class="s1">&#39;spring&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">)</span>
-<span class="n">pearsonr</span><span class="p">(</span><span class="n">x0_adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">groundtruth_key</span><span class="p">],</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">x0_adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;pred_fate_bias&#39;</span><span class="p">])</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">x0_adata</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">groundtruth_key</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">basis</span><span class="o">=</span><span class="s1">'spring'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'coolwarm'</span><span class="p">)</span>
+<span class="n">sc</span><span class="o">.</span><span class="n">pl</span><span class="o">.</span><span class="n">embedding</span><span class="p">(</span><span class="n">adata</span><span class="p">[</span><span class="n">x0_adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">index</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'pred_fate_bias'</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">basis</span><span class="o">=</span><span class="s1">'spring'</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">'coolwarm'</span><span class="p">)</span>
+<span class="n">pearsonr</span><span class="p">(</span><span class="n">x0_adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">groundtruth_key</span><span class="p">],</span> <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">x0_adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">'pred_fate_bias'</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>

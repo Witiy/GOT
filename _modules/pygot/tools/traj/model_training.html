@@ -356,9 +356,9 @@ document.write(`
         <span class="n">v_centric_iter_n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">v_centric_batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> 
         <span class="n">add_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
         <span class="n">lr</span><span class="o">=</span><span class="mf">5e-3</span><span class="p">,</span> 
-        <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+        <span class="n">path</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
         <span class="n">linear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">distance_metrics</span><span class="o">=</span><span class="s1">&#39;SP&#39;</span><span class="p">,</span>
+        <span class="n">distance_metrics</span><span class="o">=</span><span class="s1">'SP'</span><span class="p">,</span>
         <span class="n">pretrained_model</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">x_centric</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">x_centric_iter_n</span><span class="o">=</span><span class="mi">2000</span><span class="p">,</span>
@@ -368,7 +368,7 @@ document.write(`
         <span class="n">filtered</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimates velocities and fit trajectories in latent space.</span>
+<span class="w">    </span><span class="sd">"""Estimates velocities and fit trajectories in latent space.</span>
 <span class="sd">    </span>
 
 <span class="sd">    Arguments:</span>
@@ -377,7 +377,7 @@ document.write(`
 <span class="sd">        Annotated data matrix.</span>
 <span class="sd">    time_key: `str`</span>
 <span class="sd">        Name of time label in adata.obs</span>
-<span class="sd">    embedding_key: `str&#39;</span>
+<span class="sd">    embedding_key: `str'</span>
 <span class="sd">        Name of latent space to fit, in adata.obsm</span>
 <span class="sd">    landmarks: `bool`</span>
 <span class="sd">        Use landmarks to approximate graphical paths</span>
@@ -398,7 +398,7 @@ document.write(`
 <span class="sd">        Assumption of gaussian distribution of velocity</span>
 <span class="sd">    sigma: `float` (default: 0.1)</span>
 <span class="sd">        The variance of gaussian distribution of velocity</span>
-<span class="sd">    distance_metrics: &#39;SP&#39; or &#39;L2&#39; (default: &#39;SP&#39;)</span>
+<span class="sd">    distance_metrics: 'SP' or 'L2' (default: 'SP')</span>
 <span class="sd">        Distance metrics in optimal transport (shortest path distance or euclidean distance)</span>
 <span class="sd">    pretrained_model: :class`~torch.nn.Module` (default: None)</span>
 <span class="sd">        Training for pretraiened model</span>
@@ -429,9 +429,9 @@ document.write(`
 <span class="sd">        velocity model</span>
 <span class="sd">    history: `list`</span>
 <span class="sd">        training history</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cpu'</span><span class="p">)</span>
     <span class="n">dim</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">embedding_key</span><span class="p">][:,:</span><span class="n">dim</span><span class="p">]</span>
     <span class="n">sp_sampler</span> <span class="o">=</span> <span class="n">GraphicalOTVelocitySampler</span><span class="p">(</span>

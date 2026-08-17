@@ -371,7 +371,7 @@ document.write(`
 <p>To use VAE:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vae</span> <span class="o">=</span> <span class="n">pygot</span><span class="o">.</span><span class="n">pp</span><span class="o">.</span><span class="n">gs_vae</span><span class="p">()</span>
 <span class="n">vae</span><span class="o">.</span><span class="n">register_model</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">latent_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_latent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_latent'</span><span class="p">]</span> <span class="o">=</span> <span class="n">vae</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>To use GS-VAE:</p>
@@ -379,9 +379,9 @@ document.write(`
 <span class="n">auc_space</span> <span class="o">=</span> <span class="n">gs_vae</span><span class="o">.</span><span class="n">precompute_gs</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">gene_set_book_paths</span><span class="p">,</span> <span class="n">mouse</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="c1"># compute gene set score by AUCell</span>
 <span class="n">adata</span> <span class="o">=</span> <span class="n">gs_vae</span><span class="o">.</span><span class="n">process_gs</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">auc_space</span><span class="p">)</span> <span class="c1"># process gene set score into adata</span>
 <span class="n">gs_vae</span><span class="o">.</span><span class="n">register_model</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">latent_dim</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_latent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gs_vae</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_latent'</span><span class="p">]</span> <span class="o">=</span> <span class="n">gs_vae</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
 
-<span class="n">denoised_gs</span> <span class="o">=</span> <span class="n">gs_vae</span><span class="o">.</span><span class="n">pred_gs_using_z</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">&#39;X_latent&#39;</span><span class="p">])</span> <span class="c1"># predict denoised gene set score</span>
+<span class="n">denoised_gs</span> <span class="o">=</span> <span class="n">gs_vae</span><span class="o">.</span><span class="n">pred_gs_using_z</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="s1">'X_latent'</span><span class="p">])</span> <span class="c1"># predict denoised gene set score</span>
 </pre></div>
 </div>
 <div class="admonition warning">

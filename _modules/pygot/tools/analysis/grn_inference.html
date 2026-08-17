@@ -352,7 +352,7 @@ document.write(`
 <div class="viewcode-block" id="GRNData">
 <a class="viewcode-back" href="../../../../generated/pygot.tools.analysis.GRNData.html#pygot.tools.analysis.GRNData">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GRNData</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gene regulatory network data structure</span>
+<span class="w">    </span><span class="sd">"""Gene regulatory network data structure</span>
 
 <span class="sd">    This class store the variable of infered grn</span>
 
@@ -370,14 +370,14 @@ document.write(`
 <span class="sd">    self.gene_names: `list`</span>
 <span class="sd">        Gene names</span>
 <span class="sd">    self.models: `dict`</span>
-<span class="sd">        self.models[&#39;G&#39;] is torch model of G, self.models[&#39;beta&#39;] is torch model of beta</span>
+<span class="sd">        self.models['G'] is torch model of G, self.models['beta'] is torch model of beta</span>
 <span class="sd">    </span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 <div class="viewcode-block" id="GRNData.__init__">
 <a class="viewcode-back" href="../../../../generated/pygot.tools.analysis.GRNData.html#pygot.tools.analysis.GRNData.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">G_hat</span><span class="p">:</span><span class="n">GeneRegulatroyModel</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">:</span> <span class="n">GeneDegradation</span><span class="p">,</span> <span class="n">tf_names</span><span class="p">,</span> <span class="n">gene_names</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;initial function</span>
+<span class="w">        </span><span class="sd">"""initial function</span>
 
 <span class="sd">        Arguments:</span>
 <span class="sd">        ----------</span>
@@ -390,20 +390,20 @@ document.write(`
 <span class="sd">        gene_names: `list`</span>
 <span class="sd">            gene names</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">G</span> <span class="o">=</span> <span class="n">G_hat</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta_hat</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ranked_edges</span> <span class="o">=</span> <span class="n">get_ranked_edges</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="p">,</span> <span class="n">tf_names</span><span class="o">=</span><span class="n">tf_names</span><span class="p">,</span> <span class="n">gene_names</span><span class="o">=</span><span class="n">gene_names</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tf_names</span> <span class="o">=</span> <span class="n">tf_names</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gene_names</span> <span class="o">=</span> <span class="n">gene_names</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;G&#39;</span><span class="p">:</span><span class="n">G_hat</span><span class="p">,</span> <span class="s1">&#39;beta&#39;</span><span class="p">:</span><span class="n">beta_hat</span><span class="p">}</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'G'</span><span class="p">:</span><span class="n">G_hat</span><span class="p">,</span> <span class="s1">'beta'</span><span class="p">:</span><span class="n">beta_hat</span><span class="p">}</span></div>
 
 
 <div class="viewcode-block" id="GRNData.export_grn_into_celloracle">
 <a class="viewcode-back" href="../../../../generated/pygot.tools.analysis.GRNData.html#pygot.tools.analysis.GRNData.export_grn_into_celloracle">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">export_grn_into_celloracle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oracle</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;CellOracle interface</span>
+<span class="w">        </span><span class="sd">"""CellOracle interface</span>
 
 <span class="sd">        Export the fitted GRN into CellOracle for further analysis, such as perturbation</span>
 
@@ -412,21 +412,21 @@ document.write(`
 <span class="sd">        oracle: :class:`celloracle.Oracle`</span>
 <span class="sd">            celloracle object</span>
 <span class="sd">        </span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">network</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">G</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tf_names</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gene_names</span><span class="p">)</span>
         <span class="n">coef_matrix</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gene_names</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gene_names</span><span class="p">))),</span> <span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gene_names</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">columns</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gene_names</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
         <span class="n">coef_matrix</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">network</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">network</span>
         <span class="n">oracle</span><span class="o">.</span><span class="n">coef_matrix</span> <span class="o">=</span> <span class="n">coef_matrix</span>
         <span class="n">oracle</span><span class="o">.</span><span class="n">active_regulatory_genes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tf_names</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="n">oracle</span><span class="o">.</span><span class="n">all_regulatory_genes_in_TFdict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tf_names</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Finish!&#39;</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'Finish!'</span><span class="p">)</span></div>
 </div>
 
 
 <div class="viewcode-block" id="GRN">
 <a class="viewcode-back" href="../../../../generated/pygot.tools.analysis.GRN.html#pygot.tools.analysis.GRN">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GRN</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gene regulatory network infered by velocity linear regression</span>
+<span class="w">    </span><span class="sd">"""Gene regulatory network infered by velocity linear regression</span>
 
 <span class="sd">    </span>
 <span class="sd">    Example:</span>
@@ -435,10 +435,10 @@ document.write(`
 <span class="sd">    ::</span>
 
 <span class="sd">        grn = GRN()</span>
-<span class="sd">        grn_adata = grn.fit(adata, species=&#39;human&#39;)</span>
+<span class="sd">        grn_adata = grn.fit(adata, species='human')</span>
 <span class="sd">        print(grn_adata.ranked_edges.head()) #print the top regulatory relationship</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 <div class="viewcode-block" id="GRN.__init__">
 <a class="viewcode-back" href="../../../../generated/pygot.tools.analysis.GRN.html#pygot.tools.analysis.GRN.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">):</span>
@@ -453,7 +453,7 @@ document.write(`
         <span class="n">adata</span><span class="p">,</span>
         <span class="n">TF_constrain</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">TF_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">species</span><span class="o">=</span><span class="s1">&#39;human&#39;</span><span class="p">,</span>
+        <span class="n">species</span><span class="o">=</span><span class="s1">'human'</span><span class="p">,</span>
         <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">layer_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
         <span class="n">n_epoch</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> 
@@ -468,19 +468,19 @@ document.write(`
         <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">lineage_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        fit the gene regulatory network</span>
 
 
 <span class="sd">        Arguments:</span>
 <span class="sd">        ----------</span>
 <span class="sd">        adata: :class:`~anndata.AnnData`</span>
-<span class="sd">            Annotated data matrix, gene velocity should be stored in adata.layers[&#39;velocity&#39;]</span>
+<span class="sd">            Annotated data matrix, gene velocity should be stored in adata.layers['velocity']</span>
 <span class="sd">        TF_constrain: `bool` (default: True)</span>
 <span class="sd">            Only fit the transcriptional factor(TF)</span>
 <span class="sd">        TF_names: `list` (default: None)</span>
 <span class="sd">            Names of TF, if None, use default TF names</span>
-<span class="sd">        species: &#39;human&#39; or &#39;mm&#39; (default: &#39;human&#39;)</span>
+<span class="sd">        species: 'human' or 'mm' (default: 'human')</span>
 <span class="sd">            Default TF names of species</span>
 <span class="sd">        non_negative: `bool` (default: True)</span>
 <span class="sd">            ONLY fit positive regulatory relationship, which may avoid overfit</span>
@@ -516,7 +516,7 @@ document.write(`
 <span class="sd">        grn_data: :class:`GRNData` </span>
 <span class="sd">            gene regulatory network</span>
 <span class="sd">        </span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">infer_GRN</span><span class="p">(</span>
             <span class="n">adata</span><span class="p">,</span>
             <span class="n">TF_constrain</span><span class="p">,</span>
@@ -542,14 +542,14 @@ document.write(`
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">preprocess_dataset</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">TF_names</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">layer_key</span><span class="p">,</span> <span class="n">early_stopping</span><span class="p">,</span> <span class="n">val_split</span><span class="p">,</span> <span class="n">device</span><span class="p">):</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;scaled_velocity&#39;</span><span class="p">])</span>
-    <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">))</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">'scaled_velocity'</span><span class="p">])</span>
+    <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">[</span><span class="s1">'idx'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">layer_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">X</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer_key</span><span class="p">])</span>
 
-    <span class="n">tf_idx</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">TF_names</span><span class="p">][</span><span class="s1">&#39;idx&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+    <span class="n">tf_idx</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">TF_names</span><span class="p">][</span><span class="s1">'idx'</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
     <span class="c1"># Split into training and validation sets if early stopping is enabled</span>
     <span class="k">if</span> <span class="n">early_stopping</span><span class="p">:</span>
         <span class="n">dataset_size</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -569,11 +569,11 @@ document.write(`
 
 <span class="k">def</span><span class="w"> </span><span class="nf">optimize_global_GRN</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">TF_names</span><span class="p">,</span> <span class="n">layer_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">beta_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span>  <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">l1_penalty</span> <span class="o">=</span> <span class="mf">0.005</span><span class="p">,</span> <span class="n">init_beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">min_beta</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> 
-                        <span class="n">init_jacobian</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">),</span> 
+                        <span class="n">init_jacobian</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cpu'</span><span class="p">),</span> 
                         <span class="n">early_stopping</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">min_epochs</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">val_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">non_negative</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     
     
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;l1_penalty:&#39;</span><span class="p">,</span> <span class="n">l1_penalty</span><span class="p">,</span> <span class="s1">&#39;min_beta:&#39;</span><span class="p">,</span> <span class="n">min_beta</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'l1_penalty:'</span><span class="p">,</span> <span class="n">l1_penalty</span><span class="p">,</span> <span class="s1">'min_beta:'</span><span class="p">,</span> <span class="n">min_beta</span><span class="p">)</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span><span class="p">,</span> <span class="n">tf_idx</span> <span class="o">=</span> <span class="n">preprocess_dataset</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">TF_names</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">layer_key</span><span class="p">,</span> <span class="n">early_stopping</span><span class="p">,</span> <span class="n">val_split</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
     <span class="n">batch_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">))</span>
     <span class="n">gene_num</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -593,7 +593,7 @@ document.write(`
     <span class="k">if</span> <span class="n">beta_grad</span><span class="p">:</span>
         <span class="n">optimizer_beta</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">beta_hat</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
     <span class="n">loss_list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">best_val_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+    <span class="n">best_val_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)</span>
     <span class="n">patience</span> <span class="o">=</span> <span class="mi">10</span>
     <span class="n">patience_counter</span> <span class="o">=</span> <span class="mi">0</span>
     
@@ -649,12 +649,12 @@ document.write(`
                 <span class="n">patience_counter</span> <span class="o">+=</span> <span class="mi">1</span>
 
             <span class="k">if</span> <span class="n">patience_counter</span> <span class="o">&gt;=</span> <span class="n">patience</span> <span class="ow">and</span> <span class="n">epoch</span> <span class="o">&gt;</span> <span class="n">min_epochs</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Early stopping at epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">. Best validation loss: </span><span class="si">{</span><span class="n">best_val_loss</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Early stopping at epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">. Best validation loss: </span><span class="si">{</span><span class="n">best_val_loss</span><span class="si">:</span><span class="s1">.5f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
                 <span class="k">break</span>
 
-            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch [</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s1">], Train Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">, Val Loss: </span><span class="si">{</span><span class="n">val_loss</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Epoch [</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s1">], Train Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">, Val Loss: </span><span class="si">{</span><span class="n">val_loss</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch [</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s1">], Train Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Epoch [</span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s1">], Train Loss: </span><span class="si">{</span><span class="n">train_loss</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
         
         <span class="n">loss_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
 
@@ -674,16 +674,16 @@ document.write(`
     <span class="n">top_idx</span> <span class="o">=</span> <span class="n">idx</span><span class="p">[:</span><span class="n">num_top</span><span class="p">]</span>
     <span class="n">gene1</span> <span class="o">=</span> <span class="n">tf_names</span><span class="p">[</span><span class="n">top_idx</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">gene_names</span><span class="p">)]</span>
     <span class="n">gene2</span> <span class="o">=</span> <span class="n">gene_names</span><span class="p">[</span><span class="n">top_idx</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">gene_names</span><span class="p">)]</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">gene1</span><span class="p">,</span> <span class="n">gene2</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">top_idx</span><span class="p">]],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Gene1&#39;</span><span class="p">,</span> <span class="s1">&#39;Gene2&#39;</span><span class="p">,</span> <span class="s1">&#39;EdgeWeight&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
-    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;absEdgeWeight&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">EdgeWeight</span><span class="p">)</span>
-    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;absEdgeWeight&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">gene1</span><span class="p">,</span> <span class="n">gene2</span><span class="p">,</span> <span class="n">values</span><span class="p">[</span><span class="n">top_idx</span><span class="p">]],</span> <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="s1">'Gene1'</span><span class="p">,</span> <span class="s1">'Gene2'</span><span class="p">,</span> <span class="s1">'EdgeWeight'</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">'absEdgeWeight'</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">EdgeWeight</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">'absEdgeWeight'</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">infer_GRN</span><span class="p">(</span>
     <span class="n">adata</span><span class="p">,</span>
     <span class="n">TF_constrain</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">TF_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">species</span><span class="o">=</span><span class="s1">&#39;human&#39;</span><span class="p">,</span>
+    <span class="n">species</span><span class="o">=</span><span class="s1">'human'</span><span class="p">,</span>
     <span class="n">lineage_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">layer_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
     <span class="n">n_epoch</span><span class="o">=</span><span class="mi">10000</span><span class="p">,</span> 
@@ -701,45 +701,45 @@ document.write(`
 <span class="p">):</span>
     
     <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;velocity&#39;</span> <span class="ow">in</span> <span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Please compute velocity first and store velocity in adata.layers&#39;</span><span class="p">)</span>
+        <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cpu'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s1">'velocity'</span> <span class="ow">in</span> <span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">'Please compute velocity first and store velocity in adata.layers'</span><span class="p">)</span>
     
-    <span class="k">if</span> <span class="ow">not</span> <span class="s1">&#39;gene_name&#39;</span> <span class="ow">in</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;gene_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">index</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="s1">'gene_name'</span> <span class="ow">in</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'gene_name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">var</span><span class="o">.</span><span class="n">index</span>
 
     <span class="k">if</span> <span class="n">TF_constrain</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">TF_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">species</span> <span class="o">==</span> <span class="s1">&#39;human&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">species</span> <span class="o">==</span> <span class="s1">'human'</span><span class="p">:</span>
                 <span class="n">TF_names</span> <span class="o">=</span> <span class="n">TF_human</span>
-            <span class="k">elif</span> <span class="n">species</span> <span class="o">==</span> <span class="s1">&#39;mm&#39;</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">species</span> <span class="o">==</span> <span class="s1">'mm'</span><span class="p">:</span>
                 <span class="n">TF_names</span> <span class="o">=</span> <span class="n">TF_mm</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Default database do NOT contains TF list of speices</span><span class="si">{}</span><span class="s1">. Please specify the `TF_names` parameter&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">'Default database do NOT contains TF list of speices</span><span class="si">{}</span><span class="s1">. Please specify the `TF_names` parameter'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">species</span><span class="p">))</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">TF_names</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;gene_name&#39;</span><span class="p">]</span>
-    <span class="n">TF_names</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">TF_names</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;gene_name&#39;</span><span class="p">]))</span>
-    <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;tf_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">TF_names</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TF number: </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">TF_names</span><span class="p">),</span> <span class="n">TF_names</span><span class="p">))</span>
+        <span class="n">TF_names</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'gene_name'</span><span class="p">]</span>
+    <span class="n">TF_names</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">TF_names</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'gene_name'</span><span class="p">]))</span>
+    <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'tf_name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">TF_names</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"TF number: </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">TF_names</span><span class="p">),</span> <span class="n">TF_names</span><span class="p">))</span>
                                             
     <span class="k">if</span> <span class="n">layer_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">issparse</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="p">):</span>
             <span class="n">adata</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">adata</span><span class="o">.</span><span class="n">X</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]))</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">adata</span><span class="o">.</span><span class="n">X</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">'velocity'</span><span class="p">]))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">issparse</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer_key</span><span class="p">]):</span>
             <span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer_key</span><span class="p">]</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer_key</span><span class="p">][</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer_key</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;scale velocity with factor : </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scale</span><span class="p">))</span>
-    <span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;scaled_velocity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;velocity&#39;</span><span class="p">]</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer_key</span><span class="p">][</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">layer_key</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">'velocity'</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'scale velocity with factor : </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scale</span><span class="p">))</span>
+    <span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">'scaled_velocity'</span><span class="p">]</span> <span class="o">=</span> <span class="n">scale</span> <span class="o">*</span> <span class="n">adata</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">'velocity'</span><span class="p">]</span>
     
     <span class="k">if</span> <span class="n">lineage_key</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         
         <span class="n">lineages</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">lineage_key</span><span class="p">])</span>
-        <span class="n">lineages</span> <span class="o">=</span> <span class="n">lineages</span><span class="p">[</span><span class="n">lineages</span> <span class="o">!=</span> <span class="s1">&#39;uncertain&#39;</span><span class="p">]</span>
+        <span class="n">lineages</span> <span class="o">=</span> <span class="n">lineages</span><span class="p">[</span><span class="n">lineages</span> <span class="o">!=</span> <span class="s1">'uncertain'</span><span class="p">]</span>
         <span class="n">adatas</span> <span class="o">=</span> <span class="p">[</span><span class="n">adata</span><span class="p">[</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">lineage_key</span><span class="p">]</span> <span class="o">==</span> <span class="n">lineages</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lineages</span><span class="p">))]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">init_beta</span><span class="p">,</span> <span class="n">GeneDegradation</span><span class="p">):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Using whold dataset to estimate degradation..&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Using whold dataset to estimate degradation.."</span><span class="p">)</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">optimize_global_GRN</span><span class="p">(</span>
                 <span class="n">adata</span><span class="p">,</span>
                 <span class="n">TF_names</span><span class="o">=</span><span class="n">TF_names</span><span class="p">,</span>
@@ -760,9 +760,9 @@ document.write(`
         <span class="k">else</span><span class="p">:</span>
             <span class="n">beta_hat</span> <span class="o">=</span> <span class="n">init_beta</span>
         <span class="n">grns</span> <span class="o">=</span> <span class="p">{}</span>  
-        <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;global_grn_fit_godness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'global_grn_fit_godness'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lineages</span><span class="p">)):</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Training GRN for lineage: </span><span class="si">{</span><span class="n">lineages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Training GRN for lineage: </span><span class="si">{</span><span class="n">lineages</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
             <span class="n">G_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">fit_godness</span> <span class="o">=</span> <span class="n">optimize_global_GRN</span><span class="p">(</span>
                 <span class="n">adatas</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
                 <span class="n">TF_names</span><span class="o">=</span><span class="n">TF_names</span><span class="p">,</span>
@@ -780,9 +780,9 @@ document.write(`
                 <span class="n">val_split</span><span class="o">=</span><span class="n">val_split</span><span class="p">,</span> 
                 <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span>
             <span class="p">)</span> 
-            <span class="n">grn</span> <span class="o">=</span> <span class="n">GRNData</span><span class="p">(</span><span class="n">G_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;tf_name&#39;</span><span class="p">],</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;gene_name&#39;</span><span class="p">])</span>
+            <span class="n">grn</span> <span class="o">=</span> <span class="n">GRNData</span><span class="p">(</span><span class="n">G_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'tf_name'</span><span class="p">],</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'gene_name'</span><span class="p">])</span>
             <span class="n">grns</span><span class="p">[</span><span class="n">lineages</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">grn</span>
-            <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">adatas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;global_grn_fit_godness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit_godness</span>
+            <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">adatas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">'global_grn_fit_godness'</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit_godness</span>
             
         <span class="k">return</span> <span class="n">grns</span>
     <span class="k">else</span><span class="p">:</span>
@@ -803,10 +803,10 @@ document.write(`
                 <span class="n">val_split</span><span class="o">=</span><span class="n">val_split</span><span class="p">,</span> 
                 <span class="n">non_negative</span><span class="o">=</span><span class="n">non_negative</span>
             <span class="p">)</span>
-        <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">&#39;global_grn_fit_godness&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit_godness</span>
-        <span class="n">grn</span> <span class="o">=</span> <span class="n">GRNData</span><span class="p">(</span><span class="n">G_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;tf_name&#39;</span><span class="p">],</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;gene_name&#39;</span><span class="p">])</span>
-        <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;gene_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;gene_name&#39;</span><span class="p">])</span>
-        <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;tf_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">&#39;tf_name&#39;</span><span class="p">])</span>
+        <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="s1">'global_grn_fit_godness'</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit_godness</span>
+        <span class="n">grn</span> <span class="o">=</span> <span class="n">GRNData</span><span class="p">(</span><span class="n">G_hat</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">,</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'tf_name'</span><span class="p">],</span> <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'gene_name'</span><span class="p">])</span>
+        <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'gene_name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'gene_name'</span><span class="p">])</span>
+        <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'tf_name'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'tf_name'</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">grn</span>
 </pre></div>
 
