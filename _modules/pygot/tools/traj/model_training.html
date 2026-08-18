@@ -391,8 +391,9 @@ document.write(`
 <span class="sd">    n_neighbors: `int` (default: 50)</span>
 <span class="sd">        Neighbors number in kNN</span>
 <span class="sd">    knn_constraint: `bool` (default: True)</span>
-<span class="sd">        Use the kNN graph for OT cost and path interpolation, and apply the</span>
-<span class="sd">        kNN velocity filter. If False, use L2 OT cost and linear interpolation.</span>
+<span class="sd">        Use graph paths for interpolation and apply the kNN velocity filter.</span>
+<span class="sd">        If False, use linear interpolation without kNN filtering. The OT cost</span>
+<span class="sd">        remains controlled independently by ``distance_metrics``.</span>
 <span class="sd">    v_centric_iter_n: `int` (default: 1000)</span>
 <span class="sd">        Iteration number of v-centric training</span>
 <span class="sd">    v_centric_batch_size: `int` (default: 256)</span>

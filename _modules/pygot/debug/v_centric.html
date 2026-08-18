@@ -652,22 +652,10 @@ document.write(`
                 <span class="sa">f</span><span class="s1">'No retained samples are available for time point </span><span class="si">{</span><span class="n">time_point</span><span class="si">!r}</span><span class="s1">'</span>
             <span class="p">)</span>
 
-        <span class="n">embedding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span><span class="p">])</span>
-        <span class="n">direct_2d</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span>
-        <span class="k">if</span> <span class="n">direct_2d</span><span class="p">:</span>
-            <span class="n">observed</span> <span class="o">=</span> <span class="n">embedding</span>
-            <span class="n">map_positions</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-            <span class="n">axis_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">vis_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s1">'`vis_key` is required when the fitted embedding is not 2D'</span>
-                <span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">!=</span> <span class="n">vis_key</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">learn_vis_map</span><span class="p">(</span><span class="n">vis_key</span><span class="o">=</span><span class="n">vis_key</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">learn_map_kwargs</span> <span class="ow">or</span> <span class="p">{}))</span>
-            <span class="n">observed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">])</span>
-            <span class="n">map_positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span>
-            <span class="n">axis_key</span> <span class="o">=</span> <span class="n">vis_key</span>
+        <span class="n">observed</span><span class="p">,</span> <span class="n">map_positions</span><span class="p">,</span> <span class="n">axis_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_2d_view</span><span class="p">(</span>
+            <span class="n">vis_key</span><span class="p">,</span>
+            <span class="n">learn_map_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
@@ -712,6 +700,194 @@ document.write(`
         <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">ax</span></div>
 
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.plot_pair_comparison_2d">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.plot_pair_comparison_2d">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_pair_comparison_2d</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">batch</span><span class="p">,</span>
+            <span class="n">time_point</span><span class="p">,</span>
+            <span class="n">pair_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">vis_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">learn_map_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">linear_path_points</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">embedding_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">knn_path_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">linear_path_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">knn_sample_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">linear_sample_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">source_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">target_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">show_legend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Compare KNN and linear interpolation for the same sampled OT pair.</span>
+
+<span class="sd">        The source and target cells, as well as the interpolation fractions,</span>
+<span class="sd">        are held fixed. Consequently, the figure isolates the path</span>
+<span class="sd">        interpolation difference instead of also changing the OT pairing.</span>
+<span class="sd">        When ``pair_id`` is omitted, the connected retained pair with the</span>
+<span class="sd">        largest graph-path-to-chord ratio in the selected transition is used.</span>
+<span class="sd">        """</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">knn_constraint</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s1">'`plot_pair_comparison_2d` requires a debugger with '</span>
+                <span class="s1">'`knn_constraint=True`'</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">linear_path_points</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="ow">or</span> <span class="n">linear_path_points</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'`linear_path_points` must be an integer of at least 2'</span><span class="p">)</span>
+
+        <span class="n">transition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_index</span><span class="p">(</span><span class="n">time_point</span><span class="p">)</span>
+        <span class="n">transition_sample_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">transition_idx</span> <span class="o">==</span> <span class="n">transition</span>
+        <span class="n">retained_pair_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">pair_id</span><span class="p">[</span><span class="n">transition_sample_mask</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">retained_pair_ids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">'No retained samples are available for time point </span><span class="si">{</span><span class="n">time_point</span><span class="si">!r}</span><span class="s1">'</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pair_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">connected</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_connected</span><span class="p">[</span><span class="n">retained_pair_ids</span><span class="p">]</span>
+            <span class="n">candidate_ids</span> <span class="o">=</span> <span class="n">retained_pair_ids</span><span class="p">[</span><span class="n">connected</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidate_ids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">'No connected retained pair is available for time point '</span>
+                    <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">time_point</span><span class="si">!r}</span><span class="s1">'</span>
+                <span class="p">)</span>
+            <span class="n">chord</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_chord_length</span><span class="p">[</span><span class="n">candidate_ids</span><span class="p">]</span>
+            <span class="n">positive_chord</span> <span class="o">=</span> <span class="n">chord</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="n">candidate_ids</span> <span class="o">=</span> <span class="n">candidate_ids</span><span class="p">[</span><span class="n">positive_chord</span><span class="p">]</span>
+            <span class="n">chord</span> <span class="o">=</span> <span class="n">chord</span><span class="p">[</span><span class="n">positive_chord</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidate_ids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">'No non-degenerate connected pair is available for time '</span>
+                    <span class="sa">f</span><span class="s1">'point </span><span class="si">{</span><span class="n">time_point</span><span class="si">!r}</span><span class="s1">'</span>
+                <span class="p">)</span>
+            <span class="n">ratio</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_path_length</span><span class="p">[</span><span class="n">candidate_ids</span><span class="p">]</span> <span class="o">/</span> <span class="n">chord</span>
+            <span class="n">pair_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">candidate_ids</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">ratio</span><span class="p">)])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pair_id</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'`pair_id` must be an integer'</span><span class="p">)</span>
+            <span class="n">pair_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">pair_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pair_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">retained_pair_ids</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s1">'Pair </span><span class="si">{</span><span class="n">pair_id</span><span class="si">}</span><span class="s1"> has no retained samples in the '</span>
+                    <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">time_point</span><span class="si">!r}</span><span class="s1"> transition; choose one of '</span>
+                    <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">retained_pair_ids</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s1">'</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_connected</span><span class="p">[</span><span class="n">pair_id</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Pair </span><span class="si">{</span><span class="n">pair_id</span><span class="si">}</span><span class="s1"> has no connected KNN path'</span><span class="p">)</span>
+
+        <span class="n">sample_mask</span> <span class="o">=</span> <span class="n">transition_sample_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">pair_id</span> <span class="o">==</span> <span class="n">pair_id</span><span class="p">)</span>
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">sample_mask</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">pair_x0</span><span class="p">[</span><span class="n">pair_id</span><span class="p">])</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">pair_x1</span><span class="p">[</span><span class="n">pair_id</span><span class="p">])</span>
+        <span class="n">linear_samples</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">alpha</span> <span class="o">*</span> <span class="n">x1</span>
+        <span class="n">clean_samples</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'x_clean'</span><span class="p">,</span> <span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">knn_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">clean_samples</span><span class="p">)[</span><span class="n">sample_mask</span><span class="p">]</span>
+        <span class="n">knn_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pair_path_coordinates</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">pair_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">knn_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Pair </span><span class="si">{</span><span class="n">pair_id</span><span class="si">}</span><span class="s1"> has no plottable KNN path'</span><span class="p">)</span>
+        <span class="n">linear_fraction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">linear_path_points</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+        <span class="n">linear_path</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">linear_fraction</span><span class="p">)</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">linear_fraction</span> <span class="o">*</span> <span class="n">x1</span>
+
+        <span class="n">observed</span><span class="p">,</span> <span class="n">map_positions</span><span class="p">,</span> <span class="n">axis_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolve_2d_view</span><span class="p">(</span>
+            <span class="n">vis_key</span><span class="p">,</span>
+            <span class="n">learn_map_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">knn_path_vis</span> <span class="o">=</span> <span class="n">map_positions</span><span class="p">(</span><span class="n">knn_path</span><span class="p">)</span>
+        <span class="n">linear_path_vis</span> <span class="o">=</span> <span class="n">map_positions</span><span class="p">(</span><span class="n">linear_path</span><span class="p">)</span>
+        <span class="n">knn_samples_vis</span> <span class="o">=</span> <span class="n">map_positions</span><span class="p">(</span><span class="n">knn_samples</span><span class="p">)</span>
+        <span class="n">linear_samples_vis</span> <span class="o">=</span> <span class="n">map_positions</span><span class="p">(</span><span class="n">linear_samples</span><span class="p">)</span>
+        <span class="n">endpoints_vis</span> <span class="o">=</span> <span class="n">map_positions</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">]))</span>
+
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="n">background_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'s'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">:</span> <span class="s1">'lightgray'</span><span class="p">,</span> <span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">.45</span><span class="p">}</span>
+        <span class="n">background_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">embedding_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">observed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">observed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">background_style</span><span class="p">)</span>
+
+        <span class="n">knn_path_style</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'black'</span><span class="p">,</span>
+            <span class="s1">'linewidth'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s1">'label'</span><span class="p">:</span> <span class="s1">'KNN shortest path'</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">knn_path_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">knn_path_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">knn_path_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">knn_path_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">knn_path_style</span><span class="p">)</span>
+        <span class="n">linear_path_style</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'tab:orange'</span><span class="p">,</span>
+            <span class="s1">'linestyle'</span><span class="p">:</span> <span class="s1">'--'</span><span class="p">,</span>
+            <span class="s1">'linewidth'</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Non-KNN linear path'</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">linear_path_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">linear_path_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linear_path_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">linear_path_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">linear_path_style</span><span class="p">)</span>
+
+        <span class="n">knn_point_style</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'black'</span><span class="p">,</span>
+            <span class="s1">'s'</span><span class="p">:</span> <span class="mi">35</span><span class="p">,</span>
+            <span class="s1">'label'</span><span class="p">:</span> <span class="s1">'KNN samples'</span><span class="p">,</span>
+            <span class="s1">'zorder'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">knn_point_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">knn_sample_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">knn_samples_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">knn_samples_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">knn_point_style</span><span class="p">)</span>
+        <span class="n">linear_point_style</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'color'</span><span class="p">:</span> <span class="s1">'tab:orange'</span><span class="p">,</span>
+            <span class="s1">'marker'</span><span class="p">:</span> <span class="s1">'x'</span><span class="p">,</span>
+            <span class="s1">'s'</span><span class="p">:</span> <span class="mi">40</span><span class="p">,</span>
+            <span class="s1">'label'</span><span class="p">:</span> <span class="s1">'Non-KNN samples'</span><span class="p">,</span>
+            <span class="s1">'zorder'</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">linear_point_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">linear_sample_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">linear_samples_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">linear_samples_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="o">**</span><span class="n">linear_point_style</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">source_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'color'</span><span class="p">:</span> <span class="s1">'blue'</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">'label'</span><span class="p">:</span> <span class="s1">'source'</span><span class="p">,</span> <span class="s1">'zorder'</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+        <span class="n">source_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">source_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">endpoints_vis</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">endpoints_vis</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">source_style</span><span class="p">)</span>
+        <span class="n">target_style</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'facecolors'</span><span class="p">:</span> <span class="s1">'none'</span><span class="p">,</span>
+            <span class="s1">'edgecolors'</span><span class="p">:</span> <span class="s1">'red'</span><span class="p">,</span>
+            <span class="s1">'s'</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+            <span class="s1">'label'</span><span class="p">:</span> <span class="s1">'target'</span><span class="p">,</span>
+            <span class="s1">'zorder'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">target_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">target_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">endpoints_vis</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">endpoints_vis</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">target_style</span><span class="p">)</span>
+
+        <span class="n">chord_length</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_chord_length</span><span class="p">[</span><span class="n">pair_id</span><span class="p">]</span>
+        <span class="n">path_chord_ratio</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">pair_path_length</span><span class="p">[</span><span class="n">pair_id</span><span class="p">]</span> <span class="o">/</span> <span class="n">chord_length</span>
+            <span class="k">if</span> <span class="n">chord_length</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+        <span class="p">)</span>
+        <span class="n">time_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">transition</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">'Pair </span><span class="si">{</span><span class="n">pair_id</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">time_point</span><span class="si">}</span><span class="s1"> → </span><span class="si">{</span><span class="n">time_end</span><span class="si">}</span><span class="s1"> | '</span>
+            <span class="sa">f</span><span class="s1">'path/chord=</span><span class="si">{</span><span class="n">path_chord_ratio</span><span class="si">:</span><span class="s1">.3g</span><span class="si">}</span><span class="s1">'</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">axis_key</span><span class="si">}</span><span class="s1"> 1'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">axis_key</span><span class="si">}</span><span class="s1"> 2'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">show_legend</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_resolve_2d_view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vis_key</span><span class="p">,</span> <span class="n">learn_map_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">embedding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">embedding</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span>
+        <span class="k">if</span> <span class="n">vis_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">'`vis_key` is required when the fitted embedding is not 2D'</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">!=</span> <span class="n">vis_key</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">learn_vis_map</span><span class="p">(</span><span class="n">vis_key</span><span class="o">=</span><span class="n">vis_key</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">learn_map_kwargs</span> <span class="ow">or</span> <span class="p">{}))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">,</span> <span class="n">vis_key</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_transition_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_point</span><span class="p">):</span>
         <span class="n">matches</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">time_point</span><span class="p">)</span>

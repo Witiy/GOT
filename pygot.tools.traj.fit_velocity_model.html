@@ -370,8 +370,9 @@ document.write(`
 </dd>
 <dt>n_neighbors: <cite>int</cite> (default: 50)</dt><dd><p>Neighbors number in kNN</p>
 </dd>
-<dt>knn_constraint: <cite>bool</cite> (default: True)</dt><dd><p>Use the kNN graph for OT cost and path interpolation, and apply the
-kNN velocity filter. If False, use L2 OT cost and linear interpolation.</p>
+<dt>knn_constraint: <cite>bool</cite> (default: True)</dt><dd><p>Use graph paths for interpolation and apply the kNN velocity filter.
+If False, use linear interpolation without kNN filtering. The OT cost
+remains controlled independently by <code class="docutils literal notranslate"><span class="pre">distance_metrics</span></code>.</p>
 </dd>
 <dt>v_centric_iter_n: <cite>int</cite> (default: 1000)</dt><dd><p>Iteration number of v-centric training</p>
 </dd>
