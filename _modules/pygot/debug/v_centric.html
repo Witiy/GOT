@@ -412,7 +412,7 @@ document.write(`
             <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
             <span class="n">k</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
             <span class="n">q</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
-        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Sample without constructing or training a velocity model."""</span>
         <span class="n">use_filtered</span> <span class="o">=</span> <span class="n">filtered</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">knn_constraint</span>
@@ -619,108 +619,108 @@ document.write(`
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_2d</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">batch</span><span class="p">,</span>
-            <span class="n">vis_key</span><span class="o">=</span><span class="s1">'X_umap'</span><span class="p">,</span>
+            <span class="n">time_point</span><span class="p">,</span>
+            <span class="n">vis_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">learn_map_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-            <span class="n">show_cells</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">show_pairs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">show_paths</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">show_velocity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">show_rejected</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s1">'alpha'</span><span class="p">,</span>
-            <span class="n">normalize_velocity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="n">max_paths</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-            <span class="n">max_arrows</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
-            <span class="n">dt</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
-            <span class="n">scatter_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">embedding_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">path_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">sample_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">source_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">target_kw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="p">):</span>
-<span class="w">        </span><span class="sd">"""Plot directly sampled positions, graph paths, and pushed-forward velocities."""</span>
+<span class="w">        </span><span class="sd">"""Plot sampled paths and points for one adjacent time transition.</span>
+
+<span class="sd">        ``time_point`` is the source label of the transition to plot. For</span>
+<span class="sd">        example, if the observed time labels are ``[0, 1, 2]``, passing</span>
+<span class="sd">        ``time_point=1`` plots samples and paths from the ``1 -&gt; 2``</span>
+<span class="sd">        transition.</span>
+
+<span class="sd">        When the fitted embedding is already two-dimensional, its coordinates</span>
+<span class="sd">        are used directly and ``vis_key`` is unnecessary. For a</span>
+<span class="sd">        higher-dimensional fitted embedding, ``vis_key`` must identify a 2D</span>
+<span class="sd">        representation in ``adata.obsm``; an out-of-sample map is learned so</span>
+<span class="sd">        sampled paths and points can be projected into that representation.</span>
+<span class="sd">        """</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">!=</span> <span class="n">vis_key</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">learn_vis_map</span><span class="p">(</span><span class="n">vis_key</span><span class="o">=</span><span class="n">vis_key</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">learn_map_kwargs</span> <span class="ow">or</span> <span class="p">{}))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">project_to_2d</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+        <span class="n">transition</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transition_index</span><span class="p">(</span><span class="n">time_point</span><span class="p">)</span>
+        <span class="n">sample_mask</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">transition_idx</span> <span class="o">==</span> <span class="n">transition</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">sample_mask</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">'No retained samples are available for time point </span><span class="si">{</span><span class="n">time_point</span><span class="si">!r}</span><span class="s1">'</span>
+            <span class="p">)</span>
+
+        <span class="n">embedding</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span><span class="p">])</span>
+        <span class="n">direct_2d</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">direct_2d</span><span class="p">:</span>
+            <span class="n">observed</span> <span class="o">=</span> <span class="n">embedding</span>
+            <span class="n">map_positions</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">axis_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">vis_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">'`vis_key` is required when the fitted embedding is not 2D'</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">!=</span> <span class="n">vis_key</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">learn_vis_map</span><span class="p">(</span><span class="n">vis_key</span><span class="o">=</span><span class="n">vis_key</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">learn_map_kwargs</span> <span class="ow">or</span> <span class="p">{}))</span>
+            <span class="n">observed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">])</span>
+            <span class="n">map_positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span>
+            <span class="n">axis_key</span> <span class="o">=</span> <span class="n">vis_key</span>
 
         <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">show_cells</span><span class="p">:</span>
-            <span class="n">observed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">])</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">observed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">observed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'lightgray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.45</span><span class="p">)</span>
+        <span class="n">background_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'s'</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">'c'</span><span class="p">:</span> <span class="s1">'lightgray'</span><span class="p">,</span> <span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">.45</span><span class="p">}</span>
+        <span class="n">background_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">embedding_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">observed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">observed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">background_style</span><span class="p">)</span>
 
-        <span class="n">pair_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">pair_id</span><span class="p">)</span>
-        <span class="n">pair_ids</span> <span class="o">=</span> <span class="n">pair_ids</span><span class="p">[:</span><span class="n">max_paths</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">show_pairs</span><span class="p">:</span>
-            <span class="n">x0_vis</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_x0_vis</span><span class="p">[</span><span class="n">pair_ids</span><span class="p">]</span>
-            <span class="n">x1_vis</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_x1_vis</span><span class="p">[</span><span class="n">pair_ids</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x0_vis</span><span class="p">,</span> <span class="n">x1_vis</span><span class="p">):</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">'--'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:blue'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.2</span><span class="p">)</span>
+        <span class="n">pair_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">pair_id</span><span class="p">[</span><span class="n">sample_mask</span><span class="p">])[:</span><span class="n">max_paths</span><span class="p">]</span>
+        <span class="n">path_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'color'</span><span class="p">:</span> <span class="s1">'black'</span><span class="p">,</span> <span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">.3</span><span class="p">,</span> <span class="s1">'linewidth'</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">path_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">path_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="k">for</span> <span class="n">pair_id</span> <span class="ow">in</span> <span class="n">pair_ids</span><span class="p">:</span>
+            <span class="n">path_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pair_path_coordinates</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">pair_id</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">path_x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">path_vis</span> <span class="o">=</span> <span class="n">map_positions</span><span class="p">(</span><span class="n">path_x</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">path_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">path_style</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">show_paths</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">pair_id</span> <span class="ow">in</span> <span class="n">pair_ids</span><span class="p">:</span>
-                <span class="n">path_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pair_path_coordinates</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">pair_id</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">path_x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">path_vis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">(</span><span class="n">path_x</span><span class="p">)</span>
-                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">path_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.25</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">.8</span><span class="p">)</span>
+        <span class="n">x_vis</span> <span class="o">=</span> <span class="n">map_positions</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">sample_mask</span><span class="p">])</span>
+        <span class="n">sample_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'color'</span><span class="p">:</span> <span class="s1">'black'</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span> <span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">.8</span><span class="p">,</span> <span class="s1">'zorder'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+        <span class="n">sample_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">sample_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">sample_style</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">color</span> <span class="o">==</span> <span class="s1">'velocity_norm'</span><span class="p">:</span>
-            <span class="n">colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">color</span> <span class="o">==</span> <span class="s1">'pair_id'</span><span class="p">:</span>
-            <span class="n">colors</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_id</span>
-        <span class="k">elif</span> <span class="n">color</span> <span class="o">==</span> <span class="s1">'t'</span><span class="p">:</span>
-            <span class="n">colors</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
-            <span class="n">colors</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">color</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Unknown sample color: </span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'`</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s1">` is not sample-level numeric metadata'</span><span class="p">)</span>
+        <span class="n">source_vis</span> <span class="o">=</span> <span class="n">map_positions</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">pair_x0</span><span class="p">[</span><span class="n">pair_ids</span><span class="p">])</span>
+        <span class="n">target_vis</span> <span class="o">=</span> <span class="n">map_positions</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">pair_x1</span><span class="p">[</span><span class="n">pair_ids</span><span class="p">])</span>
+        <span class="n">source_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'color'</span><span class="p">:</span> <span class="s1">'blue'</span><span class="p">,</span> <span class="s1">'s'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span> <span class="s1">'label'</span><span class="p">:</span> <span class="s1">'source'</span><span class="p">,</span> <span class="s1">'zorder'</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span>
+        <span class="n">source_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">source_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">source_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">source_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">source_style</span><span class="p">)</span>
+        <span class="n">target_style</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'facecolors'</span><span class="p">:</span> <span class="s1">'none'</span><span class="p">,</span>
+            <span class="s1">'edgecolors'</span><span class="p">:</span> <span class="s1">'red'</span><span class="p">,</span>
+            <span class="s1">'s'</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
+            <span class="s1">'label'</span><span class="p">:</span> <span class="s1">'target'</span><span class="p">,</span>
+            <span class="s1">'zorder'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">target_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">target_kw</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">target_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">target_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="o">**</span><span class="n">target_style</span><span class="p">)</span>
 
-        <span class="n">sample_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'s'</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">.8</span><span class="p">,</span> <span class="s1">'cmap'</span><span class="p">:</span> <span class="s1">'viridis'</span><span class="p">}</span>
-        <span class="n">sample_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">scatter_kwargs</span> <span class="ow">or</span> <span class="p">{})</span>
-        <span class="k">if</span> <span class="s1">'c'</span> <span class="ow">in</span> <span class="n">sample_style</span> <span class="ow">or</span> <span class="s1">'color'</span> <span class="ow">in</span> <span class="n">sample_style</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Use the `color` argument instead of scatter color kwargs'</span><span class="p">)</span>
-        <span class="n">points</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-            <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-            <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">sample_style</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">show_rejected</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">~</span><span class="n">batch</span><span class="o">.</span><span class="n">filter_mask</span><span class="p">):</span>
-            <span class="n">rejected</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pre_filter_x_vis</span><span class="p">[</span><span class="o">~</span><span class="n">batch</span><span class="o">.</span><span class="n">filter_mask</span><span class="p">]</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rejected</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rejected</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.6</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">show_velocity</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">arrow_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
-                <span class="mi">0</span><span class="p">,</span>
-                <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
-                <span class="nb">min</span><span class="p">(</span><span class="n">max_arrows</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">)),</span>
-                <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="n">velocity</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">u_vis</span><span class="p">[</span><span class="n">arrow_idx</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">normalize_velocity</span><span class="p">:</span>
-                <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-                <span class="n">velocity</span> <span class="o">=</span> <span class="n">velocity</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">)</span>
-            <span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
-                <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[</span><span class="n">arrow_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
-                <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[</span><span class="n">arrow_idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-                <span class="n">velocity</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
-                <span class="n">velocity</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
-                <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span>
-                <span class="n">alpha</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span>
-                <span class="n">scale</span><span class="o">=</span><span class="mi">30</span> <span class="k">if</span> <span class="n">normalize_velocity</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-                <span class="n">width</span><span class="o">=</span><span class="mf">.002</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s1">'V-centric samples | embed-to-vis RMSE=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping_rmse</span><span class="si">:</span><span class="s1">.4g</span><span class="si">}</span><span class="s1">'</span>
-        <span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">vis_key</span><span class="si">}</span><span class="s1"> 1'</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">vis_key</span><span class="si">}</span><span class="s1"> 2'</span><span class="p">)</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+        <span class="n">time_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">transition</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'V-centric samples: </span><span class="si">{</span><span class="n">time_point</span><span class="si">}</span><span class="s1"> → </span><span class="si">{</span><span class="n">time_end</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">axis_key</span><span class="si">}</span><span class="s1"> 1'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">axis_key</span><span class="si">}</span><span class="s1"> 2'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">'off'</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">ax</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_transition_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_point</span><span class="p">):</span>
+        <span class="n">matches</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">time_point</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">matches</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">available</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">'Unknown source time point </span><span class="si">{</span><span class="n">time_point</span><span class="si">!r}</span><span class="s1">; choose one of </span><span class="si">{</span><span class="n">available</span><span class="si">}</span><span class="s1">'</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">matches</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
 <div class="viewcode-block" id="VCentricSamplingDebugger.plot_pair_2d">
 <a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.plot_pair_2d">[docs]</a>
