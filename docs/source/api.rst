@@ -93,6 +93,18 @@ Plotting (pl)
    plotting.plot_root_cell
 
 
+Debugging (debug)
+-----------------
+
+**Direct v-centric sampling and 2D visualization**
+
+.. autosummary::
+   :toctree: generated/
+
+   debug.VCentricSamplingDebugger
+   debug.VCentricSampleBatch
+
+
 Datasets
 ---------------
 .. autosummary:: 

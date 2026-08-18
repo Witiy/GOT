@@ -17,10 +17,10 @@ class Landmarks:
     def __init__(self, ):    
         pass
     def fit(self, X, n_neighbors=30, n_landmarks=5000,  verbose=True,):
-        
+
         try:
             import faiss
-        
+
         except ImportError:
             raise ImportError(
                     "Please install FAISS to use landmarks")
@@ -543,6 +543,7 @@ class GraphicalOTVelocitySampler:
             interpolate_num=100,
             distance_metrics='SP',
             n_samples_in_path=1,
+            return_metadata=False,
             ):
         if not isinstance(n_samples_in_path, (int, np.integer)) or n_samples_in_path < 1:
             raise ValueError('`n_samples_in_path` must be a positive integer')
@@ -556,40 +557,98 @@ class GraphicalOTVelocitySampler:
         
         xa_t, ua_t = [], []
         ts = []
+        sample_pair_id = []
+        sample_connected = []
+        sample_linear_fallback = []
+        sample_path_length = []
+        sample_chord_length = []
+        pair_paths = []
+        pair_connected = []
+        pair_linear_fallback = []
+        pair_path_length = []
+        pair_chord_length = []
+
         for idx in range(len(x0)):
+            source = int(i[idx])
+            target = int(j_map[idx])
+            chord_length = float(np.linalg.norm(x1[idx] - x0[idx])) if return_metadata else 0.0
+
             if not self.knn_constraint:
-                for _ in range(n_samples_in_path):
-                    t = random.random()
-                    xa_t.append((1-t) * x0[idx] + t * x1[idx])
-                    ua_t.append(x1[idx] - x0[idx])
-                    ts.append(t)
+                path = np.array([source, target])
+                connected = True
+                use_linear = True
+                used_linear_fallback = False
+                path_length = chord_length
+            else:
+                path, flag = self.GPs[t_start].graphical_path(
+                    source_idx=source,
+                    end_idx=target,
+                )
+                connected = bool(flag and len(path) >= 2)
+                used_linear_fallback = not connected and self.linear
+                use_linear = used_linear_fallback
+
+                if connected and return_metadata:
+                    path_length = float(
+                        np.asarray(
+                            self.GPs[t_start].graphical_distance(
+                                np.array([source]),
+                                np.array([target]),
+                            )
+                        ).squeeze()
+                    )
+                else:
+                    path_length = chord_length
+
+            if return_metadata:
+                pair_paths.append(np.asarray(path, dtype=int))
+                pair_connected.append(connected)
+                pair_linear_fallback.append(used_linear_fallback)
+                pair_path_length.append(path_length)
+                pair_chord_length.append(chord_length)
+
+            if not connected and not use_linear:
                 continue
 
-            source = i[idx]
-            target = j_map[idx]
-            
-            path, flag = self.GPs[t_start].graphical_path(source_idx=source, end_idx=target)
-            
-            if flag == False or len(path) < 2:
-                if not self.linear:
-                    continue
-                for _ in range(n_samples_in_path):
-                    t = random.random()
-                    xa_t.append((1-t) * x0[idx] + t * x1[idx])
-                    ua_t.append(x1[idx] - x0[idx])
-                    ts.append(t)
-            
-            else:
-                for _ in range(n_samples_in_path):
-                    t = random.random()
+            for _ in range(n_samples_in_path):
+                t = random.random()
+                if use_linear:
+                    xa = (1-t) * x0[idx] + t * x1[idx]
+                    ua = x1[idx] - x0[idx]
+                else:
                     xa, ua = self.GPs[t_start].interpolate_one_point(path, ti=t, )
-                    xa_t.append(xa)
-                    ua_t.append(ua)
-                    ts.append(t)
-            
-            #print('-', np.linalg.norm(xa), np.linalg.norm(ua))
-        
-        return np.array(xa_t), np.array(ua_t), np.array(ts)[:,None], x0, x1
+                xa_t.append(xa)
+                ua_t.append(ua)
+                ts.append(t)
+                if return_metadata:
+                    sample_pair_id.append(idx)
+                    sample_connected.append(connected)
+                    sample_linear_fallback.append(used_linear_fallback)
+                    sample_path_length.append(path_length)
+                    sample_chord_length.append(chord_length)
+
+        result = (np.array(xa_t), np.array(ua_t), np.array(ts)[:,None], x0, x1)
+        if not return_metadata:
+            return result
+
+        metadata = {
+            'alpha': np.asarray(ts, dtype=float),
+            'pair_id': np.asarray(sample_pair_id, dtype=int),
+            'connected': np.asarray(sample_connected, dtype=bool),
+            'used_linear_fallback': np.asarray(sample_linear_fallback, dtype=bool),
+            'path_length': np.asarray(sample_path_length, dtype=float),
+            'chord_length': np.asarray(sample_chord_length, dtype=float),
+            'pair_source_idx': np.asarray(i, dtype=int),
+            'pair_target_idx': np.asarray(j_map, dtype=int) - self.n_list[t_start],
+            'pair_x0': np.asarray(x0),
+            'pair_x1': np.asarray(x1),
+            'pair_connected': np.asarray(pair_connected, dtype=bool),
+            'pair_used_linear_fallback': np.asarray(pair_linear_fallback, dtype=bool),
+            'pair_path_length': np.asarray(pair_path_length, dtype=float),
+            'pair_chord_length': np.asarray(pair_chord_length, dtype=float),
+            'paths': pair_paths,
+        }
+        return result + (metadata,)
 
     
 
@@ -600,6 +659,7 @@ class GraphicalOTVelocitySampler:
             distance_metrics : str = 'L2', 
             add_noise : bool = True,
             n_samples_in_path : int = 1,
+            return_metadata : bool = False,
             ):
         """ sample data point x_t and corresponding velocity u_t using OT and SP
         
@@ -614,6 +674,8 @@ class GraphicalOTVelocitySampler:
                 xt add noise or not
             n_samples_in_path : int
                 number of interpolation samples drawn from each OT-paired path
+            return_metadata : bool
+                return sampling metadata for debugging
 
         Return
         ------
@@ -627,15 +689,19 @@ class GraphicalOTVelocitySampler:
         """
         X, U, T = [], [], []
         X0, X1 = [], []
+        metadata_list = []
+        pair_offset = 0
 
         for t_start in range(len(self.ts) - 1):
 
-            xa_t, ua_t, t, x0, x1 = self._sample_one_time_point(
+            sample_result = self._sample_one_time_point(
                 t_start,
                 batch_size=batch_size,
                 distance_metrics=distance_metrics,
                 n_samples_in_path=n_samples_in_path,
+                return_metadata=return_metadata,
             )
+            xa_t, ua_t, t, x0, x1 = sample_result[:5]
                 
             if len(xa_t) == 0:
                 raise Exception('low connection of graph, please increase `n_neighbors` or set `linear` into `True` ')
@@ -649,16 +715,59 @@ class GraphicalOTVelocitySampler:
             T.append(t)
             X.append(xa_t)
             U.append(ua_t)
+
+            if return_metadata:
+                metadata = sample_result[5]
+                metadata['pair_id'] = metadata['pair_id'] + pair_offset
+                metadata['transition_idx'] = np.full(len(xa_t), t_start, dtype=int)
+                metadata['pair_transition_idx'] = np.full(len(x0), t_start, dtype=int)
+                metadata_list.append(metadata)
+                pair_offset += len(x0)
             
         
         X, U, T = np.concatenate(X), np.concatenate(U), np.concatenate(T)
         X, U, T =  X.reshape(-1, X.shape[-1]), U.reshape(-1, U.shape[-1]), T.reshape(-1, T.shape[-1])
+        X_clean = X.copy()
         if add_noise:
-                X = X + sigma*np.random.randn(X.shape[0], X.shape[1])
+            X = X + sigma*np.random.randn(X.shape[0], X.shape[1])
         T = torch.Tensor(T)
         X = torch.Tensor(X)
         U = torch.Tensor(U)
-        return T, X, U, X0, X1
+        result = (T, X, U, X0, X1)
+        if not return_metadata:
+            return result
+
+        sample_fields = [
+            'alpha',
+            'pair_id',
+            'connected',
+            'used_linear_fallback',
+            'path_length',
+            'chord_length',
+            'transition_idx',
+        ]
+        pair_fields = [
+            'pair_source_idx',
+            'pair_target_idx',
+            'pair_x0',
+            'pair_x1',
+            'pair_connected',
+            'pair_used_linear_fallback',
+            'pair_path_length',
+            'pair_chord_length',
+            'pair_transition_idx',
+        ]
+        metadata = {
+            key: np.concatenate([item[key] for item in metadata_list])
+            for key in sample_fields + pair_fields
+        }
+        metadata['paths'] = [path for item in metadata_list for path in item['paths']]
+        metadata['x_clean'] = X_clean
+        metadata['pre_filter_t'] = T.detach().cpu().numpy().copy()
+        metadata['pre_filter_x'] = X.detach().cpu().numpy().copy()
+        metadata['pre_filter_u'] = U.detach().cpu().numpy().copy()
+        metadata['filter_mask'] = np.ones(len(X), dtype=bool)
+        return result + (metadata,)
     
 
     def filtered_sample_batch_path(
@@ -670,6 +779,7 @@ class GraphicalOTVelocitySampler:
             k=15,
             q=80,
             n_samples_in_path : int = 1,
+            return_metadata : bool = False,
            
             ):
         """ sample data point x_t and corresponding velocity u_t using OT and SP, filter outlier using gaussian dist with knn center
@@ -689,6 +799,8 @@ class GraphicalOTVelocitySampler:
                 cutoff, filter in q % data points.
             n_samples_in_path : int
                 number of interpolation samples drawn from each OT-paired path
+            return_metadata : bool
+                return sampling metadata for debugging
 
         Return
         ------
@@ -707,22 +819,45 @@ class GraphicalOTVelocitySampler:
                 distance_metrics,
                 add_noise,
                 n_samples_in_path=n_samples_in_path,
+                return_metadata=return_metadata,
             )
 
-        T, X, U, X0, X1 = self.sample_batch_path(
+        sample_result = self.sample_batch_path(
             sigma,
             batch_size,
             distance_metrics,
             add_noise,
             n_samples_in_path=n_samples_in_path,
+            return_metadata=return_metadata,
         )
+        T, X, U, X0, X1 = sample_result[:5]
 
         filtered_idx = filter_outlier(torch.Tensor(X), torch.tensor(U), k=k, q=q)
-        T = torch.Tensor(T[filtered_idx])
-        X = torch.Tensor(X[filtered_idx])
-        U = torch.Tensor(U[filtered_idx])
-        
-        return T, X, U, X0, X1
+        filtered_idx = np.asarray(filtered_idx[0], dtype=int)
+        T = T[filtered_idx]
+        X = X[filtered_idx]
+        U = U[filtered_idx]
+
+        result = (T, X, U, X0, X1)
+        if not return_metadata:
+            return result
+
+        metadata = sample_result[5]
+        filter_mask = np.zeros(len(metadata['pre_filter_x']), dtype=bool)
+        filter_mask[filtered_idx] = True
+        metadata['filter_mask'] = filter_mask
+        for key in [
+            'alpha',
+            'pair_id',
+            'connected',
+            'used_linear_fallback',
+            'path_length',
+            'chord_length',
+            'transition_idx',
+            'x_clean',
+        ]:
+            metadata[key] = metadata[key][filtered_idx]
+        return result + (metadata,)
 
 
 

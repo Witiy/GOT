@@ -2,6 +2,7 @@ from . import external, evalute, utils, datasets
 from . import plotting as pl
 from . import preprocessing as pp
 from . import tools as tl
+from . import debug
 
 __all__ = [
     "utils",
@@ -10,5 +11,6 @@ __all__ = [
     "pl",
     "pp",
     "tl",
+    "debug",
     "datasets"
 ]
