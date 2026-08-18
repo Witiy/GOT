@@ -542,7 +542,11 @@ class GraphicalOTVelocitySampler:
             batch_size=256, 
             interpolate_num=100,
             distance_metrics='SP',
-            ):        
+            n_samples_in_path=1,
+            ):
+        if not isinstance(n_samples_in_path, (int, np.integer)) or n_samples_in_path < 1:
+            raise ValueError('`n_samples_in_path` must be a positive integer')
+
         interpolate_num += 1
         
         source_idx = np.random.choice(self.n_list[t_start], size=batch_size)
@@ -554,10 +558,11 @@ class GraphicalOTVelocitySampler:
         ts = []
         for idx in range(len(x0)):
             if not self.knn_constraint:
-                t = random.random()
-                xa_t.append((1-t) * x0[idx] + t * x1[idx])
-                ua_t.append(x1[idx] - x0[idx])
-                ts.append(t)
+                for _ in range(n_samples_in_path):
+                    t = random.random()
+                    xa_t.append((1-t) * x0[idx] + t * x1[idx])
+                    ua_t.append(x1[idx] - x0[idx])
+                    ts.append(t)
                 continue
 
             source = i[idx]
@@ -567,19 +572,20 @@ class GraphicalOTVelocitySampler:
             
             if flag == False or len(path) < 2:
                 if not self.linear:
-                    continue             
-                t = random.random()
-                xa_t.append((1-t) * x0[idx] + t * x1[idx])
-                ua_t.append(x1[idx] - x0[idx])
-                ts.append(t)
+                    continue
+                for _ in range(n_samples_in_path):
+                    t = random.random()
+                    xa_t.append((1-t) * x0[idx] + t * x1[idx])
+                    ua_t.append(x1[idx] - x0[idx])
+                    ts.append(t)
             
             else:
-                t = random.random()
-                #xa, ua = self.itps[t_start].interpolate_one_point_shortest_path(path, ti=t)
-                xa, ua = self.GPs[t_start].interpolate_one_point(path, ti=t, )
-                xa_t.append(xa)
-                ua_t.append(ua)
-                ts.append(t)
+                for _ in range(n_samples_in_path):
+                    t = random.random()
+                    xa, ua = self.GPs[t_start].interpolate_one_point(path, ti=t, )
+                    xa_t.append(xa)
+                    ua_t.append(ua)
+                    ts.append(t)
             
             #print('-', np.linalg.norm(xa), np.linalg.norm(ua))
         
@@ -593,6 +599,7 @@ class GraphicalOTVelocitySampler:
             batch_size : int,
             distance_metrics : str = 'L2', 
             add_noise : bool = True,
+            n_samples_in_path : int = 1,
             ):
         """ sample data point x_t and corresponding velocity u_t using OT and SP
         
@@ -605,8 +612,8 @@ class GraphicalOTVelocitySampler:
                 using 'SP' (i.e. shortest path distance) or 'L2'
             add_noise : bool
                 xt add noise or not
-            interpolate : bool
-                linear interpolate between two node in the shortest path or not
+            n_samples_in_path : int
+                number of interpolation samples drawn from each OT-paired path
 
         Return
         ------
@@ -623,7 +630,12 @@ class GraphicalOTVelocitySampler:
 
         for t_start in range(len(self.ts) - 1):
 
-            xa_t, ua_t, t, x0, x1 = self._sample_one_time_point(t_start, batch_size=batch_size, distance_metrics=distance_metrics,)
+            xa_t, ua_t, t, x0, x1 = self._sample_one_time_point(
+                t_start,
+                batch_size=batch_size,
+                distance_metrics=distance_metrics,
+                n_samples_in_path=n_samples_in_path,
+            )
                 
             if len(xa_t) == 0:
                 raise Exception('low connection of graph, please increase `n_neighbors` or set `linear` into `True` ')
@@ -657,6 +669,7 @@ class GraphicalOTVelocitySampler:
             add_noise : bool = True,
             k=15,
             q=80,
+            n_samples_in_path : int = 1,
            
             ):
         """ sample data point x_t and corresponding velocity u_t using OT and SP, filter outlier using gaussian dist with knn center
@@ -670,12 +683,12 @@ class GraphicalOTVelocitySampler:
                 using 'SP' (i.e. shortest path distance) or 'L2'
             add_noise : bool
                 xt add noise or not
-            interpolate : bool
-                linear interpolate between two node in the shortest path or not
             k : int
                 knn kernel neighbors number
             q : int
                 cutoff, filter in q % data points.
+            n_samples_in_path : int
+                number of interpolation samples drawn from each OT-paired path
 
         Return
         ------
@@ -688,9 +701,21 @@ class GraphicalOTVelocitySampler:
 
         """
         if not self.knn_constraint:
-            return self.sample_batch_path(sigma, batch_size, distance_metrics, add_noise)
+            return self.sample_batch_path(
+                sigma,
+                batch_size,
+                distance_metrics,
+                add_noise,
+                n_samples_in_path=n_samples_in_path,
+            )
 
-        T, X, U, X0, X1 = self.sample_batch_path(sigma, batch_size, distance_metrics, add_noise)
+        T, X, U, X0, X1 = self.sample_batch_path(
+            sigma,
+            batch_size,
+            distance_metrics,
+            add_noise,
+            n_samples_in_path=n_samples_in_path,
+        )
 
         filtered_idx = filter_outlier(torch.Tensor(X), torch.tensor(U), k=k, q=q)
         T = torch.Tensor(T[filtered_idx])

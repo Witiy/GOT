@@ -62,7 +62,7 @@ def fit_velocity_model(
         graph_key=None,
         n_neighbors=50,
         knn_constraint=True,
-        v_centric_iter_n=1000, v_centric_batch_size=256, 
+        v_centric_iter_n=1000, v_centric_batch_size=256,
         add_noise=True, sigma=0.1,
         lr=5e-3, 
         path='',
@@ -75,6 +75,7 @@ def fit_velocity_model(
         reverse_schema=True,
         time_varying=True,
         filtered=True,
+        n_samples_in_path=1,
         **kwargs
         ):
     """Estimates velocities and fit trajectories in latent space.
@@ -103,6 +104,8 @@ def fit_velocity_model(
         Iteration number of v-centric training
     v_centric_batch_size: `int` (default: 256)
         Batch size of v-centric training. Note: increase will dramatically increase training time due to the complexity of OT
+    n_samples_in_path: `int` (default: 1)
+        Number of interpolation samples drawn from each OT-paired path
     add_noise: `bool` (default: True)
         Assumption of gaussian distribution of velocity
     sigma: `float` (default: 0.1)
@@ -164,9 +167,23 @@ def fit_velocity_model(
 
     optimizer = torch.optim.Adam(model.parameters(), lr, weight_decay=0.001)
     if filtered and knn_constraint:
-        sample_fn_path = partial(sp_sampler.filtered_sample_batch_path, sigma=sigma, batch_size=v_centric_batch_size, distance_metrics=distance_metrics, add_noise=add_noise)
+        sample_fn_path = partial(
+            sp_sampler.filtered_sample_batch_path,
+            sigma=sigma,
+            batch_size=v_centric_batch_size,
+            distance_metrics=distance_metrics,
+            add_noise=add_noise,
+            n_samples_in_path=n_samples_in_path,
+        )
     else:
-        sample_fn_path = partial(sp_sampler.sample_batch_path, sigma=sigma, batch_size=v_centric_batch_size, distance_metrics=distance_metrics, add_noise=add_noise)
+        sample_fn_path = partial(
+            sp_sampler.sample_batch_path,
+            sigma=sigma,
+            batch_size=v_centric_batch_size,
+            distance_metrics=distance_metrics,
+            add_noise=add_noise,
+            n_samples_in_path=n_samples_in_path,
+        )
     model, history = v_centric_training(model, optimizer, sample_fn_path, iter_n=v_centric_iter_n, device=device)
 
     if x_centric:
