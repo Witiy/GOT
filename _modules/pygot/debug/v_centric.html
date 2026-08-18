@@ -1,0 +1,867 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pygot.debug.v_centric &#8212; GOT 0.3.3post1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=eba8b062" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="../../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="../../../_static/documentation_options.js?v=8842c575"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pygot/debug/v_centric';</script>
+    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">GOT 0.3.3post1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Main</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api.html">API</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.preprocessing.GS_VAE.html">pygot.preprocessing.GS_VAE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.tools.traj.fit_velocity_model.html">pygot.tools.traj.fit_velocity_model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.tools.traj.velocity.html">pygot.tools.traj.velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.tools.traj.latent_velocity.html">pygot.tools.traj.latent_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.tools.traj.latent2gene_velocity.html">pygot.tools.traj.latent2gene_velocity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.tools.traj.simulate_trajectory.html">pygot.tools.traj.simulate_trajectory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.tools.traj.fit_velocity_model_without_time.html">pygot.tools.traj.fit_velocity_model_without_time</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.tools.traj.determine_source_state.html">pygot.tools.traj.determine_source_state</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pygot.tools.analysis.ProbabilityModel.html">pygot.tools.analysis.ProbabilityModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pygot.tools.analysis.CellFate.html">pygot.tools.analysis.CellFate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pygot.tools.analysis.TimeSeriesRoadmap.html">pygot.tools.analysis.TimeSeriesRoadmap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pygot.tools.analysis.GRN.html">pygot.tools.analysis.GRN</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pygot.tools.analysis.GRNData.html">pygot.tools.analysis.GRNData</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.plotting.plot_trajectory.html">pygot.plotting.plot_trajectory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.plotting.plot_root_cell.html">pygot.plotting.plot_root_cell</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html">pygot.debug.VCentricSamplingDebugger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../generated/pygot.debug.VCentricSampleBatch.html">pygot.debug.VCentricSampleBatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pygot.datasets.synthetic.html">pygot.datasets.synthetic</a></li>
+</ul>
+</details></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vector Field Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../%5Btutorial%5D01_vector_field_learning_for_time-series.html">01. Vector Field Inference with Time-Series Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%5Btutorial%5D02_vector_field_learning_for_snapshot.html">02. Vector Field Inference with Snapshot Data</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Vector Field Interpretation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../../%5Btutorial%5D03_velocity_based_pseudotime.html">03. Velocity-based Pseudotime Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%5Btutorial%5D04_cell_fate_prediction.html">04. Cell Fate Quantification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%5Btutorial%5D05_development_tree_inference.html">05. Developmental Tree Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%5Btutorial%5D06_gene_regulatory_network_inference.html">06. Gene Regulatory Network Inference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../%5Btutorial%5D07_in_silico_perturbation.html">07. In silico perturbation</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pygot.debug.v_centric</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">contextlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">..preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">learn_embed2vis_map</span><span class="p">,</span> <span class="n">load_map_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..tools.traj.v_centric_training</span><span class="w"> </span><span class="kn">import</span> <span class="n">GraphicalOTVelocitySampler</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_to_numpy</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_temporary_random_seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">random_state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">yield</span>
+        <span class="k">return</span>
+
+    <span class="n">numpy_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+    <span class="n">python_state</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">getstate</span><span class="p">()</span>
+    <span class="n">torch_state</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">get_rng_state</span><span class="p">()</span>
+    <span class="n">cuda_states</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">get_rng_state_all</span><span class="p">()</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">numpy_state</span><span class="p">)</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">setstate</span><span class="p">(</span><span class="n">python_state</span><span class="p">)</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_rng_state</span><span class="p">(</span><span class="n">torch_state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cuda_states</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_rng_state_all</span><span class="p">(</span><span class="n">cuda_states</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="VCentricSampleBatch">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSampleBatch.html#pygot.debug.VCentricSampleBatch">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">VCentricSampleBatch</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One directly sampled v-centric training batch and its debug metadata."""</span>
+
+    <span class="n">t</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">u</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="n">x0</span><span class="p">:</span> <span class="nb">list</span>
+    <span class="n">x1</span><span class="p">:</span> <span class="nb">list</span>
+    <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'metadata'</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">metadata</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="VCentricSamplingDebugger">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">VCentricSamplingDebugger</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Run and visualize the same sampling procedure used by v-centric training."""</span>
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.__init__">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">adata</span><span class="p">,</span>
+            <span class="n">time_key</span><span class="p">,</span>
+            <span class="n">embedding_key</span><span class="p">,</span>
+            <span class="n">graph_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">knn_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+            <span class="n">landmarks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">linear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">sampler_kwargs</span><span class="p">,</span>
+            <span class="p">):</span>
+        <span class="k">if</span> <span class="n">device</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cuda'</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">'cpu'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">adata</span> <span class="o">=</span> <span class="n">adata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_key</span> <span class="o">=</span> <span class="n">time_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span> <span class="o">=</span> <span class="n">embedding_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph_key</span> <span class="o">=</span> <span class="n">embedding_key</span> <span class="k">if</span> <span class="n">graph_key</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">graph_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">device</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span> <span class="o">=</span> <span class="n">GraphicalOTVelocitySampler</span><span class="p">(</span>
+            <span class="n">adata</span><span class="p">,</span>
+            <span class="n">time_key</span><span class="p">,</span>
+            <span class="n">graph_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">graph_key</span><span class="p">,</span>
+            <span class="n">embedding_key</span><span class="o">=</span><span class="n">embedding_key</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+            <span class="n">landmarks</span><span class="o">=</span><span class="n">landmarks</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">linear</span><span class="o">=</span><span class="n">linear</span><span class="p">,</span>
+            <span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">,</span>
+            <span class="n">knn_constraint</span><span class="o">=</span><span class="n">knn_constraint</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">sampler_kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapping_rmse</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.sample">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.sample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sample</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+            <span class="n">n_samples_in_path</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">distance_metrics</span><span class="o">=</span><span class="s1">'SP'</span><span class="p">,</span>
+            <span class="n">filtered</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">add_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+            <span class="n">k</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+            <span class="n">q</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span>
+        <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Sample without constructing or training a velocity model."""</span>
+        <span class="n">use_filtered</span> <span class="o">=</span> <span class="n">filtered</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">knn_constraint</span>
+        <span class="n">sample_method</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">filtered_sample_batch_path</span>
+            <span class="k">if</span> <span class="n">use_filtered</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">sample_batch_path</span>
+        <span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'sigma'</span><span class="p">:</span> <span class="n">sigma</span><span class="p">,</span>
+            <span class="s1">'batch_size'</span><span class="p">:</span> <span class="n">batch_size</span><span class="p">,</span>
+            <span class="s1">'distance_metrics'</span><span class="p">:</span> <span class="n">distance_metrics</span><span class="p">,</span>
+            <span class="s1">'add_noise'</span><span class="p">:</span> <span class="n">add_noise</span><span class="p">,</span>
+            <span class="s1">'n_samples_in_path'</span><span class="p">:</span> <span class="n">n_samples_in_path</span><span class="p">,</span>
+            <span class="s1">'return_metadata'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">use_filtered</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">'k'</span><span class="p">:</span> <span class="n">k</span><span class="p">,</span> <span class="s1">'q'</span><span class="p">:</span> <span class="n">q</span><span class="p">})</span>
+
+        <span class="k">with</span> <span class="n">_temporary_random_seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">sample_method</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">metadata</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_enrich_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">VCentricSampleBatch</span><span class="p">(</span>
+            <span class="n">t</span><span class="o">=</span><span class="n">_to_numpy</span><span class="p">(</span><span class="n">t</span><span class="p">),</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">_to_numpy</span><span class="p">(</span><span class="n">x</span><span class="p">),</span>
+            <span class="n">u</span><span class="o">=</span><span class="n">_to_numpy</span><span class="p">(</span><span class="n">u</span><span class="p">),</span>
+            <span class="n">x0</span><span class="o">=</span><span class="p">[</span><span class="n">_to_numpy</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">],</span>
+            <span class="n">x1</span><span class="o">=</span><span class="p">[</span><span class="n">_to_numpy</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">x1</span><span class="p">],</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_enrich_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">pair_transition</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_transition_idx'</span><span class="p">]</span>
+        <span class="n">source_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">target_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pair_time_start</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">pair_time_end</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">transition</span><span class="p">,</span> <span class="n">source_idx</span><span class="p">,</span> <span class="n">target_idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                <span class="n">pair_transition</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_source_idx'</span><span class="p">],</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_target_idx'</span><span class="p">],</span>
+                <span class="p">):</span>
+            <span class="n">source_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">index_list</span><span class="p">[</span><span class="n">transition</span><span class="p">][</span><span class="n">source_idx</span><span class="p">])</span>
+            <span class="n">target_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">index_list</span><span class="p">[</span><span class="n">transition</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="n">target_idx</span><span class="p">])</span>
+            <span class="n">pair_time_start</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">transition</span><span class="p">])</span>
+            <span class="n">pair_time_end</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">transition</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_source_obs_names'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">source_names</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_target_obs_names'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">target_names</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_time_start'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pair_time_start</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_time_end'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pair_time_end</span><span class="p">)</span>
+
+        <span class="n">sample_transition</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">'transition_idx'</span><span class="p">]</span>
+        <span class="n">time_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">sample_transition</span><span class="p">]</span>
+        <span class="n">time_end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">[</span><span class="n">sample_transition</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'time_start'</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_start</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'time_end'</span><span class="p">]</span> <span class="o">=</span> <span class="n">time_end</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">ts</span><span class="p">)</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">):</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="s1">'data_time'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">'alpha'</span><span class="p">])</span> <span class="o">*</span> <span class="n">time_start</span>
+                <span class="o">+</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">'alpha'</span><span class="p">]</span> <span class="o">*</span> <span class="n">time_end</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="p">[</span><span class="s1">'data_time'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'source_idx'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_source_idx'</span><span class="p">][</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_id'</span><span class="p">]]</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'target_idx'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_target_idx'</span><span class="p">][</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_id'</span><span class="p">]]</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'source_obs_names'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_source_obs_names'</span><span class="p">][</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_id'</span><span class="p">]]</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s1">'target_obs_names'</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_target_obs_names'</span><span class="p">][</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_id'</span><span class="p">]]</span>
+        <span class="k">return</span> <span class="n">metadata</span>
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.summary">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.summary">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">print_summary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Return basic sampling, connectivity, filtering, and velocity diagnostics."""</span>
+        <span class="n">path_length</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_path_length'</span><span class="p">]</span>
+        <span class="n">chord_length</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_chord_length'</span><span class="p">]</span>
+        <span class="n">valid_chord</span> <span class="o">=</span> <span class="n">chord_length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">ratios</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">path_length</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">ratios</span><span class="p">[</span><span class="n">valid_chord</span><span class="p">]</span> <span class="o">=</span> <span class="n">path_length</span><span class="p">[</span><span class="n">valid_chord</span><span class="p">]</span> <span class="o">/</span> <span class="n">chord_length</span><span class="p">[</span><span class="n">valid_chord</span><span class="p">]</span>
+        <span class="n">velocity_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">finite_ratios</span> <span class="o">=</span> <span class="n">ratios</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">ratios</span><span class="p">)]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">'ot_pairs'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">path_length</span><span class="p">),</span>
+            <span class="s1">'connected_pairs'</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_connected'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+            <span class="s1">'disconnected_pairs'</span><span class="p">:</span> <span class="nb">int</span><span class="p">((</span><span class="o">~</span><span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_connected'</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+            <span class="s1">'linear_fallback_pairs'</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_used_linear_fallback'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()),</span>
+            <span class="s1">'samples_before_filter'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pre_filter_x'</span><span class="p">]),</span>
+            <span class="s1">'samples_after_filter'</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">),</span>
+            <span class="s1">'mean_velocity_norm'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">velocity_norm</span><span class="p">)),</span>
+            <span class="s1">'p95_velocity_norm'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">velocity_norm</span><span class="p">,</span> <span class="mi">95</span><span class="p">)),</span>
+            <span class="s1">'max_velocity_norm'</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">velocity_norm</span><span class="p">)),</span>
+            <span class="s1">'mean_path_chord_ratio'</span><span class="p">:</span> <span class="p">(</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">finite_ratios</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">finite_ratios</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="p">),</span>
+            <span class="s1">'max_path_chord_ratio'</span><span class="p">:</span> <span class="p">(</span>
+                <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">finite_ratios</span><span class="p">))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">finite_ratios</span><span class="p">)</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+            <span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping_rmse</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s1">'embed_to_vis_rmse'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapping_rmse</span>
+        <span class="k">if</span> <span class="n">print_summary</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.learn_vis_map">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.learn_vis_map">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">learn_vis_map</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">vis_key</span><span class="o">=</span><span class="s1">'X_umap'</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
+            <span class="n">num_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">patience</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Learn an out-of-sample map from the training embedding to a 2D view."""</span>
+        <span class="k">if</span> <span class="n">vis_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'`</span><span class="si">{</span><span class="n">vis_key</span><span class="si">}</span><span class="s1">` is not present in `adata.obsm`'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'`adata.obsm[</span><span class="si">{</span><span class="n">vis_key</span><span class="si">!r}</span><span class="s1">]` must be two-dimensional'</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">_temporary_random_seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">):</span>
+            <span class="n">mapped_cells</span><span class="p">,</span> <span class="n">mapper</span> <span class="o">=</span> <span class="n">learn_embed2vis_map</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="p">,</span>
+                <span class="n">embedding_key</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span><span class="p">,</span>
+                <span class="n">vis_key</span><span class="o">=</span><span class="n">vis_key</span><span class="p">,</span>
+                <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+                <span class="n">num_epochs</span><span class="o">=</span><span class="n">num_epochs</span><span class="p">,</span>
+                <span class="n">patience</span><span class="o">=</span><span class="n">patience</span><span class="p">,</span>
+                <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">=</span> <span class="n">vis_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="o">=</span> <span class="n">mapper</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapping_rmse</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">mapped_cells</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">mapped_cells</span><span class="p">,</span> <span class="n">mapper</span></div>
+
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.set_vis_mapper">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.set_vis_mapper">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_vis_mapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mapper</span><span class="p">,</span> <span class="n">vis_key</span><span class="o">=</span><span class="s1">'X_umap'</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Reuse an existing embed-to-visualization mapper."""</span>
+        <span class="k">if</span> <span class="n">vis_key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'`</span><span class="si">{</span><span class="n">vis_key</span><span class="si">}</span><span class="s1">` is not present in `adata.obsm`'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'`adata.obsm[</span><span class="si">{</span><span class="n">vis_key</span><span class="si">!r}</span><span class="s1">]` must be two-dimensional'</span><span class="p">)</span>
+        <span class="n">mapper</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">=</span> <span class="n">vis_key</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="o">=</span> <span class="n">mapper</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_key</span><span class="p">]))</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mapping_rmse</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">mapped</span> <span class="o">-</span> <span class="n">target</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.save_vis_mapper">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.save_vis_mapper">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save_vis_mapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">'No visualization mapper has been fitted or assigned'</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.load_vis_mapper">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.load_vis_mapper">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_vis_mapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">vis_key</span><span class="o">=</span><span class="s1">'X_umap'</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_vis_mapper</span><span class="p">(</span><span class="n">load_map_model</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)),</span> <span class="n">vis_key</span><span class="o">=</span><span class="n">vis_key</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_map_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">'Call `learn_vis_map` or `set_vis_mapper` first'</span><span class="p">)</span>
+        <span class="n">mapped</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mapped</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'The visualization mapper output must be two-dimensional'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">mapped</span>
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.project_to_2d">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.project_to_2d">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">project_to_2d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Project sample positions and velocities through the learned nonlinear map."""</span>
+        <span class="k">if</span> <span class="n">dt</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'`dt` must be positive'</span><span class="p">)</span>
+        <span class="n">x_vis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x_next_vis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">dt</span> <span class="o">*</span> <span class="n">batch</span><span class="o">.</span><span class="n">u</span><span class="p">)</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'x_vis'</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_vis</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'u_vis'</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_next_vis</span> <span class="o">-</span> <span class="n">x_vis</span><span class="p">)</span> <span class="o">/</span> <span class="n">dt</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_x0_vis'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_x0'</span><span class="p">])</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_x1_vis'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_x1'</span><span class="p">])</span>
+        <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pre_filter_x_vis'</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pre_filter_x'</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">batch</span></div>
+
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.plot_2d">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.plot_2d">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_2d</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">batch</span><span class="p">,</span>
+            <span class="n">vis_key</span><span class="o">=</span><span class="s1">'X_umap'</span><span class="p">,</span>
+            <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">learn_map_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">show_cells</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_pairs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">show_paths</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_velocity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">show_rejected</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s1">'alpha'</span><span class="p">,</span>
+            <span class="n">normalize_velocity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">max_paths</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">max_arrows</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+            <span class="n">dt</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
+            <span class="n">scatter_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Plot directly sampled positions, graph paths, and pushed-forward velocities."""</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">!=</span> <span class="n">vis_key</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">learn_vis_map</span><span class="p">(</span><span class="n">vis_key</span><span class="o">=</span><span class="n">vis_key</span><span class="p">,</span> <span class="o">**</span><span class="p">(</span><span class="n">learn_map_kwargs</span> <span class="ow">or</span> <span class="p">{}))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project_to_2d</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">dt</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">show_cells</span><span class="p">:</span>
+            <span class="n">observed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">observed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">observed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'lightgray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.45</span><span class="p">)</span>
+
+        <span class="n">pair_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">pair_id</span><span class="p">)</span>
+        <span class="n">pair_ids</span> <span class="o">=</span> <span class="n">pair_ids</span><span class="p">[:</span><span class="n">max_paths</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">show_pairs</span><span class="p">:</span>
+            <span class="n">x0_vis</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_x0_vis</span><span class="p">[</span><span class="n">pair_ids</span><span class="p">]</span>
+            <span class="n">x1_vis</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_x1_vis</span><span class="p">[</span><span class="n">pair_ids</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x0_vis</span><span class="p">,</span> <span class="n">x1_vis</span><span class="p">):</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">'--'</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'tab:blue'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show_paths</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">pair_id</span> <span class="ow">in</span> <span class="n">pair_ids</span><span class="p">:</span>
+                <span class="n">path_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pair_path_coordinates</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">pair_id</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">path_x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">path_vis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">(</span><span class="n">path_x</span><span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">path_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.25</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">.8</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">color</span> <span class="o">==</span> <span class="s1">'velocity_norm'</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">color</span> <span class="o">==</span> <span class="s1">'pair_id'</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_id</span>
+        <span class="k">elif</span> <span class="n">color</span> <span class="o">==</span> <span class="s1">'t'</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">t</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">color</span> <span class="ow">in</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="n">color</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Unknown sample color: </span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">colors</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'`</span><span class="si">{</span><span class="n">color</span><span class="si">}</span><span class="s1">` is not sample-level numeric metadata'</span><span class="p">)</span>
+
+        <span class="n">sample_style</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'s'</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span> <span class="s1">'alpha'</span><span class="p">:</span> <span class="mf">.8</span><span class="p">,</span> <span class="s1">'cmap'</span><span class="p">:</span> <span class="s1">'viridis'</span><span class="p">}</span>
+        <span class="n">sample_style</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">scatter_kwargs</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="s1">'c'</span> <span class="ow">in</span> <span class="n">sample_style</span> <span class="ow">or</span> <span class="s1">'color'</span> <span class="ow">in</span> <span class="n">sample_style</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Use the `color` argument instead of scatter color kwargs'</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">sample_style</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show_rejected</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">~</span><span class="n">batch</span><span class="o">.</span><span class="n">filter_mask</span><span class="p">):</span>
+            <span class="n">rejected</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pre_filter_x_vis</span><span class="p">[</span><span class="o">~</span><span class="n">batch</span><span class="o">.</span><span class="n">filter_mask</span><span class="p">]</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">rejected</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">rejected</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">18</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.6</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show_velocity</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">arrow_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="nb">min</span><span class="p">(</span><span class="n">max_arrows</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">)),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">velocity</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">u_vis</span><span class="p">[</span><span class="n">arrow_idx</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">normalize_velocity</span><span class="p">:</span>
+                <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">velocity</span> <span class="o">=</span> <span class="n">velocity</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+                <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[</span><span class="n">arrow_idx</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[</span><span class="n">arrow_idx</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">velocity</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">velocity</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="mf">.5</span><span class="p">,</span>
+                <span class="n">scale</span><span class="o">=</span><span class="mi">30</span> <span class="k">if</span> <span class="n">normalize_velocity</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mf">.002</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">'V-centric samples | embed-to-vis RMSE=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mapping_rmse</span><span class="si">:</span><span class="s1">.4g</span><span class="si">}</span><span class="s1">'</span>
+        <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">vis_key</span><span class="si">}</span><span class="s1"> 1'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">vis_key</span><span class="si">}</span><span class="s1"> 2'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">color</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="VCentricSamplingDebugger.plot_pair_2d">
+<a class="viewcode-back" href="../../../generated/pygot.debug.VCentricSamplingDebugger.html#pygot.debug.VCentricSamplingDebugger.plot_pair_2d">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot_pair_2d</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">batch</span><span class="p">,</span>
+            <span class="n">pair_id</span><span class="p">,</span>
+            <span class="n">vis_key</span><span class="o">=</span><span class="s1">'X_umap'</span><span class="p">,</span>
+            <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">show_velocity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">normalize_velocity</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""Plot one OT pair and all samples drawn from its path."""</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+        <span class="k">if</span> <span class="n">pair_id</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">pair_id</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'paths'</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Unknown pair_id: </span><span class="si">{</span><span class="n">pair_id</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_mapper</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">!=</span> <span class="n">vis_key</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">learn_vis_map</span><span class="p">(</span><span class="n">vis_key</span><span class="o">=</span><span class="n">vis_key</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'learn_map_kwargs'</span><span class="p">,</span> <span class="p">{}))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">project_to_2d</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'dt'</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+        <span class="n">observed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">adata</span><span class="o">.</span><span class="n">obsm</span><span class="p">[</span><span class="n">vis_key</span><span class="p">])</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">observed</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">observed</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">'lightgray'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">.35</span><span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_id</span> <span class="o">==</span> <span class="n">pair_id</span>
+        <span class="n">path_x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pair_path_coordinates</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">pair_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path_x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path_vis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_map_positions</span><span class="p">(</span><span class="n">path_x</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path_vis</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">path_vis</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_x0_vis</span><span class="p">[</span><span class="n">pair_id</span><span class="p">]</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">pair_x1_vis</span><span class="p">[</span><span class="n">pair_id</span><span class="p">]</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">start</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">start</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'blue'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'source'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">end</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">end</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="s1">'red'</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'target'</span><span class="p">)</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+            <span class="n">c</span><span class="o">=</span><span class="n">batch</span><span class="o">.</span><span class="n">alpha</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span>
+            <span class="n">cmap</span><span class="o">=</span><span class="s1">'viridis'</span><span class="p">,</span>
+            <span class="n">s</span><span class="o">=</span><span class="mi">28</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s1">'samples'</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">show_velocity</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">mask</span><span class="p">):</span>
+            <span class="n">velocity</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">u_vis</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">normalize_velocity</span><span class="p">:</span>
+                <span class="n">norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">velocity</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">velocity</span> <span class="o">=</span> <span class="n">velocity</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">norm</span><span class="p">,</span> <span class="mf">1e-8</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span>
+                <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">batch</span><span class="o">.</span><span class="n">x_vis</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">velocity</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+                <span class="n">velocity</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+                <span class="n">color</span><span class="o">=</span><span class="s1">'black'</span><span class="p">,</span>
+                <span class="n">alpha</span><span class="o">=</span><span class="mf">.55</span><span class="p">,</span>
+                <span class="n">scale</span><span class="o">=</span><span class="mi">30</span> <span class="k">if</span> <span class="n">normalize_velocity</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="n">width</span><span class="o">=</span><span class="mf">.002</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">'alpha'</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s1">'V-centric OT pair </span><span class="si">{</span><span class="n">pair_id</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">ax</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_pair_path_coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">pair_id</span><span class="p">):</span>
+        <span class="n">transition</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'pair_transition_idx'</span><span class="p">][</span><span class="n">pair_id</span><span class="p">]</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'paths'</span><span class="p">][</span><span class="n">pair_id</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">x_pair</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">transition</span><span class="p">],</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">transition</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="p">])</span>
+        <span class="k">return</span> <span class="n">x_pair</span><span class="p">[</span><span class="n">path</span><span class="p">]</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Ruihong Xu
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2025, Ruihong Xu.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
