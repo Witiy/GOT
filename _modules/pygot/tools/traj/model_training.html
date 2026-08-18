@@ -353,7 +353,7 @@ document.write(`
         <span class="n">graph_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
         <span class="n">knn_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">v_centric_iter_n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">v_centric_batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> 
+        <span class="n">v_centric_iter_n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">v_centric_batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
         <span class="n">add_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
         <span class="n">lr</span><span class="o">=</span><span class="mf">5e-3</span><span class="p">,</span> 
         <span class="n">path</span><span class="o">=</span><span class="s1">''</span><span class="p">,</span>
@@ -366,6 +366,7 @@ document.write(`
         <span class="n">reverse_schema</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">time_varying</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">filtered</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">n_samples_in_path</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Estimates velocities and fit trajectories in latent space.</span>
@@ -394,6 +395,8 @@ document.write(`
 <span class="sd">        Iteration number of v-centric training</span>
 <span class="sd">    v_centric_batch_size: `int` (default: 256)</span>
 <span class="sd">        Batch size of v-centric training. Note: increase will dramatically increase training time due to the complexity of OT</span>
+<span class="sd">    n_samples_in_path: `int` (default: 1)</span>
+<span class="sd">        Number of interpolation samples drawn from each OT-paired path</span>
 <span class="sd">    add_noise: `bool` (default: True)</span>
 <span class="sd">        Assumption of gaussian distribution of velocity</span>
 <span class="sd">    sigma: `float` (default: 0.1)</span>
@@ -455,9 +458,23 @@ document.write(`
 
     <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">filtered</span> <span class="ow">and</span> <span class="n">knn_constraint</span><span class="p">:</span>
-        <span class="n">sample_fn_path</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">sp_sampler</span><span class="o">.</span><span class="n">filtered_sample_batch_path</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">v_centric_batch_size</span><span class="p">,</span> <span class="n">distance_metrics</span><span class="o">=</span><span class="n">distance_metrics</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="n">add_noise</span><span class="p">)</span>
+        <span class="n">sample_fn_path</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">sp_sampler</span><span class="o">.</span><span class="n">filtered_sample_batch_path</span><span class="p">,</span>
+            <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">v_centric_batch_size</span><span class="p">,</span>
+            <span class="n">distance_metrics</span><span class="o">=</span><span class="n">distance_metrics</span><span class="p">,</span>
+            <span class="n">add_noise</span><span class="o">=</span><span class="n">add_noise</span><span class="p">,</span>
+            <span class="n">n_samples_in_path</span><span class="o">=</span><span class="n">n_samples_in_path</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">sample_fn_path</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">sp_sampler</span><span class="o">.</span><span class="n">sample_batch_path</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">v_centric_batch_size</span><span class="p">,</span> <span class="n">distance_metrics</span><span class="o">=</span><span class="n">distance_metrics</span><span class="p">,</span> <span class="n">add_noise</span><span class="o">=</span><span class="n">add_noise</span><span class="p">)</span>
+        <span class="n">sample_fn_path</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span>
+            <span class="n">sp_sampler</span><span class="o">.</span><span class="n">sample_batch_path</span><span class="p">,</span>
+            <span class="n">sigma</span><span class="o">=</span><span class="n">sigma</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">v_centric_batch_size</span><span class="p">,</span>
+            <span class="n">distance_metrics</span><span class="o">=</span><span class="n">distance_metrics</span><span class="p">,</span>
+            <span class="n">add_noise</span><span class="o">=</span><span class="n">add_noise</span><span class="p">,</span>
+            <span class="n">n_samples_in_path</span><span class="o">=</span><span class="n">n_samples_in_path</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="n">model</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">v_centric_training</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">sample_fn_path</span><span class="p">,</span> <span class="n">iter_n</span><span class="o">=</span><span class="n">v_centric_iter_n</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">x_centric</span><span class="p">:</span>
