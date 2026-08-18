@@ -111,7 +111,7 @@ class VCentricSamplingDebugger:
             sigma=0.1,
             k=15,
             q=80,
-        random_state=None,
+            random_state=None,
             ):
         """Sample without constructing or training a velocity model."""
         use_filtered = filtered and self.sampler.knn_constraint
@@ -297,107 +297,107 @@ class VCentricSamplingDebugger:
     def plot_2d(
             self,
             batch,
-            vis_key='X_umap',
+            time_point,
+            vis_key=None,
             ax=None,
             learn_map_kwargs=None,
-            show_cells=True,
-            show_pairs=False,
-            show_paths=True,
-            show_velocity=True,
-            show_rejected=False,
-            color='alpha',
-            normalize_velocity=True,
             max_paths=100,
-            max_arrows=300,
-            dt=1e-3,
-            scatter_kwargs=None,
+            embedding_kw=None,
+            path_kw=None,
+            sample_kw=None,
+            source_kw=None,
+            target_kw=None,
             ):
-        """Plot directly sampled positions, graph paths, and pushed-forward velocities."""
+        """Plot sampled paths and points for one adjacent time transition.
+
+        ``time_point`` is the source label of the transition to plot. For
+        example, if the observed time labels are ``[0, 1, 2]``, passing
+        ``time_point=1`` plots samples and paths from the ``1 -> 2``
+        transition.
+
+        When the fitted embedding is already two-dimensional, its coordinates
+        are used directly and ``vis_key`` is unnecessary. For a
+        higher-dimensional fitted embedding, ``vis_key`` must identify a 2D
+        representation in ``adata.obsm``; an out-of-sample map is learned so
+        sampled paths and points can be projected into that representation.
+        """
         import matplotlib.pyplot as plt
 
-        if self.vis_mapper is None or self.vis_key != vis_key:
-            self.learn_vis_map(vis_key=vis_key, **(learn_map_kwargs or {}))
-        self.project_to_2d(batch, dt=dt)
+        transition = self._transition_index(time_point)
+        sample_mask = batch.transition_idx == transition
+        if not np.any(sample_mask):
+            raise ValueError(
+                f'No retained samples are available for time point {time_point!r}'
+            )
+
+        embedding = np.asarray(self.adata.obsm[self.embedding_key])
+        direct_2d = embedding.shape[1] == 2
+        if direct_2d:
+            observed = embedding
+            map_positions = lambda x: np.asarray(x)
+            axis_key = self.embedding_key
+        else:
+            if vis_key is None:
+                raise ValueError(
+                    '`vis_key` is required when the fitted embedding is not 2D'
+                )
+            if self.vis_mapper is None or self.vis_key != vis_key:
+                self.learn_vis_map(vis_key=vis_key, **(learn_map_kwargs or {}))
+            observed = np.asarray(self.adata.obsm[vis_key])
+            map_positions = self._map_positions
+            axis_key = vis_key
 
         if ax is None:
             _, ax = plt.subplots(figsize=(7, 6))
-        if show_cells:
-            observed = np.asarray(self.adata.obsm[vis_key])
-            ax.scatter(observed[:, 0], observed[:, 1], s=6, c='lightgray', alpha=.45)
+        background_style = {'s': 6, 'c': 'lightgray', 'alpha': .45}
+        background_style.update(embedding_kw or {})
+        ax.scatter(observed[:, 0], observed[:, 1], **background_style)
 
-        pair_ids = np.unique(batch.pair_id)
-        pair_ids = pair_ids[:max_paths]
-        if show_pairs:
-            x0_vis = batch.pair_x0_vis[pair_ids]
-            x1_vis = batch.pair_x1_vis[pair_ids]
-            for start, end in zip(x0_vis, x1_vis):
-                ax.plot([start[0], end[0]], [start[1], end[1]], '--', color='tab:blue', alpha=.2)
+        pair_ids = np.unique(batch.pair_id[sample_mask])[:max_paths]
+        path_style = {'color': 'black', 'alpha': .3, 'linewidth': 1}
+        path_style.update(path_kw or {})
+        for pair_id in pair_ids:
+            path_x = self._pair_path_coordinates(batch, pair_id)
+            if path_x is None:
+                continue
+            path_vis = map_positions(path_x)
+            ax.plot(path_vis[:, 0], path_vis[:, 1], **path_style)
 
-        if show_paths:
-            for pair_id in pair_ids:
-                path_x = self._pair_path_coordinates(batch, pair_id)
-                if path_x is None:
-                    continue
-                path_vis = self._map_positions(path_x)
-                ax.plot(path_vis[:, 0], path_vis[:, 1], color='black', alpha=.25, linewidth=.8)
+        x_vis = map_positions(batch.x[sample_mask])
+        sample_style = {'color': 'black', 's': 18, 'alpha': .8, 'zorder': 3}
+        sample_style.update(sample_kw or {})
+        ax.scatter(x_vis[:, 0], x_vis[:, 1], **sample_style)
 
-        if color == 'velocity_norm':
-            colors = np.linalg.norm(batch.u, axis=1)
-        elif color == 'pair_id':
-            colors = batch.pair_id
-        elif color == 't':
-            colors = batch.t.reshape(-1)
-        elif color in batch.metadata:
-            colors = batch.metadata[color]
-        else:
-            raise ValueError(f'Unknown sample color: {color}')
-        if colors is None or len(colors) != len(batch):
-            raise ValueError(f'`{color}` is not sample-level numeric metadata')
+        source_vis = map_positions(batch.pair_x0[pair_ids])
+        target_vis = map_positions(batch.pair_x1[pair_ids])
+        source_style = {'color': 'blue', 's': 20, 'label': 'source', 'zorder': 4}
+        source_style.update(source_kw or {})
+        ax.scatter(source_vis[:, 0], source_vis[:, 1], **source_style)
+        target_style = {
+            'facecolors': 'none',
+            'edgecolors': 'red',
+            's': 20,
+            'label': 'target',
+            'zorder': 4,
+        }
+        target_style.update(target_kw or {})
+        ax.scatter(target_vis[:, 0], target_vis[:, 1], **target_style)
 
-        sample_style = {'s': 16, 'alpha': .8, 'cmap': 'viridis'}
-        sample_style.update(scatter_kwargs or {})
-        if 'c' in sample_style or 'color' in sample_style:
-            raise ValueError('Use the `color` argument instead of scatter color kwargs')
-        points = ax.scatter(
-            batch.x_vis[:, 0],
-            batch.x_vis[:, 1],
-            c=colors,
-            **sample_style,
-        )
-
-        if show_rejected and np.any(~batch.filter_mask):
-            rejected = batch.pre_filter_x_vis[~batch.filter_mask]
-            ax.scatter(rejected[:, 0], rejected[:, 1], marker='x', c='red', s=18, alpha=.6)
-
-        if show_velocity and len(batch.x_vis) > 0:
-            arrow_idx = np.linspace(
-                0,
-                len(batch.x_vis) - 1,
-                min(max_arrows, len(batch.x_vis)),
-                dtype=int,
-            )
-            velocity = batch.u_vis[arrow_idx].copy()
-            if normalize_velocity:
-                norm = np.linalg.norm(velocity, axis=1, keepdims=True)
-                velocity = velocity / np.maximum(norm, 1e-8)
-            ax.quiver(
-                batch.x_vis[arrow_idx, 0],
-                batch.x_vis[arrow_idx, 1],
-                velocity[:, 0],
-                velocity[:, 1],
-                color='black',
-                alpha=.5,
-                scale=30 if normalize_velocity else None,
-                width=.002,
-            )
-
-        ax.set_title(
-            f'V-centric samples | embed-to-vis RMSE={self.mapping_rmse:.4g}'
-        )
-        ax.set_xlabel(f'{vis_key} 1')
-        ax.set_ylabel(f'{vis_key} 2')
-        ax.figure.colorbar(points, ax=ax, label=color)
+        time_end = self.sampler.ts[transition + 1]
+        ax.set_title(f'V-centric samples: {time_point} → {time_end}')
+        ax.set_xlabel(f'{axis_key} 1')
+        ax.set_ylabel(f'{axis_key} 2')
+        ax.axis('off')
         return ax.figure, ax
+
+    def _transition_index(self, time_point):
+        matches = np.flatnonzero(self.sampler.ts[:-1] == time_point)
+        if len(matches) == 0:
+            available = self.sampler.ts[:-1].tolist()
+            raise ValueError(
+                f'Unknown source time point {time_point!r}; choose one of {available}'
+            )
+        return int(matches[0])
 
     def plot_pair_2d(
             self,
