@@ -316,8 +316,9 @@ class GraphicalOTVelocitySampler:
             n_neighbors : int
                 the number of neighbors
             knn_constraint : bool
-                use the kNN graph for OT cost and path interpolation, and
-                enable kNN velocity filtering
+                use graph paths for interpolation and enable kNN velocity
+                filtering. OT cost is selected independently by
+                ``distance_metrics`` when sampling
         
         """
         assert (p == 1) or (p == 2)
@@ -338,11 +339,11 @@ class GraphicalOTVelocitySampler:
         self.set_embedding(embedding_key)
         self.data_dir = path
         self.knn_constraint = knn_constraint
+        self.n_neighbors = n_neighbors
+        self.landmarks_fold = landmarks_fold
+        self.GPs = None
         if self.knn_constraint:
-            self.load_gp(self.data_dir)
-            self.compute_shortest_path(n_neighbors, landmarks_fold=landmarks_fold)
-        else:
-            self.GPs = None
+            self._ensure_graph_paths()
         self.p = p
         
         
@@ -421,6 +422,18 @@ class GraphicalOTVelocitySampler:
                 os.makedirs(self.data_dir)
             self.save_gp(self.data_dir)
 
+    def _ensure_graph_paths(self):
+        """Load or compute graph paths only when graph-based behavior is used."""
+        if self.GPs is not None:
+            return
+        if self.data_dir != '':
+            self.load_gp(self.data_dir)
+        if self.GPs is None:
+            self.compute_shortest_path(
+                self.n_neighbors,
+                landmarks_fold=self.landmarks_fold,
+            )
+
     
     def save_gp(self, path):
         for i in range(len(self.ts) - 1):
@@ -497,13 +510,13 @@ class GraphicalOTVelocitySampler:
                 .float()
             )
         # calcu the optimal transport plan and get \pi(x0, x1) as latent distribution
-        if not self.knn_constraint or distance_metrics != 'SP':
+        if distance_metrics == 'SP':
+            # Shortest path distance as optimal transport cost matrix
+            self._ensure_graph_paths()
+            M = self.GPs[t_start].graphical_distance(source_idx, target_idx + self.n_list[t_start])
+        else:
             # L2 distance as optimal transport cost matrix
             M = torch.cdist(x0_c, x1_c)
-            
-        else:
-            # Shortest path distance as optimal transport cost matrix
-            M = self.GPs[t_start].graphical_distance(source_idx, target_idx + self.n_list[t_start])
         
         if self.p == 2:
             M = M ** 2    

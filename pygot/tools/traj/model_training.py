@@ -98,8 +98,9 @@ def fit_velocity_model(
     n_neighbors: `int` (default: 50)
         Neighbors number in kNN
     knn_constraint: `bool` (default: True)
-        Use the kNN graph for OT cost and path interpolation, and apply the
-        kNN velocity filter. If False, use L2 OT cost and linear interpolation.
+        Use graph paths for interpolation and apply the kNN velocity filter.
+        If False, use linear interpolation without kNN filtering. The OT cost
+        remains controlled independently by ``distance_metrics``.
     v_centric_iter_n: `int` (default: 1000)
         Iteration number of v-centric training
     v_centric_batch_size: `int` (default: 256)
