@@ -330,22 +330,10 @@ class VCentricSamplingDebugger:
                 f'No retained samples are available for time point {time_point!r}'
             )
 
-        embedding = np.asarray(self.adata.obsm[self.embedding_key])
-        direct_2d = embedding.shape[1] == 2
-        if direct_2d:
-            observed = embedding
-            map_positions = lambda x: np.asarray(x)
-            axis_key = self.embedding_key
-        else:
-            if vis_key is None:
-                raise ValueError(
-                    '`vis_key` is required when the fitted embedding is not 2D'
-                )
-            if self.vis_mapper is None or self.vis_key != vis_key:
-                self.learn_vis_map(vis_key=vis_key, **(learn_map_kwargs or {}))
-            observed = np.asarray(self.adata.obsm[vis_key])
-            map_positions = self._map_positions
-            axis_key = vis_key
+        observed, map_positions, axis_key = self._resolve_2d_view(
+            vis_key,
+            learn_map_kwargs,
+        )
 
         if ax is None:
             _, ax = plt.subplots(figsize=(7, 6))
@@ -389,6 +377,191 @@ class VCentricSamplingDebugger:
         ax.set_ylabel(f'{axis_key} 2')
         ax.axis('off')
         return ax.figure, ax
+
+    def plot_pair_comparison_2d(
+            self,
+            batch,
+            time_point,
+            pair_id=None,
+            vis_key=None,
+            ax=None,
+            learn_map_kwargs=None,
+            linear_path_points=100,
+            embedding_kw=None,
+            knn_path_kw=None,
+            linear_path_kw=None,
+            knn_sample_kw=None,
+            linear_sample_kw=None,
+            source_kw=None,
+            target_kw=None,
+            show_legend=True,
+            ):
+        """Compare KNN and linear interpolation for the same sampled OT pair.
+
+        The source and target cells, as well as the interpolation fractions,
+        are held fixed. Consequently, the figure isolates the path
+        interpolation difference instead of also changing the OT pairing.
+        When ``pair_id`` is omitted, the connected retained pair with the
+        largest graph-path-to-chord ratio in the selected transition is used.
+        """
+        import matplotlib.pyplot as plt
+
+        if not self.sampler.knn_constraint:
+            raise RuntimeError(
+                '`plot_pair_comparison_2d` requires a debugger with '
+                '`knn_constraint=True`'
+            )
+        if not isinstance(linear_path_points, (int, np.integer)) or linear_path_points < 2:
+            raise ValueError('`linear_path_points` must be an integer of at least 2')
+
+        transition = self._transition_index(time_point)
+        transition_sample_mask = batch.transition_idx == transition
+        retained_pair_ids = np.unique(batch.pair_id[transition_sample_mask])
+        if len(retained_pair_ids) == 0:
+            raise ValueError(
+                f'No retained samples are available for time point {time_point!r}'
+            )
+
+        if pair_id is None:
+            connected = batch.pair_connected[retained_pair_ids]
+            candidate_ids = retained_pair_ids[connected]
+            if len(candidate_ids) == 0:
+                raise ValueError(
+                    f'No connected retained pair is available for time point '
+                    f'{time_point!r}'
+                )
+            chord = batch.pair_chord_length[candidate_ids]
+            positive_chord = chord > 0
+            candidate_ids = candidate_ids[positive_chord]
+            chord = chord[positive_chord]
+            if len(candidate_ids) == 0:
+                raise ValueError(
+                    f'No non-degenerate connected pair is available for time '
+                    f'point {time_point!r}'
+                )
+            ratio = batch.pair_path_length[candidate_ids] / chord
+            pair_id = int(candidate_ids[np.argmax(ratio)])
+        else:
+            if not isinstance(pair_id, (int, np.integer)):
+                raise TypeError('`pair_id` must be an integer')
+            pair_id = int(pair_id)
+            if pair_id not in retained_pair_ids:
+                raise ValueError(
+                    f'Pair {pair_id} has no retained samples in the '
+                    f'{time_point!r} transition; choose one of '
+                    f'{retained_pair_ids.tolist()}'
+                )
+            if not batch.pair_connected[pair_id]:
+                raise ValueError(f'Pair {pair_id} has no connected KNN path')
+
+        sample_mask = transition_sample_mask & (batch.pair_id == pair_id)
+        alpha = np.asarray(batch.alpha[sample_mask]).reshape(-1, 1)
+        x0 = np.asarray(batch.pair_x0[pair_id])
+        x1 = np.asarray(batch.pair_x1[pair_id])
+        linear_samples = (1 - alpha) * x0 + alpha * x1
+        clean_samples = batch.metadata.get('x_clean', batch.x)
+        knn_samples = np.asarray(clean_samples)[sample_mask]
+        knn_path = self._pair_path_coordinates(batch, pair_id)
+        if knn_path is None:
+            raise ValueError(f'Pair {pair_id} has no plottable KNN path')
+        linear_fraction = np.linspace(0, 1, linear_path_points)[:, None]
+        linear_path = (1 - linear_fraction) * x0 + linear_fraction * x1
+
+        observed, map_positions, axis_key = self._resolve_2d_view(
+            vis_key,
+            learn_map_kwargs,
+        )
+        knn_path_vis = map_positions(knn_path)
+        linear_path_vis = map_positions(linear_path)
+        knn_samples_vis = map_positions(knn_samples)
+        linear_samples_vis = map_positions(linear_samples)
+        endpoints_vis = map_positions(np.stack([x0, x1]))
+
+        if ax is None:
+            _, ax = plt.subplots(figsize=(7, 6))
+        background_style = {'s': 6, 'c': 'lightgray', 'alpha': .45}
+        background_style.update(embedding_kw or {})
+        ax.scatter(observed[:, 0], observed[:, 1], **background_style)
+
+        knn_path_style = {
+            'color': 'black',
+            'linewidth': 2,
+            'label': 'KNN shortest path',
+        }
+        knn_path_style.update(knn_path_kw or {})
+        ax.plot(knn_path_vis[:, 0], knn_path_vis[:, 1], **knn_path_style)
+        linear_path_style = {
+            'color': 'tab:orange',
+            'linestyle': '--',
+            'linewidth': 2,
+            'label': 'Non-KNN linear path',
+        }
+        linear_path_style.update(linear_path_kw or {})
+        ax.plot(linear_path_vis[:, 0], linear_path_vis[:, 1], **linear_path_style)
+
+        knn_point_style = {
+            'color': 'black',
+            's': 35,
+            'label': 'KNN samples',
+            'zorder': 3,
+        }
+        knn_point_style.update(knn_sample_kw or {})
+        ax.scatter(knn_samples_vis[:, 0], knn_samples_vis[:, 1], **knn_point_style)
+        linear_point_style = {
+            'color': 'tab:orange',
+            'marker': 'x',
+            's': 40,
+            'label': 'Non-KNN samples',
+            'zorder': 3,
+        }
+        linear_point_style.update(linear_sample_kw or {})
+        ax.scatter(
+            linear_samples_vis[:, 0],
+            linear_samples_vis[:, 1],
+            **linear_point_style,
+        )
+
+        source_style = {'color': 'blue', 's': 60, 'label': 'source', 'zorder': 4}
+        source_style.update(source_kw or {})
+        ax.scatter(endpoints_vis[0, 0], endpoints_vis[0, 1], **source_style)
+        target_style = {
+            'facecolors': 'none',
+            'edgecolors': 'red',
+            's': 60,
+            'label': 'target',
+            'zorder': 4,
+        }
+        target_style.update(target_kw or {})
+        ax.scatter(endpoints_vis[1, 0], endpoints_vis[1, 1], **target_style)
+
+        chord_length = batch.pair_chord_length[pair_id]
+        path_chord_ratio = (
+            batch.pair_path_length[pair_id] / chord_length
+            if chord_length > 0 else np.nan
+        )
+        time_end = self.sampler.ts[transition + 1]
+        ax.set_title(
+            f'Pair {pair_id}: {time_point} → {time_end} | '
+            f'path/chord={path_chord_ratio:.3g}'
+        )
+        ax.set_xlabel(f'{axis_key} 1')
+        ax.set_ylabel(f'{axis_key} 2')
+        ax.axis('off')
+        if show_legend:
+            ax.legend()
+        return ax.figure, ax
+
+    def _resolve_2d_view(self, vis_key, learn_map_kwargs=None):
+        embedding = np.asarray(self.adata.obsm[self.embedding_key])
+        if embedding.shape[1] == 2:
+            return embedding, lambda x: np.asarray(x), self.embedding_key
+        if vis_key is None:
+            raise ValueError(
+                '`vis_key` is required when the fitted embedding is not 2D'
+            )
+        if self.vis_mapper is None or self.vis_key != vis_key:
+            self.learn_vis_map(vis_key=vis_key, **(learn_map_kwargs or {}))
+        return np.asarray(self.adata.obsm[vis_key]), self._map_positions, vis_key
 
     def _transition_index(self, time_point):
         matches = np.flatnonzero(self.sampler.ts[:-1] == time_point)
