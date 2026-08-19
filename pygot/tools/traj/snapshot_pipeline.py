@@ -118,7 +118,7 @@ def fit_velocity_model_without_time(
     graph_dist: `bool` (default: True)
         Use shortest-path distance for the root-identification OT cost. If
         False, use L2 distance. This is independent of velocity training and
-        currently requires ``kernel='dpt'``.
+        supports ``kernel='dpt'`` and ``kernel='euclidean'``.
     knn_constraint: `bool` (default: True)
         Use graph path interpolation and kNN filtering during velocity
         training. If False, use L2 OT cost and linear interpolation.
@@ -156,8 +156,15 @@ def fit_velocity_model_without_time(
     """
     assert (not plot) or (plot and (not basis is None)), 'please offer `basis` (e.g. umap) if you set `plot` = True'
     assert (not single_branch_detect) or (single_branch_detect and (not cell_type_key is None)), 'please offer `cell_type_key` if you set `single_branch_detect` = True'
-    if precomputed_pseudotime is None and not graph_dist and kernel != 'dpt':
-        raise ValueError("`graph_dist=False` currently requires `kernel='dpt'`")
+    if (
+            precomputed_pseudotime is None
+            and not graph_dist
+            and kernel not in {'dpt', 'euclidean'}
+            ):
+        raise ValueError(
+            "`graph_dist=False` requires `kernel='dpt'` or "
+            "`kernel='euclidean'`"
+        )
     if device is None:
         use_cuda = torch.cuda.is_available()
         device = torch.device("cuda" if use_cuda else "cpu")

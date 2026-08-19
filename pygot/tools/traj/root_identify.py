@@ -264,7 +264,11 @@ def calcu_got_loss(adata, pseudo_group_key='pseudobin', dist_matrix = None):
     return loss
 
 def greedy_search_best_source(adata, embedding_key, kernel='dpt', split_k=None, graph_dist=False, n_neighbors=20, connect_anchor=None, n_waypoints=1200):
-    assert (kernel=='dpt') | ((kernel != 'dpt') & (graph_dist == True))
+    if not graph_dist and kernel not in {'dpt', 'euclidean'}:
+        raise ValueError(
+            "`graph_dist=False` requires `kernel='dpt'` or "
+            "`kernel='euclidean'`"
+        )
     time_key = kernel + '_pseudotime'
     if split_k is None:
         split_k = int(len(adata) / 100)
@@ -467,5 +471,4 @@ def determine_source_state(adata, embedding_key, graph_dist=True, n_neighbors=30
         adata.uns['ot_ct_root'] = np.where(adata.obs.index == res['cell'].tolist()[0])[0][0]
         adata.uns['cytotrace_alpha'] = alpha
     return res
-
 
