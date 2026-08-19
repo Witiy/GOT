@@ -370,7 +370,7 @@ document.write(`
 </dd>
 <dt>graph_dist: <cite>bool</cite> (default: True)</dt><dd><p>Use shortest-path distance for the root-identification OT cost. If
 False, use L2 distance. This is independent of velocity training and
-currently requires <code class="docutils literal notranslate"><span class="pre">kernel='dpt'</span></code>.</p>
+supports <code class="docutils literal notranslate"><span class="pre">kernel='dpt'</span></code> and <code class="docutils literal notranslate"><span class="pre">kernel='euclidean'</span></code>.</p>
 </dd>
 <dt>knn_constraint: <cite>bool</cite> (default: True)</dt><dd><p>Use graph path interpolation and kNN filtering during velocity
 training. If False, use L2 OT cost and linear interpolation.</p>

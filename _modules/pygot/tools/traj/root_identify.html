@@ -555,7 +555,11 @@ document.write(`
     <span class="k">return</span> <span class="n">loss</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">greedy_search_best_source</span><span class="p">(</span><span class="n">adata</span><span class="p">,</span> <span class="n">embedding_key</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="s1">'dpt'</span><span class="p">,</span> <span class="n">split_k</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">graph_dist</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">connect_anchor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_waypoints</span><span class="o">=</span><span class="mi">1200</span><span class="p">):</span>
-    <span class="k">assert</span> <span class="p">(</span><span class="n">kernel</span><span class="o">==</span><span class="s1">'dpt'</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">kernel</span> <span class="o">!=</span> <span class="s1">'dpt'</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">graph_dist</span> <span class="o">==</span> <span class="kc">True</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">graph_dist</span> <span class="ow">and</span> <span class="n">kernel</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">'dpt'</span><span class="p">,</span> <span class="s1">'euclidean'</span><span class="p">}:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"`graph_dist=False` requires `kernel='dpt'` or "</span>
+            <span class="s2">"`kernel='euclidean'`"</span>
+        <span class="p">)</span>
     <span class="n">time_key</span> <span class="o">=</span> <span class="n">kernel</span> <span class="o">+</span> <span class="s1">'_pseudotime'</span>
     <span class="k">if</span> <span class="n">split_k</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">split_k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
@@ -760,7 +764,6 @@ document.write(`
         <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'ot_ct_root'</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">index</span> <span class="o">==</span> <span class="n">res</span><span class="p">[</span><span class="s1">'cell'</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">adata</span><span class="o">.</span><span class="n">uns</span><span class="p">[</span><span class="s1">'cytotrace_alpha'</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha</span>
     <span class="k">return</span> <span class="n">res</span></div>
-
 
 
 </pre></div>
