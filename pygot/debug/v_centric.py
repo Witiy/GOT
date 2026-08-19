@@ -70,6 +70,7 @@ class VCentricSamplingDebugger:
             embedding_key,
             graph_key=None,
             knn_constraint=True,
+            full_connect=False,
             n_neighbors=50,
             landmarks=False,
             linear=False,
@@ -95,6 +96,7 @@ class VCentricSamplingDebugger:
             linear=linear,
             n_neighbors=n_neighbors,
             knn_constraint=knn_constraint,
+            full_connect=full_connect,
             **sampler_kwargs,
         )
         self.vis_key = None
@@ -637,8 +639,4 @@ class VCentricSamplingDebugger:
         path = batch.metadata['paths'][pair_id]
         if len(path) < 2:
             return None
-        x_pair = np.concatenate([
-            self.sampler.X[transition],
-            self.sampler.X[transition + 1],
-        ])
-        return x_pair[path]
+        return self.sampler.path_coordinates(transition, path)

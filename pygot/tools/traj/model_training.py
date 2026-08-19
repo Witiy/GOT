@@ -62,6 +62,7 @@ def fit_velocity_model(
         graph_key=None,
         n_neighbors=50,
         knn_constraint=True,
+        full_connect=False,
         v_centric_iter_n=1000, v_centric_batch_size=256,
         add_noise=True, sigma=0.1,
         lr=5e-3, 
@@ -101,6 +102,9 @@ def fit_velocity_model(
         Use graph paths for interpolation and apply the kNN velocity filter.
         If False, use linear interpolation without kNN filtering. The OT cost
         remains controlled independently by ``distance_metrics``.
+    full_connect: `bool` (default: False)
+        If True, construct one kNN graph over all time points and reuse it for
+        every adjacent-time OT and path query.
     v_centric_iter_n: `int` (default: 1000)
         Iteration number of v-centric training
     v_centric_batch_size: `int` (default: 256)
@@ -157,6 +161,7 @@ def fit_velocity_model(
                     linear=linear,
                     n_neighbors=n_neighbors,
                     knn_constraint=knn_constraint,
+                    full_connect=full_connect,
                     **kwargs
                     
     )

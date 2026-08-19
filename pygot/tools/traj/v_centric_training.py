@@ -278,6 +278,7 @@ class GraphicalOTVelocitySampler:
             "Device": self.device,
             "Data Dir": self.data_dir,
             "KNN Constraint": self.knn_constraint,
+            "Full Connect": self.full_connect,
 
         }
         return str(item)
@@ -296,6 +297,7 @@ class GraphicalOTVelocitySampler:
             p : int = 2,
             landmarks_fold : int = 5,
             knn_constraint : bool = True,
+            full_connect : bool = False,
             ) -> None:
         """ init sampler function
 
@@ -319,6 +321,9 @@ class GraphicalOTVelocitySampler:
                 use graph paths for interpolation and enable kNN velocity
                 filtering. OT cost is selected independently by
                 ``distance_metrics`` when sampling
+            full_connect : bool
+                construct one kNN graph from all time points instead of one
+                graph for each adjacent time-point pair
         
         """
         assert (p == 1) or (p == 2)
@@ -331,6 +336,7 @@ class GraphicalOTVelocitySampler:
             for t in np.sort(pd.unique(adata.obs[time_key]))
         ]
         self.n_list = [len(self.index_list[i]) for i in range(len(self.index_list))]
+        self.offsets = np.concatenate([[0], np.cumsum(self.n_list)]).astype(int)
         self.landmarks = landmarks
         self.time_key = time_key
         self.device = device
@@ -339,6 +345,7 @@ class GraphicalOTVelocitySampler:
         self.set_embedding(embedding_key)
         self.data_dir = path
         self.knn_constraint = knn_constraint
+        self.full_connect = full_connect
         self.n_neighbors = n_neighbors
         self.landmarks_fold = landmarks_fold
         self.GPs = None
@@ -354,6 +361,7 @@ class GraphicalOTVelocitySampler:
                 self.adata.obsm[graph_key][self.adata.obs[self.time_key] == t]
                 for t in self.ts
             ]
+        self.X_cost_all = np.concatenate(self.X_cost)
         self.graph_key = graph_key
 
 
@@ -366,6 +374,7 @@ class GraphicalOTVelocitySampler:
                 self.adata.obsm[embedding_key][self.adata.obs[self.time_key] == t][:, :self.dim].astype(np.float64)
                 for t in self.ts
             ]
+        self.X_all = np.concatenate(self.X)
         self.embedding_key = embedding_key
         
 
@@ -391,6 +400,40 @@ class GraphicalOTVelocitySampler:
 
         
         self.GPs = []
+        if self.full_connect:
+            X = self.X_all
+            X_cost = self.X_cost_all if self.graph_key != self.embedding_key else None
+            if self.landmarks and len(X) > 5000:
+                landmarks = True
+                n_landmarks = max(min(25000, len(X) // landmarks_fold), 2000)
+                print('Number of landmarks : {} for full graph'.format(n_landmarks))
+            else:
+                landmarks = False
+                n_landmarks = 0
+            print('calcu shortest path on all time points')
+            self.GPs.append(
+                GraphPath(
+                    X,
+                    landmarks=landmarks,
+                    n_neighbors=n_neighbors,
+                    n_landmarks=n_landmarks,
+                    n_dijk=int(self.offsets[-2]),
+                    X_cost=X_cost,
+                )
+            )
+        else:
+            self._compute_pairwise_shortest_paths(
+                n_neighbors,
+                landmarks_fold=landmarks_fold,
+            )
+
+        # construct interpolator list
+        if self.data_dir != '':
+            if not os.path.exists(self.data_dir):
+                os.makedirs(self.data_dir)
+            self.save_gp(self.data_dir)
+
+    def _compute_pairwise_shortest_paths(self, n_neighbors, landmarks_fold=5):
         for i in range(len(self.ts)-1):
             print('calcu shortest path between {} to {}'.format(self.ts[i], self.ts[i+1]))
             if self.graph_key != self.embedding_key:
@@ -415,12 +458,6 @@ class GraphicalOTVelocitySampler:
                       X_cost=X_cost
                     )
             self.GPs.append(gp)
-            
-        # construct interpolator list
-        if self.data_dir != '':
-            if not os.path.exists(self.data_dir):
-                os.makedirs(self.data_dir)
-            self.save_gp(self.data_dir)
 
     def _ensure_graph_paths(self):
         """Load or compute graph paths only when graph-based behavior is used."""
@@ -436,8 +473,16 @@ class GraphicalOTVelocitySampler:
 
     
     def save_gp(self, path):
+        if self.full_connect:
+            save_path = os.path.join(path, '_global.pkl')
+            with open(save_path, 'wb') as f:
+                pickle.dump(self.GPs[0], f)
+            return
         for i in range(len(self.ts) - 1):
-            save_path = path + '_' + str(self.ts[i]) + 'to' + str(self.ts[i+1]) + '.pkl' 
+            save_path = os.path.join(
+                path,
+                '_' + str(self.ts[i]) + 'to' + str(self.ts[i+1]) + '.pkl',
+            )
             with open(save_path, 'wb') as f:
                 pickle.dump(self.GPs[i], f)
             
@@ -446,6 +491,16 @@ class GraphicalOTVelocitySampler:
     def load_gp(self, path):
         self.GPs = []
         print("loading saved shortest path profile")
+        if self.full_connect:
+            save_path = os.path.join(path, '_global.pkl')
+            try:
+                with open(save_path, 'rb') as f:
+                    self.GPs.append(pickle.load(f))
+            except Exception as e:
+                self.GPs = None
+                print(e)
+                print('Error in loading full shortest path file')
+            return
         for i in range(len(self.ts) - 1):
             save_path = os.path.join(path, '_' + str(self.ts[i]) + 'to' + str(self.ts[i+1]) + '.pkl' )
             try:
@@ -456,6 +511,27 @@ class GraphicalOTVelocitySampler:
                 print(e)
                 print('Error in loading shortest path file')
                 break    
+
+    def _graph(self, t_start):
+        return self.GPs[0] if self.full_connect else self.GPs[t_start]
+
+    def _graph_indices(self, t_start, source_idx, target_idx):
+        """Map adjacent-time local indices into the active graph coordinates."""
+        source_idx = np.asarray(source_idx)
+        target_idx = np.asarray(target_idx)
+        if self.full_connect:
+            return (
+                source_idx + self.offsets[t_start],
+                target_idx + self.offsets[t_start + 1],
+            )
+        return source_idx, target_idx + self.n_list[t_start]
+
+    def path_coordinates(self, t_start, path):
+        """Return embedding coordinates for graph-node indices in ``path``."""
+        path = np.asarray(path, dtype=int)
+        if self.full_connect:
+            return self.X_all[path]
+        return np.concatenate([self.X[t_start], self.X[t_start + 1]])[path]
         
 
 
@@ -513,7 +589,12 @@ class GraphicalOTVelocitySampler:
         if distance_metrics == 'SP':
             # Shortest path distance as optimal transport cost matrix
             self._ensure_graph_paths()
-            M = self.GPs[t_start].graphical_distance(source_idx, target_idx + self.n_list[t_start])
+            source_graph, target_graph = self._graph_indices(
+                t_start,
+                source_idx,
+                target_idx,
+            )
+            M = self._graph(t_start).graphical_distance(source_graph, target_graph)
         else:
             # L2 distance as optimal transport cost matrix
             M = torch.cdist(x0_c, x1_c)
@@ -584,18 +665,26 @@ class GraphicalOTVelocitySampler:
         for idx in range(len(x0)):
             source = int(i[idx])
             target = int(j_map[idx])
+            target_local = target - self.n_list[t_start]
+            source_graph, target_graph = self._graph_indices(
+                t_start,
+                source,
+                target_local,
+            )
+            source_graph = int(source_graph)
+            target_graph = int(target_graph)
             chord_length = float(np.linalg.norm(x1[idx] - x0[idx])) if return_metadata else 0.0
 
             if not self.knn_constraint:
-                path = np.array([source, target])
+                path = np.array([source_graph, target_graph])
                 connected = True
                 use_linear = True
                 used_linear_fallback = False
                 path_length = chord_length
             else:
-                path, flag = self.GPs[t_start].graphical_path(
-                    source_idx=source,
-                    end_idx=target,
+                path, flag = self._graph(t_start).graphical_path(
+                    source_idx=source_graph,
+                    end_idx=target_graph,
                 )
                 connected = bool(flag and len(path) >= 2)
                 used_linear_fallback = not connected and self.linear
@@ -604,9 +693,9 @@ class GraphicalOTVelocitySampler:
                 if connected and return_metadata:
                     path_length = float(
                         np.asarray(
-                            self.GPs[t_start].graphical_distance(
-                                np.array([source]),
-                                np.array([target]),
+                            self._graph(t_start).graphical_distance(
+                                np.array([source_graph]),
+                                np.array([target_graph]),
                             )
                         ).squeeze()
                     )
@@ -629,7 +718,7 @@ class GraphicalOTVelocitySampler:
                     xa = (1-t) * x0[idx] + t * x1[idx]
                     ua = x1[idx] - x0[idx]
                 else:
-                    xa, ua = self.GPs[t_start].interpolate_one_point(path, ti=t, )
+                    xa, ua = self._graph(t_start).interpolate_one_point(path, ti=t, )
                 xa_t.append(xa)
                 ua_t.append(ua)
                 ts.append(t)
