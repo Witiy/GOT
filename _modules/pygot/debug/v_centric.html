@@ -368,6 +368,7 @@ document.write(`
             <span class="n">embedding_key</span><span class="p">,</span>
             <span class="n">graph_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">knn_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">full_connect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
             <span class="n">landmarks</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">linear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -393,6 +394,7 @@ document.write(`
             <span class="n">linear</span><span class="o">=</span><span class="n">linear</span><span class="p">,</span>
             <span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">,</span>
             <span class="n">knn_constraint</span><span class="o">=</span><span class="n">knn_constraint</span><span class="p">,</span>
+            <span class="n">full_connect</span><span class="o">=</span><span class="n">full_connect</span><span class="p">,</span>
             <span class="o">**</span><span class="n">sampler_kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">vis_key</span> <span class="o">=</span> <span class="kc">None</span>
@@ -966,11 +968,7 @@ document.write(`
         <span class="n">path</span> <span class="o">=</span> <span class="n">batch</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">'paths'</span><span class="p">][</span><span class="n">pair_id</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">x_pair</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">transition</span><span class="p">],</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">X</span><span class="p">[</span><span class="n">transition</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span>
-        <span class="p">])</span>
-        <span class="k">return</span> <span class="n">x_pair</span><span class="p">[</span><span class="n">path</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sampler</span><span class="o">.</span><span class="n">path_coordinates</span><span class="p">(</span><span class="n">transition</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div>
 
 </pre></div>
 

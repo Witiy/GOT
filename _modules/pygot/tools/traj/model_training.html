@@ -355,6 +355,7 @@ document.write(`
         <span class="n">graph_key</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
         <span class="n">knn_constraint</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">full_connect</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">v_centric_iter_n</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">v_centric_batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>
         <span class="n">add_noise</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
         <span class="n">lr</span><span class="o">=</span><span class="mf">5e-3</span><span class="p">,</span> 
@@ -394,6 +395,9 @@ document.write(`
 <span class="sd">        Use graph paths for interpolation and apply the kNN velocity filter.</span>
 <span class="sd">        If False, use linear interpolation without kNN filtering. The OT cost</span>
 <span class="sd">        remains controlled independently by ``distance_metrics``.</span>
+<span class="sd">    full_connect: `bool` (default: False)</span>
+<span class="sd">        If True, construct one kNN graph over all time points and reuse it for</span>
+<span class="sd">        every adjacent-time OT and path query.</span>
 <span class="sd">    v_centric_iter_n: `int` (default: 1000)</span>
 <span class="sd">        Iteration number of v-centric training</span>
 <span class="sd">    v_centric_batch_size: `int` (default: 256)</span>
@@ -450,6 +454,7 @@ document.write(`
                     <span class="n">linear</span><span class="o">=</span><span class="n">linear</span><span class="p">,</span>
                     <span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">,</span>
                     <span class="n">knn_constraint</span><span class="o">=</span><span class="n">knn_constraint</span><span class="p">,</span>
+                    <span class="n">full_connect</span><span class="o">=</span><span class="n">full_connect</span><span class="p">,</span>
                     <span class="o">**</span><span class="n">kwargs</span>
                     
     <span class="p">)</span>
