@@ -87,6 +87,8 @@ def fit_velocity_model_without_time(
         kernel='dpt', 
         connect_anchor=True,
         split_m=30, 
+        graph_dist=True,
+        knn_constraint=True,
         single_branch_detect=True, 
         cytotrace=True, 
         cell_type_key=None,
@@ -113,6 +115,13 @@ def fit_velocity_model_without_time(
         Use extrema in diffusion map space to connect the whole graph
     split_m: `int` (default: 30)
         Number of split. This number should NOT be too small
+    graph_dist: `bool` (default: True)
+        Use shortest-path distance for the root-identification OT cost. If
+        False, use L2 distance. This is independent of velocity training and
+        currently requires ``kernel='dpt'``.
+    knn_constraint: `bool` (default: True)
+        Use graph path interpolation and kNN filtering during velocity
+        training. If False, use L2 OT cost and linear interpolation.
     single_branch_detect: `bool` (default: True)
         Auto detect single branch so that auto determine use ct_root or ot_ct_root as source cell
     cytotrace: `bool` (default: True)
@@ -147,6 +156,8 @@ def fit_velocity_model_without_time(
     """
     assert (not plot) or (plot and (not basis is None)), 'please offer `basis` (e.g. umap) if you set `plot` = True'
     assert (not single_branch_detect) or (single_branch_detect and (not cell_type_key is None)), 'please offer `cell_type_key` if you set `single_branch_detect` = True'
+    if precomputed_pseudotime is None and not graph_dist and kernel != 'dpt':
+        raise ValueError("`graph_dist=False` currently requires `kernel='dpt'`")
     if device is None:
         use_cuda = torch.cuda.is_available()
         device = torch.device("cuda" if use_cuda else "cpu")
@@ -178,6 +189,7 @@ def fit_velocity_model_without_time(
                                 kernel=kernel, 
                                 split_m=split_m, 
                                 embedding_key=embedding_key, 
+                                graph_dist=graph_dist,
                                 cytotrace=cytotrace,
                                 connect_anchor=connect_anchor)
         
@@ -209,8 +221,15 @@ def fit_velocity_model_without_time(
         plt.show()
         plt.close()
     
-    model, history = _fit_velocity_model(adata, embedding_key,  device=device, **kwargs)
+    training_kwargs = kwargs.copy()
+    training_kwargs['knn_constraint'] = knn_constraint
+    if not knn_constraint:
+        training_kwargs['distance_metrics'] = 'L2'
+    model, history = _fit_velocity_model(
+        adata,
+        embedding_key,
+        device=device,
+        **training_kwargs,
+    )
     return model, history
     
-
-
